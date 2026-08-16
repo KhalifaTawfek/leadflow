@@ -118,18 +118,39 @@ function budgetWeight(budget) {
 
 const URGENCY_WEIGHT = { urgent: 4, high: 3, normal: 1, low: 0 };
 const URGENCY_LABEL = { urgent: "Urgent", high: "High", normal: "Normal", low: "Low" };
+const URGENCY_RANK = { low: 0, normal: 1, high: 2, urgent: 3 };
+
+// The agent forms its OWN urgency opinion by reading the request text — so a
+// customer who under-states urgency ("Low" while their account is hacked) is
+// still triaged correctly. Words are matched case-insensitively.
+const URGENT_SIGNALS = ["hacked", "breach", "compromis", "urgent", "asap", "immediately", "right now", "cant work", "can't work", "server down", "site down", "is down", "outage", "lost access", "locked out", "emergency", "critical", "losing money", "being attacked", "ddos", "ransom"];
+const HIGH_SIGNALS = ["deadline", "this week", "stopped working", "not working", "keeps failing", "important", "as soon as", "recurring", "every day", "repeatedly"];
+
+function detectUrgency(text) {
+  const t = String(text).toLowerCase();
+  if (URGENT_SIGNALS.some((k) => t.includes(k))) return "urgent";
+  if (HIGH_SIGNALS.some((k) => t.includes(k))) return "high";
+  return "normal";
+}
+
+// The urgency the agent acts on = the stronger of (customer pick, AI detection).
+function effectiveUrgency(customer, ai) {
+  const c = String(customer).toLowerCase();
+  return (URGENCY_RANK[ai] ?? 1) > (URGENCY_RANK[c] ?? 1) ? ai : c;
+}
 
 // Step 2 — priority 1-10 from urgency + budget + security sensitivity + detail.
 // Returns both the score and a human-readable breakdown of how it was reached,
 // so the CRM can show WHY the agent chose the number (not the customer).
-function explainPriority(lead, category) {
+function explainPriority(lead, category, actingUrgency) {
   const factors = [];
   let score = 3;
   factors.push("base 3");
 
-  const uw = URGENCY_WEIGHT[String(lead.urgency).toLowerCase()] ?? 1;
+  const urg = actingUrgency || String(lead.urgency).toLowerCase();
+  const uw = URGENCY_WEIGHT[urg] ?? 1;
   score += uw;
-  const uLabel = URGENCY_LABEL[String(lead.urgency).toLowerCase()] || "Normal";
+  const uLabel = URGENCY_LABEL[urg] || "Normal";
   factors.push(`${uLabel} urgency ${uw >= 0 ? "+" : ""}${uw}`);
 
   const bw = budgetWeight(lead.budget);
@@ -184,17 +205,26 @@ function draftReply(lead, category, estimate, questions) {
 function analyzeLead(lead) {
   const text = `${lead.serviceType || ""} ${lead.problem || ""}`;
   const rule = classify(text);                       // 1
-  const { score: priority, reason: priorityReason } = explainPriority(lead, rule.category); // 2
+  // The agent forms its own urgency opinion, then acts on the stronger of it vs the customer's.
+  const aiUrgency = detectUrgency(lead.problem || "");
+  const acting = effectiveUrgency(lead.urgency, aiUrgency);
+  const { score: priority, reason: priorityReason } = explainPriority(lead, rule.category, acting); // 2
   const summary = summarize(lead, rule.category);      // 3
   const questions = rule.questions;                    // 4
   const estimateHours = rule.estimate;                 // 6
   const reply = draftReply(lead, rule.category, estimateHours, questions); // 5
 
+  const customerUrgency = String(lead.urgency).toLowerCase();
+  const aiRaised = (URGENCY_RANK[aiUrgency] ?? 1) > (URGENCY_RANK[customerUrgency] ?? 1);
+
   return {
     category: rule.category,
     priority,
-    priorityReason,
-    urgencyLabel: URGENCY_LABEL[String(lead.urgency).toLowerCase()] || "Normal",
+    priorityReason: aiRaised
+      ? `${priorityReason} — AI raised urgency to ${URGENCY_LABEL[acting]} from the request wording`
+      : priorityReason,
+    urgencyLabel: URGENCY_LABEL[customerUrgency] || "Normal",      // what the customer picked
+    aiUrgency: URGENCY_LABEL[aiUrgency] || "Normal",              // what the AI detected from the text
     estimateHours,
     summary,
     questions: questions.join("\n"),
