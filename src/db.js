@@ -41,7 +41,9 @@ const Lead = sequelize.define("Lead", {
   budget: { type: DataTypes.STRING, defaultValue: "Not stated" },
   status: { type: DataTypes.ENUM("NEW", "CONTACTED", "QUALIFIED", "PROPOSAL_SENT", "WON", "LOST"), defaultValue: "NEW" },
   assignedToId: { type: DataTypes.UUID, allowNull: true },
-  customerId: { type: DataTypes.UUID, allowNull: true }   // the customer account that placed this request
+  customerId: { type: DataTypes.UUID, allowNull: true },   // the customer account that placed this request
+  reply: { type: DataTypes.TEXT, allowNull: true },        // the reply staff sent the customer (visible to them)
+  repliedAt: { type: DataTypes.DATE, allowNull: true }
 }, { tableName: "leads" });
 
 const LeadNote = sequelize.define("LeadNote", {
@@ -65,7 +67,8 @@ const AiAnalysis = sequelize.define("AiAnalysis", {
 const ActivityLog = sequelize.define("ActivityLog", {
   id: uuid,
   action: { type: DataTypes.STRING, allowNull: false },
-  detail: { type: DataTypes.STRING, defaultValue: "" }
+  detail: { type: DataTypes.STRING, defaultValue: "" },
+  leadId: { type: DataTypes.UUID, allowNull: true }   // link an alert back to its lead (for clickable alerts)
 }, { tableName: "activity_logs" });
 
 // ---- Associations ----
@@ -94,6 +97,9 @@ async function initDb() {
   // (so existing databases pick it up without a destructive sync/alter).
   await sequelize.query('ALTER TABLE ai_analysis ADD COLUMN IF NOT EXISTS priority_reason TEXT');
   await sequelize.query('ALTER TABLE ai_analysis ADD COLUMN IF NOT EXISTS ai_urgency VARCHAR(255)');
+  await sequelize.query('ALTER TABLE leads ADD COLUMN IF NOT EXISTS reply TEXT');
+  await sequelize.query('ALTER TABLE leads ADD COLUMN IF NOT EXISTS replied_at TIMESTAMP');
+  await sequelize.query('ALTER TABLE activity_logs ADD COLUMN IF NOT EXISTS lead_id UUID');
 }
 
 module.exports = { sequelize, initDb, User, Service, Lead, LeadNote, AiAnalysis, ActivityLog };

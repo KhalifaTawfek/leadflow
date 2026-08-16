@@ -104,8 +104,8 @@ async function requireStaff(req, res, next) {
   req.user = user;
   next();
 }
-async function logActivity(userId, action, detail) {
-  try { await ActivityLog.create({ userId: userId || null, action, detail: String(detail).slice(0, 300) }); } catch {}
+async function logActivity(userId, action, detail, leadId) {
+  try { await ActivityLog.create({ userId: userId || null, action, detail: String(detail).slice(0, 300), leadId: leadId || null }); } catch {}
 }
 
 // ================= AUTH =================
@@ -172,7 +172,7 @@ app.post("/api/leads", leadLimiter, requireAuth, async (req, res) => {
   // Run the AI agent flow and store the result.
   const analysis = analyzeLead(lead);
   await AiAnalysis.create({ leadId: lead.id, ...analysis });
-  await logActivity(req.user.id, "NEW_LEAD", `${name} · ${analysis.category} · P${analysis.priority}`);
+  await logActivity(req.user.id, "NEW_LEAD", `${name} · ${analysis.category} · P${analysis.priority}`, lead.id);
 
   // Fire automations (webhook + high-priority alert + email) without blocking the response.
   onNewLead(lead, analysis).catch(() => {});
@@ -271,6 +271,20 @@ app.post("/api/leads/:id/notes", requireStaff, async (req, res) => {
   if (!lead) return res.status(404).json({ error: "Lead not found." });
   const note = await LeadNote.create({ leadId: lead.id, authorId: req.user.id, text: text.slice(0, 1000) });
   res.status(201).json({ note });
+});
+
+// Staff: send a reply to the customer (stored on the lead, visible in their portal).
+app.post("/api/leads/:id/reply", requireStaff, async (req, res) => {
+  const text = String(req.body.text || "").trim();
+  if (text.length < 1) return res.status(400).json({ error: "Reply cannot be empty." });
+  const lead = await Lead.findByPk(req.params.id);
+  if (!lead) return res.status(404).json({ error: "Lead not found." });
+  lead.reply = text.slice(0, 4000);
+  lead.repliedAt = new Date();
+  if (lead.status === "NEW") lead.status = "CONTACTED";   // replying moves it along the pipeline
+  await lead.save();
+  await logActivity(req.user.id, "REPLY_SENT", `${lead.name} · reply sent to customer`, lead.id);
+  res.json({ ok: true, lead: { id: lead.id, reply: lead.reply, repliedAt: lead.repliedAt, status: lead.status } });
 });
 
 // Admin: re-run the AI analysis for a lead.
@@ -421,7 +435,7 @@ app.get("/api/health", async (_req, res) => {
 // in-app Alerts page and demonstrates the notification pipeline.
 app.get("/api/alerts", requireStaff, async (_req, res) => {
   const logs = await ActivityLog.findAll({
-    where: { action: { [Op.in]: ["NEW_LEAD", "DAILY_REPORT"] } },
+    where: { action: { [Op.in]: ["NEW_LEAD", "DAILY_REPORT", "REPLY_SENT"] } },
     order: [["createdAt", "DESC"]],
     limit: 40
   });
@@ -430,6 +444,7 @@ app.get("/api/alerts", requireStaff, async (_req, res) => {
     action: l.action,
     detail: l.detail,
     at: l.createdAt,
+    leadId: l.leadId,
     high: l.action === "NEW_LEAD" && /P(?:8|9|10)\b/.test(l.detail || "")
   }));
   res.json({ alerts, telegram: telegramEnabled() });

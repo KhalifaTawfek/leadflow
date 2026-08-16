@@ -70,7 +70,7 @@ async function main() {
 
     const analysis = analyzeLead(lead);
     await AiAnalysis.create({ leadId: lead.id, ...analysis });
-    await ActivityLog.create({ userId: customer.id, action: "NEW_LEAD", detail: `${name} · ${analysis.category} · P${analysis.priority}` });
+    await ActivityLog.create({ userId: customer.id, action: "NEW_LEAD", detail: `${name} · ${analysis.category} · P${analysis.priority}`, leadId: lead.id });
 
     // Backdate created_at (and the log) so the 14-day chart shows a trend.
     await sequelize.query("UPDATE leads SET created_at = :d WHERE id = :id", { replacements: { d: created, id: lead.id } });

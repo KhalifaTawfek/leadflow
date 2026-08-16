@@ -161,6 +161,9 @@
     }catch(e){}
     await loadStats();
     await loadLeads();
+    // Deep-link: /admin?lead=<id> opens that lead (used by clickable alerts).
+    const wantLead = new URLSearchParams(location.search).get('lead');
+    if(wantLead) openLead(wantLead);
   }
 
   async function loadStats(){
@@ -225,6 +228,11 @@
         <button class="btn ghost sm" id="reAnalyze">Re-run AI</button>
       </div>
       <div style="margin-top:16px">
+        <h4 style="color:var(--green);font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Reply to customer</h4>
+        ${lead.reply?`<div class="note" style="border:0;background:rgba(62,207,142,.08);border-radius:8px;padding:10px"><span style="color:var(--soft);font-size:12px">Sent ${new Date(lead.repliedAt).toLocaleString()}</span><div style="white-space:pre-wrap;margin-top:4px">${esc(lead.reply)}</div></div>`:'<div class="muted" style="font-size:13px">No reply sent yet — the customer sees this in their “My Requests”.</div>'}
+        <div style="margin-top:10px"><textarea id="replyText" placeholder="Write a reply the customer will see…" style="min-height:70px">${esc(lead.reply||a.draftReply||'')}</textarea><button class="btn primary sm" id="sendReply" style="margin-top:8px">Send reply to customer</button></div>
+      </div>
+      <div style="margin-top:16px">
         <h4 style="color:var(--green);font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Internal notes</h4>
         <div id="notes">${(lead.notes||[]).map(n=>`<div class="note"><span class="who">${esc(n.author?.username||'staff')}</span> <span style="color:var(--soft);font-size:12px">${new Date(n.createdAt).toLocaleString()}</span><div>${esc(n.text)}</div></div>`).join('')||'<div class="muted" style="font-size:13px">No notes yet.</div>'}</div>
         <div style="margin-top:10px"><textarea id="noteText" placeholder="Add an internal note…" style="min-height:60px"></textarea><button class="btn ghost sm" id="addNote" style="margin-top:8px">Add note</button></div>
@@ -233,6 +241,7 @@
     document.getElementById('reAnalyze').onclick=async()=>{await api('/api/leads/'+id+'/analyze',{method:'POST'});openLead(id);};
     document.getElementById('addNote').onclick=async()=>{const t=document.getElementById('noteText').value.trim();if(!t)return;await api('/api/leads/'+id+'/notes',{method:'POST',body:JSON.stringify({text:t})});openLead(id);loadLeads();};
     const cr=document.getElementById('copyReply'); if(cr)cr.onclick=()=>{navigator.clipboard.writeText(a.draftReply);cr.textContent='Copied ✓';setTimeout(()=>cr.textContent='Copy reply',1400);};
+    const sr=document.getElementById('sendReply'); if(sr)sr.onclick=async()=>{const t=document.getElementById('replyText').value.trim();if(!t)return;sr.textContent='Sending…';try{await api('/api/leads/'+id+'/reply',{method:'POST',body:JSON.stringify({text:t})});await loadLeads();openLead(id);}catch(e){sr.textContent='Send reply to customer';alert(e.message);}};
   }
 
   async function boot(){

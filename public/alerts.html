@@ -68,7 +68,8 @@
     if(s<60)return s+'s ago'; if(s<3600)return Math.floor(s/60)+'m ago';
     if(s<86400)return Math.floor(s/3600)+'h ago'; return Math.floor(s/86400)+'d ago';
   }
-  const NAMES={NEW_LEAD:'New lead',DAILY_REPORT:'Daily report'};
+  const NAMES={NEW_LEAD:'New lead',DAILY_REPORT:'Daily report',REPLY_SENT:'Reply sent to customer'};
+  window.toggleDetail=(i)=>{const e=document.getElementById('det-'+i);if(e)e.style.display=e.style.display==='none'?'block':'none';};
   async function load(){
     try{
       const r=await fetch('/api/alerts',{cache:'no-store'});
@@ -78,15 +79,24 @@
       el('tgPill').className = 'pill '+(d.telegram?'on':'off');
       const a=d.alerts||[];
       if(!a.length){ el('list').innerHTML='<div class="item"><div class="body"><div class="t">No alerts yet</div><div class="d">New leads and daily reports will appear here.</div></div></div>'; return; }
-      el('list').innerHTML=a.map(x=>`
-        <div class="item ${x.high?'high':''}">
+      el('list').innerHTML=a.map((x,i)=>{
+        const head=`${x.high?'🚨 ':''}${NAMES[x.action]||x.action}`;
+        const detail=(x.detail||'').replace(/</g,'&lt;');
+        if(x.leadId){
+          // New-lead / reply alerts link straight to the lead in the CRM.
+          return `<a class="item ${x.high?'high':''}" href="/admin?lead=${encodeURIComponent(x.leadId)}" style="text-decoration:none;color:inherit;cursor:pointer">
+            <span class="dot"></span>
+            <div class="body"><div class="t">${head}</div><div class="d">${detail}</div>
+              <div style="color:var(--green);font-size:12px;margin-top:4px">Open lead in CRM →</div></div>
+            <div class="when">${ago(x.at)}</div></a>`;
+        }
+        // Daily reports (no lead) expand to show the numbers.
+        return `<div class="item" style="cursor:pointer" onclick="toggleDetail(${i})">
           <span class="dot"></span>
-          <div class="body">
-            <div class="t">${x.high?'🚨 ':''}${NAMES[x.action]||x.action}</div>
-            <div class="d">${(x.detail||'').replace(/</g,'&lt;')}</div>
-          </div>
-          <div class="when">${ago(x.at)}</div>
-        </div>`).join('');
+          <div class="body"><div class="t">${head} <span style="color:var(--soft);font-size:12px">(tap to expand)</span></div><div class="d">${detail}</div>
+            <div id="det-${i}" style="display:none;margin-top:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px">${detail.split('·').map(s=>`<div>${s.trim()}</div>`).join('')}</div></div>
+          <div class="when">${ago(x.at)}</div></div>`;
+      }).join('');
     }catch(e){ el('msg').textContent='Could not load alerts.'; }
   }
   el('refreshBtn').onclick=load;

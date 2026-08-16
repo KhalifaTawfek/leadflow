@@ -410,6 +410,7 @@
           <div class="top"><h3>${esc(a.category||l.serviceType)}</h3><span class="badge ${cls}">${esc(l.statusLabel)}</span></div>
           <div class="meta">Requested ${new Date(l.createdAt).toLocaleDateString()} · Est. ${esc(a.estimateHours||'—')} · Urgency ${esc(a.aiUrgency||a.urgencyLabel||l.urgency)}</div>
           <p>${esc(l.problem)}</p>
+          ${l.reply?`<div class="ai-box" style="border-color:rgba(62,207,142,.45)"><h4>💬 Reply from our team</h4><p style="white-space:pre-wrap">${esc(l.reply)}</p><p style="color:var(--soft);font-size:12px;margin-top:6px">${l.repliedAt?new Date(l.repliedAt).toLocaleString():''}</p></div>`:''}
           ${a.questions?`<div class="ai-box"><h4>What we still need from you</h4><ul style="margin:0 0 0 18px;color:var(--muted)">${a.questions.split('\n').map(q=>`<li>${esc(q)}</li>`).join('')}</ul></div>`:''}
         </div>`;
       }).join('');
