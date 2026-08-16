@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LeadFlow AI — Admin / CRM</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%233ecf8e'/><text x='50' y='55' font-size='46' font-weight='bold' text-anchor='middle' fill='%23062018'>LF</text></svg>">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<meta name="theme-color" content="#0d1512">
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));}</script>
+<style>
+  :root{
+    --bg:#0d1512;--panel:#12201b;--panel2:#17281f;--ink:#eaf5ef;--muted:#9db3aa;--soft:#6f857c;
+    --green:#3ecf8e;--green2:#2fa873;--teal:#1f6f5c;--amber:#f0b84f;--red:#ef6f5c;--blue:#5ea9ef;--line:rgba(255,255,255,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+  a{color:inherit;text-decoration:none}
+  .topbar{display:flex;align-items:center;gap:16px;padding:12px 20px;border-bottom:1px solid var(--line);background:#0f1a16;position:sticky;top:0;z-index:10}
+  .brand{display:inline-flex;align-items:center;gap:9px;font-weight:800}
+  .brand .mark{width:30px;height:30px;display:grid;place-items:center;background:var(--green);color:#062018;border-radius:8px;font-weight:900;font-size:12px}
+  .topbar .right{margin-left:auto;display:flex;align-items:center;gap:12px;color:var(--muted);font-size:14px}
+  .btn{border:0;border-radius:9px;padding:10px 16px;font-weight:800;cursor:pointer;font-size:14px}
+  .btn.primary{background:var(--green);color:#062018}.btn.primary:hover{background:var(--green2)}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+  .btn.sm{padding:7px 12px;font-size:13px}
+  .wrap{max-width:1200px;margin:0 auto;padding:22px 20px 70px}
+  input,select,textarea{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:9px;color:var(--ink);padding:10px 12px;font:inherit}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green)}
+  label{display:grid;gap:6px;font-weight:700;color:var(--muted);font-size:13px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .login{max-width:380px;margin:8vh auto;display:grid;gap:14px}
+  .login h1{font-size:24px;text-align:center}
+  .notice{padding:11px 13px;border-radius:9px;font-weight:600;font-size:14px}
+  .notice.err{background:rgba(239,111,92,.15);color:#ffb4a6}
+  .metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:16px}
+  .metric{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .metric b{display:block;font-size:26px}.metric span{color:var(--muted);font-size:12px}
+  .metric.g b{color:var(--green)}.metric.a b{color:var(--amber)}.metric.r b{color:var(--red)}.metric.b b{color:var(--blue)}
+  .cols{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin-top:16px}
+  .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .filters select{width:auto;min-width:130px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line)}
+  th{color:var(--soft);font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+  tr.lead-row{cursor:pointer}tr.lead-row:hover{background:var(--panel2)}
+  .prio{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:7px;font-weight:800;font-size:13px;background:var(--panel2)}
+  .prio.hi{background:rgba(239,111,92,.2);color:#ffb4a6}.prio.md{background:rgba(240,184,79,.2);color:var(--amber)}.prio.lo{background:rgba(62,207,142,.18);color:var(--green)}
+  .badge{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:800}
+  .st-NEW{background:rgba(94,169,239,.2);color:var(--blue)}
+  .st-CONTACTED{background:rgba(240,184,79,.2);color:var(--amber)}
+  .st-QUALIFIED{background:rgba(62,207,142,.18);color:var(--green)}
+  .st-PROPOSAL_SENT{background:rgba(159,122,234,.2);color:#c4a7f0}
+  .st-WON{background:rgba(62,207,142,.28);color:#a7f0cf}
+  .st-LOST{background:rgba(239,111,92,.2);color:#ffb4a6}
+  .chart{margin-top:6px}
+  .detail h2{font-size:20px;margin-bottom:2px}
+  .detail .muted{color:var(--muted);font-size:14px}
+  .kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px;margin:12px 0}
+  .kv .k{color:var(--soft)}
+  .ai{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px}
+  .ai h4{color:var(--green);font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+  .reply{white-space:pre-wrap;background:#0f1a16;border:1px solid var(--line);border-radius:9px;padding:12px;font-size:13px;color:#d7e7df;margin-top:8px}
+  .note{border-top:1px solid var(--line);padding:9px 0;font-size:14px}
+  .note .who{color:var(--green);font-weight:700;font-size:13px}
+  .empty{color:var(--muted);text-align:center;padding:40px 10px}
+  .row-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  @media(max-width:900px){.metrics{grid-template-columns:repeat(3,1fr)}.cols{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+  let me=null, currentLeadId=null, users=[];
+  async function api(path,opts={}){
+    const r=await fetch(path,{...opts,headers:{'content-type':'application/json',...(opts.headers||{})}});
+    const d=await r.json().catch(()=>({}));
+    if(!r.ok) throw new Error(d.error||'Request failed');
+    return d;
+  }
+  function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+  function prioClass(p){return p>=8?'hi':p>=5?'md':'lo'}
+  const STATUSES=['NEW','CONTACTED','QUALIFIED','PROPOSAL_SENT','WON','LOST'];
+  const app=document.getElementById('app');
+
+  function renderLogin(err){
+    app.innerHTML=`<div class="login panel">
+      <a class="brand" href="/" style="justify-content:center"><span class="mark">LF</span> LeadFlow AI</a>
+      <h1>Admin sign in</h1>
+      ${err?`<div class="notice err">${esc(err)}</div>`:''}
+      <label>Username<input id="u" autocomplete="username"></label>
+      <label>Password<input id="p" type="password" autocomplete="current-password"></label>
+      <button class="btn primary" id="loginBtn">Sign in</button>
+    </div>`;
+    document.getElementById('loginBtn').onclick=async()=>{
+      try{
+        await api('/api/auth/login',{method:'POST',body:JSON.stringify({username:document.getElementById('u').value,password:document.getElementById('p').value})});
+        boot();
+      }catch(e){ renderLogin(e.message); }
+    };
+    document.getElementById('p').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('loginBtn').click()});
+  }
+
+  function lineChart(perDay){
+    const w=560,h=140,pad=24;
+    const max=Math.max(1,...perDay.map(d=>d.count));
+    const pts=perDay.map((d,i)=>{
+      const x=pad+i*(w-2*pad)/(perDay.length-1);
+      const y=h-pad-(d.count/max)*(h-2*pad);
+      return [x,y];
+    });
+    const line=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+    const area=`M${pts[0][0]} ${h-pad} `+pts.map(p=>'L'+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ')+` L${pts[pts.length-1][0]} ${h-pad} Z`;
+    return `<svg class="chart" viewBox="0 0 ${w} ${h}" width="100%" preserveAspectRatio="none">
+      <path d="${area}" fill="rgba(62,207,142,.14)"/>
+      <path d="${line}" fill="none" stroke="#3ecf8e" stroke-width="2.5"/>
+      ${pts.map(p=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="2.5" fill="#3ecf8e"/>`).join('')}
+    </svg>`;
+  }
+
+  async function renderDashboard(){
+    app.innerHTML=`
+      <div class="topbar">
+        <a class="brand" href="/"><span class="mark">LF</span> LeadFlow AI</a>
+        <span class="badge st-QUALIFIED">CRM</span>
+        <div class="right"><a href="/alerts" class="btn ghost sm" style="text-decoration:none">🔔 Alerts</a><span>${esc(me.username)} · ${esc(me.role)}</span><button class="btn ghost sm" id="logout">Log out</button></div>
+      </div>
+      <div class="wrap">
+        <div class="metrics" id="metrics"></div>
+        <div class="panel"><h3 style="font-size:15px;margin-bottom:4px">Leads — last 14 days</h3><div id="chart"></div></div>
+        <div class="cols">
+          <div class="panel">
+            <div class="filters">
+              <select id="fStatus"><option value="">All statuses</option>${STATUSES.map(s=>`<option value="${s}">${s.replace('_',' ')}</option>`).join('')}</select>
+              <select id="fService"><option value="">All services</option></select>
+              <select id="fPriority"><option value="0">Any priority</option><option value="8">High (8+)</option><option value="5">Medium (5+)</option></select>
+            </div>
+            <div id="leadsTable"></div>
+          </div>
+          <div class="panel detail" id="detail"><div class="empty">Select a lead to see the AI analysis and details.</div></div>
+        </div>
+      </div>`;
+    document.getElementById('logout').onclick=async()=>{await api('/api/auth/logout',{method:'POST'});me=null;renderLogin();};
+    ['fStatus','fService','fPriority'].forEach(id=>document.getElementById(id).addEventListener('change',loadLeads));
+    try{ users=(await api('/api/users')).users; }catch(e){}
+    try{
+      const {services}=await api('/api/services');
+      document.getElementById('fService').innerHTML='<option value="">All services</option>'+services.map(s=>`<option>${esc(s.name)}</option>`).join('');
+    }catch(e){}
+    await loadStats();
+    await loadLeads();
+  }
+
+  async function loadStats(){
+    const s=await api('/api/stats');
+    const m=s.metrics;
+    document.getElementById('metrics').innerHTML=`
+      <div class="metric"><b>${m.total}</b><span>Total leads</span></div>
+      <div class="metric a"><b>${m.highValue}</b><span>High-value</span></div>
+      <div class="metric r"><b>${m.urgent}</b><span>Urgent</span></div>
+      <div class="metric g"><b>${m.won}</b><span>Won</span></div>
+      <div class="metric b"><b>${m.conversion}%</b><span>Conversion</span></div>
+      <div class="metric"><b>${m.lost}</b><span>Lost</span></div>`;
+    document.getElementById('chart').innerHTML=lineChart(s.perDay);
+  }
+
+  async function loadLeads(){
+    const q=new URLSearchParams();
+    const st=document.getElementById('fStatus').value; if(st)q.set('status',st);
+    const sv=document.getElementById('fService').value; if(sv)q.set('serviceType',sv);
+    const pr=document.getElementById('fPriority').value; if(pr&&pr!=='0')q.set('minPriority',pr);
+    const {leads}=await api('/api/leads?'+q.toString());
+    const el=document.getElementById('leadsTable');
+    if(!leads.length){el.innerHTML='<div class="empty">No leads match these filters.</div>';return;}
+    el.innerHTML=`<table><thead><tr><th>P</th><th>Name</th><th>Service</th><th>Status</th><th>Notes</th></tr></thead><tbody>
+      ${leads.map(l=>{const p=l.analysis?.priority||0;return `<tr class="lead-row" data-id="${l.id}">
+        <td><span class="prio ${prioClass(p)}">${p}</span></td>
+        <td><b>${esc(l.name)}</b><br><span style="color:var(--soft);font-size:12px">${esc(l.email)}</span></td>
+        <td>${esc(l.analysis?.category||l.serviceType)}</td>
+        <td><span class="badge st-${l.status}">${l.status.replace('_',' ')}</span></td>
+        <td>${l.noteCount||0}</td></tr>`}).join('')}
+    </tbody></table>`;
+    el.querySelectorAll('.lead-row').forEach(r=>r.onclick=()=>openLead(r.dataset.id));
+  }
+
+  async function openLead(id){
+    currentLeadId=id;
+    const {lead}=await api('/api/leads/'+id);
+    const a=lead.analysis||{};
+    const d=document.getElementById('detail');
+    d.innerHTML=`
+      <h2>${esc(lead.name)} <span class="prio ${prioClass(a.priority||0)}" style="vertical-align:middle">${a.priority||'—'}</span></h2>
+      <div class="muted">${esc(lead.email)} · ${esc(lead.phone)}</div>
+      <div class="kv">
+        <span class="k">Service</span><span>${esc(a.category||lead.serviceType)}</span>
+        <span class="k">Urgency</span><span>${esc(a.urgencyLabel||lead.urgency)}</span>
+        <span class="k">Budget</span><span>${esc(lead.budget)}</span>
+        <span class="k">Estimate</span><span>${esc(a.estimateHours||'—')}</span>
+      </div>
+      <div><span class="k" style="color:var(--soft);font-size:13px">Problem</span><p style="margin-top:4px">${esc(lead.problem)}</p></div>
+      <div class="ai">
+        <h4>🤖 AI analysis</h4>
+        <p style="font-size:14px">${esc(a.summary||'No analysis yet.')}</p>
+        ${a.questions?`<p style="margin-top:10px;color:var(--soft);font-size:12px;text-transform:uppercase;letter-spacing:.05em">Follow-up questions</p><ul style="margin:6px 0 0 18px;font-size:14px;color:var(--muted)">${a.questions.split('\n').map(q=>`<li>${esc(q)}</li>`).join('')}</ul>`:''}
+        ${a.draftReply?`<p style="margin-top:10px;color:var(--soft);font-size:12px;text-transform:uppercase;letter-spacing:.05em">Draft reply</p><div class="reply">${esc(a.draftReply)}</div><button class="btn ghost sm" id="copyReply" style="margin-top:8px">Copy reply</button>`:''}
+      </div>
+      <div class="row-actions">
+        <select id="statusSel">${STATUSES.map(s=>`<option value="${s}" ${s===lead.status?'selected':''}>${s.replace('_',' ')}</option>`).join('')}</select>
+        <select id="assignSel"><option value="">Unassigned</option>${users.map(u=>`<option value="${u.id}" ${lead.assignedToId===u.id?'selected':''}>${esc(u.username)}</option>`).join('')}</select>
+        <button class="btn primary sm" id="saveLead">Save</button>
+        <button class="btn ghost sm" id="reAnalyze">Re-run AI</button>
+      </div>
+      <div style="margin-top:16px">
+        <h4 style="color:var(--green);font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Internal notes</h4>
+        <div id="notes">${(lead.notes||[]).map(n=>`<div class="note"><span class="who">${esc(n.author?.username||'staff')}</span> <span style="color:var(--soft);font-size:12px">${new Date(n.createdAt).toLocaleString()}</span><div>${esc(n.text)}</div></div>`).join('')||'<div class="muted" style="font-size:13px">No notes yet.</div>'}</div>
+        <div style="margin-top:10px"><textarea id="noteText" placeholder="Add an internal note…" style="min-height:60px"></textarea><button class="btn ghost sm" id="addNote" style="margin-top:8px">Add note</button></div>
+      </div>`;
+    document.getElementById('saveLead').onclick=async()=>{await api('/api/leads/'+id,{method:'PATCH',body:JSON.stringify({status:document.getElementById('statusSel').value,assignedToId:document.getElementById('assignSel').value})});await loadStats();await loadLeads();openLead(id);};
+    document.getElementById('reAnalyze').onclick=async()=>{await api('/api/leads/'+id+'/analyze',{method:'POST'});openLead(id);};
+    document.getElementById('addNote').onclick=async()=>{const t=document.getElementById('noteText').value.trim();if(!t)return;await api('/api/leads/'+id+'/notes',{method:'POST',body:JSON.stringify({text:t})});openLead(id);loadLeads();};
+    const cr=document.getElementById('copyReply'); if(cr)cr.onclick=()=>{navigator.clipboard.writeText(a.draftReply);cr.textContent='Copied ✓';setTimeout(()=>cr.textContent='Copy reply',1400);};
+  }
+
+  async function boot(){
+    try{ me=(await api('/api/auth/me')).user; }catch(e){ me=null; }
+    if(me && me.role!=='ADMIN' && me.role!=='SALES'){ renderLogin('This is the staff area. Use the main site to track your requests.'); return; }
+    if(me) renderDashboard(); else renderLogin();
+  }
+  boot();
+</script>
+</body>
+</html>

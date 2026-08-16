@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LeadFlow AI — System Status</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%233ecf8e'/><text x='50' y='55' font-size='46' font-weight='bold' text-anchor='middle' fill='%23062018'>LF</text></svg>">
+<style>
+  :root{--bg:#0d1512;--panel:#12201b;--ink:#eaf5ef;--muted:#9db3aa;--soft:#6f857c;--green:#3ecf8e;--red:#ef6f5c;--amber:#f0b84f;--line:rgba(255,255,255,.10)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;background:
+    radial-gradient(circle at 0 0,rgba(62,207,142,.14),transparent 45%),var(--bg);color:var(--ink);line-height:1.5;min-height:100vh}
+  .wrap{max-width:720px;margin:0 auto;padding:48px 20px}
+  .brand{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:20px}
+  .brand .mark{width:34px;height:34px;display:grid;place-items:center;background:var(--green);color:#062018;border-radius:9px;font-weight:900;font-size:13px}
+  h1{font-size:30px;letter-spacing:-.5px;margin:22px 0 4px}
+  .sub{color:var(--muted);margin-bottom:24px}
+  .overall{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:16px}
+  .dot{width:14px;height:14px;border-radius:50%}
+  .dot.ok{background:var(--green);box-shadow:0 0 12px rgba(62,207,142,.7)}
+  .dot.bad{background:var(--red);box-shadow:0 0 12px rgba(239,111,92,.7)}
+  .overall b{font-size:18px}
+  .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;text-align:center}
+  .card .name{color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+  .card .state{font-size:20px;font-weight:800}
+  .card .state.ok{color:var(--green)}.card .state.bad{color:var(--red)}
+  .card .num{font-size:26px;font-weight:800;color:var(--ink)}
+  .grid4{grid-template-columns:1fr 1fr 1fr 1fr}
+  @media(max-width:520px){.grid4{grid-template-columns:1fr 1fr}}
+  .meta{color:var(--soft);font-size:13px;margin-top:18px;text-align:center}
+  @media(max-width:520px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><span class="mark">LF</span> LeadFlow AI</div>
+  <h1>System status</h1>
+  <p class="sub">Live health of the platform's core components — refreshes automatically.</p>
+
+  <div class="overall" id="overall">
+    <span class="dot" id="overallDot"></span>
+    <b id="overallText">Checking…</b>
+  </div>
+
+  <div class="grid">
+    <div class="card"><div class="name">API</div><div class="state" id="s-api">—</div></div>
+    <div class="card"><div class="name">Database</div><div class="state" id="s-db">—</div></div>
+    <div class="card"><div class="name">AI Agent</div><div class="state" id="s-agent">—</div></div>
+  </div>
+
+  <h2 style="font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:28px 0 12px">Live numbers</h2>
+  <div class="grid grid4">
+    <div class="card"><div class="name">Total leads</div><div class="num" id="n-leads">—</div></div>
+    <div class="card"><div class="name">Leads today</div><div class="num" id="n-today">—</div></div>
+    <div class="card"><div class="name">Open</div><div class="num" id="n-open">—</div></div>
+    <div class="card"><div class="name">Customers</div><div class="num" id="n-cust">—</div></div>
+  </div>
+
+  <p class="meta" id="meta"></p>
+</div>
+
+<script>
+  function setState(id, up){
+    const el=document.getElementById(id);
+    el.textContent = up ? 'Operational' : 'Down';
+    el.className = 'state ' + (up ? 'ok' : 'bad');
+  }
+  async function load(){
+    try{
+      const r = await fetch('/api/health', {cache:'no-store'});
+      const d = await r.json();
+      const s = d.services || {};
+      setState('s-api', s.api === 'ok');
+      setState('s-db', s.db === 'ok');
+      setState('s-agent', s.agent === 'ok');
+      const allOk = s.api==='ok' && s.db==='ok' && s.agent==='ok';
+      document.getElementById('overallDot').className = 'dot ' + (allOk?'ok':'bad');
+      document.getElementById('overallText').textContent = allOk ? 'All systems operational' : 'Some systems are degraded';
+      const c = d.counts || {};
+      const setNum = (id,v)=>{ document.getElementById(id).textContent = (v===undefined||v===null)?'—':v; };
+      setNum('n-leads', c.leads); setNum('n-today', c.leadsToday); setNum('n-open', c.openLeads); setNum('n-cust', c.customers);
+      const up = d.uptime||0; const h=Math.floor(up/3600), m=Math.floor((up%3600)/60);
+      const lat = d.dbLatencyMs!=null ? ` · DB ${d.dbLatencyMs}ms` : '';
+      document.getElementById('meta').textContent = `Uptime ${h}h ${m}m${lat} · last checked ${new Date().toLocaleTimeString()}`;
+    }catch(e){
+      ['s-api','s-db','s-agent'].forEach(id=>setState(id,false));
+      document.getElementById('overallDot').className='dot bad';
+      document.getElementById('overallText').textContent='Cannot reach the server';
+      document.getElementById('meta').textContent='Retrying…';
+    }
+  }
+  load(); setInterval(load, 10000);
+</script>
+</body>
+</html>

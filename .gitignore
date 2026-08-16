@@ -1,0 +1,17 @@
+# Dependencies (rebuilt on the server)
+node_modules/
+
+# Secrets — NEVER commit these
+.env
+*.env
+!.env.example
+
+# Runtime data / backups
+data/
+*.sqlite
+*.log
+backups/
+
+# OS junk
+.DS_Store
+Thumbs.db

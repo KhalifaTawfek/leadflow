@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LeadFlow AI — IT, Cyber & Automation Services</title>
+<meta name="description" content="Account security, servers, automation, Docker, Cloudflare and monitoring. Register, request a service, and track it.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%233ecf8e'/><text x='50' y='55' font-size='46' font-weight='bold' text-anchor='middle' fill='%23062018'>LF</text></svg>">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<meta name="theme-color" content="#0d1512">
+<meta name="mobile-web-app-capable" content="yes">
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));}</script>
+<style>
+  :root{--bg:#0d1512;--panel:#12201b;--panel2:#17281f;--ink:#eaf5ef;--muted:#9db3aa;--soft:#6f857c;
+    --green:#3ecf8e;--green2:#2fa873;--amber:#f0b84f;--red:#ef6f5c;--blue:#5ea9ef;--purple:#c4a7f0;--line:rgba(255,255,255,.10);}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;background:
+    radial-gradient(circle at 0 0,rgba(62,207,142,.14),transparent 45%),
+    radial-gradient(circle at 100% 0,rgba(31,111,92,.18),transparent 40%),var(--bg);color:var(--ink);line-height:1.55;min-height:100vh}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+  header{position:sticky;top:0;z-index:20;background:rgba(13,21,18,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;gap:20px;padding:14px 20px;max-width:1100px;margin:0 auto}
+  .brand{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:20px}
+  .brand .mark{width:34px;height:34px;display:grid;place-items:center;background:var(--green);color:#062018;border-radius:9px;font-weight:900;font-size:13px}
+  .nav .links{display:flex;gap:18px;margin-left:auto;color:var(--muted);font-weight:600;font-size:15px;align-items:center}
+  .nav .links a{cursor:pointer}.nav .links a:hover{color:var(--ink)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:10px;padding:11px 18px;font-weight:800;cursor:pointer;font-size:15px}
+  .btn.primary{background:var(--green);color:#062018}.btn.primary:hover{background:var(--green2)}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+  .btn.sm{padding:8px 14px;font-size:14px}
+  .chip{display:inline-flex;align-items:center;gap:7px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:5px 10px 5px 6px;font-weight:700;font-size:14px}
+  .chip .av{width:24px;height:24px;border-radius:50%;background:var(--green);color:#062018;display:grid;place-items:center;font-weight:900;font-size:12px}
+  .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;padding:64px 0 36px}
+  .hero h1{font-size:clamp(34px,5vw,54px);line-height:1.05;letter-spacing:-1px;margin-bottom:16px}
+  .hero h1 span{color:var(--green)}
+  .hero p.lead{color:var(--muted);font-size:18px;max-width:52ch;margin-bottom:24px}
+  .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 24px 60px rgba(0,0,0,.28)}
+  h2.sec{font-size:clamp(24px,3.2vw,34px);letter-spacing:-.5px;margin-bottom:6px}
+  .sec-sub{color:var(--muted);margin-bottom:22px}
+  section{padding:38px 0}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .svc{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;transition:.15s;display:flex;flex-direction:column}
+  .svc:hover{transform:translateY(-3px);border-color:rgba(62,207,142,.4)}
+  .svc h3{font-size:18px;margin-bottom:6px}.svc p{color:var(--muted);font-size:14px;margin-bottom:12px;flex:1}
+  .svc .price{color:var(--green);font-weight:800;font-size:14px;margin-bottom:12px}
+  label{display:grid;gap:6px;font-weight:700;color:var(--muted);font-size:14px;margin-bottom:14px}
+  input,select,textarea{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:10px;color:var(--ink);padding:12px 13px;font:inherit}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(62,207,142,.18)}
+  textarea{min-height:100px;resize:vertical}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+  .notice{padding:12px 14px;border-radius:10px;font-weight:600;margin-bottom:14px}
+  .notice.err{background:rgba(239,111,92,.15);color:#ffb4a6}
+  .notice.info{background:rgba(94,169,239,.14);color:#bcdcff}
+  /* modal */
+  .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;place-items:center;z-index:60;padding:20px}
+  .modal-bg.open{display:grid}
+  .modal{width:min(440px,100%);background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px}
+  .modal h3{font-size:22px;margin-bottom:4px}
+  .modal .switch{margin-top:14px;color:var(--muted);font-size:14px}.modal .switch a{color:var(--green);font-weight:700;cursor:pointer}
+  .x{float:right;cursor:pointer;color:var(--soft);font-size:22px;line-height:1}
+  /* checkout */
+  .checkout{border:1px solid var(--line);border-radius:14px;background:var(--panel2);padding:18px;margin-top:8px}
+  .checkout .row{display:flex;justify-content:space-between;padding:6px 0;font-size:15px}
+  .checkout .row.total{border-top:1px solid var(--line);margin-top:8px;padding-top:12px;font-weight:800;font-size:18px}
+  .free{color:var(--green);font-weight:800}
+  .beta{display:inline-block;background:rgba(62,207,142,.16);color:var(--green);font-size:11px;font-weight:800;padding:3px 8px;border-radius:999px;margin-left:8px}
+  /* my requests */
+  .req{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:12px}
+  .req .top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .req h3{font-size:17px}
+  .req .meta{color:var(--soft);font-size:13px;margin:4px 0 8px}
+  .badge{display:inline-block;padding:4px 11px;border-radius:999px;font-size:12px;font-weight:800}
+  .b-Received{background:rgba(94,169,239,.2);color:var(--blue)}
+  .b-Inprogress{background:rgba(240,184,79,.2);color:var(--amber)}
+  .b-Quotesent{background:rgba(159,122,234,.2);color:var(--purple)}
+  .b-Completed{background:rgba(62,207,142,.24);color:#a7f0cf}
+  .b-Closed{background:rgba(239,111,92,.2);color:#ffb4a6}
+  .ai-box{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:10px;font-size:14px}
+  .ai-box h4{color:var(--green);font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+  .empty{color:var(--muted);text-align:center;padding:40px 10px}
+  footer{border-top:1px solid var(--line);color:var(--soft);padding:26px 0;margin-top:20px;font-size:14px;text-align:center}
+  @media(max-width:820px){.hero{grid-template-columns:1fr;padding:40px 0 18px}.grid{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}}
+  @media(max-width:520px){.grid{grid-template-columns:1fr}.nav .links{gap:12px}}
+</style>
+</head>
+<body>
+<header>
+  <nav class="nav">
+    <a class="brand" href="#" onclick="go('home');return false"><span class="mark">LF</span> LeadFlow AI</a>
+    <div class="links" id="navLinks"></div>
+  </nav>
+</header>
+
+<main class="wrap" id="app"></main>
+
+<footer>LeadFlow AI · IT / Cyber / Automation services · <a href="/admin">Staff login</a></footer>
+
+<!-- Auth modal -->
+<div class="modal-bg" id="authModal">
+  <div class="modal">
+    <span class="x" onclick="closeAuth()">×</span>
+    <h3 id="authTitle">Log in</h3>
+    <p class="sec-sub" id="authSub" style="margin:4px 0 16px">Welcome back.</p>
+    <div id="authNotice"></div>
+    <label>Username<input id="authUser" autocomplete="username"></label>
+    <label>Password<input id="authPass" type="password" autocomplete="current-password"></label>
+    <button class="btn primary" style="width:100%" id="authBtn">Log in</button>
+    <p class="switch" id="authSwitch"></p>
+  </div>
+</div>
+
+<script>
+  let me = null, services = [], serviceMap = {}, pending = null;
+
+  // Real portfolio — one proof example per service (things actually built).
+  const CASES = [
+    { tag:"Servers / RDP", title:"Multi-site Ubuntu VPS", body:"Set up and secured an Ubuntu server — non-root user, SSH keys, firewall, and Nginx reverse proxy — hosting three live production sites on one machine, each with HTTPS.", result:"3 sites live, isolated & auto-restarting", link:"https://cookblog.net" },
+    { tag:"Docker / DevOps", title:"One-command Docker deploy", body:"Packaged a Node.js + PostgreSQL app into Docker Compose so the whole stack builds and starts with a single command, with a clean rebuild and update flow.", result:"Reproducible, one-command deploys", link:"" },
+    { tag:"Cloudflare / Network", title:"DNS, SSL & DDoS protection", body:"Moved cookblog.net onto Cloudflare: configured DNS, Full-strict SSL, and DDoS/WAF protection while hiding the origin server's real IP.", result:"Encrypted, shielded, faster", link:"https://cookblog.net" },
+    { tag:"Account Security", title:"Hardened web-app login", body:"Implemented bcrypt password hashing, signed httpOnly sessions, login rate-limiting, and role-based access to protect user accounts from brute-force and takeover.", result:"No plaintext passwords · brute-force blocked", link:"" },
+    { tag:"Automation", title:"AI-powered lead intake", body:"Built a system that captures customer requests, auto-classifies them with an AI agent, scores urgency, drafts replies, and notifies the team and customer by email — automatically.", result:"Every request triaged in seconds", link:"" },
+    { tag:"Monitoring", title:"Health checks & alerts", body:"Added a health endpoint reporting API, database, and agent status, plus an automated daily report — so issues are caught before customers notice.", result:"Early warning on downtime", link:"" }
+  ];
+  async function api(path, opts={}){
+    const r = await fetch(path,{...opts,headers:{'content-type':'application/json',...(opts.headers||{})}});
+    const d = await r.json().catch(()=>({}));
+    if(!r.ok) throw new Error(d.error||'Something went wrong.');
+    return d;
+  }
+  const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const app = document.getElementById('app');
+
+  async function loadMe(){ try{ me=(await api('/api/auth/me')).user; }catch(e){ me=null; } renderNav(); }
+  function renderNav(){
+    const el = document.getElementById('navLinks');
+    let s = `<a onclick="go('home')">Services</a><a onclick="go('demos')">Live Demos</a><a onclick="go('home');setTimeout(()=>document.getElementById('work')&&document.getElementById('work').scrollIntoView({behavior:'smooth'}),60)">Our Work</a><a onclick="go('contact')">Contact</a>`;
+    if(me && me.role==='CUSTOMER'){
+      s += `<a onclick="go('mine')">My Requests</a>
+            <span class="chip"><span class="av">${esc((me.username[0]||'?').toUpperCase())}</span>${esc(me.username)}</span>
+            <a onclick="logout()">Log out</a>`;
+    } else {
+      s += `<a onclick="openAuth('login')">Log in</a><button class="btn primary sm" onclick="openAuth('register')">Sign up</button>`;
+    }
+    el.innerHTML = s;
+  }
+
+  async function loadServices(){
+    try{ services = (await api('/api/services')).services; serviceMap = {}; services.forEach(x=>serviceMap[x.name]=x); }catch(e){}
+  }
+
+  let statusTimer = null;
+  function clearTimers(){ if(statusTimer){ clearInterval(statusTimer); statusTimer=null; } }
+  function go(view, arg){ window.scrollTo(0,0); clearTimers(); if(view==='home')return renderHome(); if(view==='request')return renderRequest(); if(view==='mine')return renderMine(); if(view==='demos')return renderDemos(); if(view==='contact')return renderContact(); }
+
+  function renderContact(){
+    app.innerHTML = `
+      <section style="max-width:720px;margin:0 auto;padding-top:30px">
+        <h2 class="sec">Contact us</h2>
+        <p class="sec-sub">Questions before you request a service? Reach out — we usually reply within one business day.</p>
+        <div class="card">
+          <div class="checkout" style="margin-top:0">
+            <div class="row"><span>Email</span><span><a href="mailto:admin@cookblog.net" style="color:var(--green);font-weight:700">admin@cookblog.net</a></span></div>
+            <div class="row"><span>Service area</span><span>Remote · worldwide</span></div>
+            <div class="row"><span>Response time</span><span>Within 1 business day</span></div>
+          </div>
+          <p class="sec-sub" style="margin-top:14px">The fastest way to start is to <a onclick="startRequest()" style="color:var(--green);cursor:pointer;font-weight:700">request a service →</a> — our AI triages it instantly and we get back to you.</p>
+        </div>
+      </section>`;
+  }
+
+  // ---------- LIVE DEMOS ----------
+  const AGENT_RULES = [
+    {cat:"Account Security", kw:["login","hacked","2fa","password","phishing","gmail","facebook","instagram","account","breach","secure"], est:"2-4 hours"},
+    {cat:"Servers / RDP", kw:["server","rdp","remote desktop","vps","ssh","hosting","downtime","reboot"], est:"3-6 hours"},
+    {cat:"Automation", kw:["automate","automation","workflow","script","bot","integrate","zapier","scrape","repetitive"], est:"6-12 hours"},
+    {cat:"Docker / DevOps", kw:["docker","container","kubernetes","ci/cd","pipeline","deploy","compose","image"], est:"6-10 hours"},
+    {cat:"Cloudflare / Network", kw:["cloudflare","dns","ssl","waf","firewall","domain","cdn","ddos","certificate","proxy"], est:"1-3 hours"},
+    {cat:"Monitoring", kw:["monitor","monitoring","uptime","alert","grafana","prometheus","logs","health","status","netdata"], est:"3-5 hours"},
+    {cat:"Website + Domain + Protection", kw:["website","web site","domain","hosting","landing page","build my site","online store","wordpress","web presence","subscription","make me a site","e-commerce"], est:"3-7 days setup"}
+  ];
+  function triage(text, urgency){
+    const t=text.toLowerCase(); let best=null,hits=0;
+    for(const r of AGENT_RULES){ const h=r.kw.filter(k=>t.includes(k)).length; if(h>hits){hits=h;best=r;} }
+    const rule = best||{cat:"General IT Services",est:"2-5 hours"};
+    const uw={urgent:4,high:3,normal:1,low:0}[urgency]??1;
+    let p=3+uw+(text.length>160?1:0)+((rule.cat==="Account Security"||rule.cat==="Cloudflare / Network")?1:0);
+    return {category:rule.cat, estimate:rule.est, priority:Math.max(1,Math.min(10,p))};
+  }
+  async function sha1hex(str){
+    const buf=await crypto.subtle.digest('SHA-1', new TextEncoder().encode(str));
+    return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('').toUpperCase();
+  }
+  function pwStrength(pw){
+    let s=0; if(pw.length>=8)s++; if(pw.length>=12)s++; if(/[a-z]/.test(pw)&&/[A-Z]/.test(pw))s++; if(/[0-9]/.test(pw))s++; if(/[^A-Za-z0-9]/.test(pw))s++;
+    return s;
+  }
+
+  function renderDemos(){
+    app.innerHTML = `
+      <section style="padding-top:34px">
+        <h2 class="sec">Live demos — see it actually work</h2>
+        <p class="sec-sub">These run for real, right now, in your browser. No sign-up needed.</p>
+        <div class="grid" style="grid-template-columns:1fr 1fr;gap:18px">
+
+          <div class="card">
+            <span class="price" style="color:var(--blue)">Account Security</span>
+            <h3 style="margin:4px 0 6px">🔒 Password security checker</h3>
+            <p class="sec-sub" style="font-size:14px">Type a password — we score its strength and check it against real breach databases (privacy-safe, only a hash prefix is sent).</p>
+            <input type="password" id="pwIn" placeholder="Type a test password…">
+            <button class="btn primary sm" id="pwBtn" style="margin-top:10px">Check it</button>
+            <div id="pwOut" style="margin-top:12px"></div>
+          </div>
+
+          <div class="card">
+            <span class="price" style="color:var(--blue)">Automation</span>
+            <h3 style="margin:4px 0 6px">🤖 AI request triage</h3>
+            <p class="sec-sub" style="font-size:14px">Describe any IT problem — our AI classifies it, scores urgency, and estimates the work, instantly.</p>
+            <textarea id="aiIn" placeholder="e.g. My WordPress site is down and Cloudflare shows a 522 error" style="min-height:80px"></textarea>
+            <button class="btn primary sm" id="aiBtn" style="margin-top:10px">Analyze it</button>
+            <div id="aiOut" style="margin-top:12px"></div>
+          </div>
+
+          <div class="card">
+            <span class="price" style="color:var(--blue)">Automation</span>
+            <h3 style="margin:4px 0 6px">⚙️ Data extraction automation</h3>
+            <p class="sec-sub" style="font-size:14px">Paste any messy text — this automation extracts and de-duplicates every email, phone number and link, then formats it. The kind of repetitive job we automate for clients.</p>
+            <textarea id="exIn" placeholder="Paste notes, a contact list, an email thread…" style="min-height:80px"></textarea>
+            <button class="btn primary sm" id="exBtn" style="margin-top:10px">Run automation</button>
+            <div id="exOut" style="margin-top:12px"></div>
+          </div>
+
+          <div class="card">
+            <span class="price" style="color:var(--blue)">Cloudflare / Network</span>
+            <h3 style="margin:4px 0 6px">🌐 Website security scanner</h3>
+            <p class="sec-sub" style="font-size:14px">Enter any website — we check HTTPS, response time, Cloudflare protection, and security headers.</p>
+            <input id="scanIn" placeholder="example.com">
+            <button class="btn primary sm" id="scanBtn" style="margin-top:10px">Scan site</button>
+            <div id="scanOut" style="margin-top:12px"></div>
+          </div>
+
+          <div class="card">
+            <span class="price" style="color:var(--blue)">Monitoring · Servers</span>
+            <h3 style="margin:4px 0 6px">📡 Live system status</h3>
+            <p class="sec-sub" style="font-size:14px">Real-time uptime of the sites we host — pinged live, refreshing automatically.</p>
+            <div id="statusOut"><div class="sec-sub">Checking…</div></div>
+          </div>
+
+        </div>
+      </section>`;
+
+    // Password checker
+    const pwBtn=document.getElementById('pwBtn');
+    async function runPw(){
+      const pw=document.getElementById('pwIn').value; const out=document.getElementById('pwOut');
+      if(!pw){ out.innerHTML='<div class="notice info">Type a password to check.</div>'; return; }
+      out.innerHTML='<div class="sec-sub">Checking…</div>';
+      const strength=pwStrength(pw);
+      const labels=['Very weak','Weak','Fair','Good','Strong','Very strong'];
+      const colors=['#ef6f5c','#ef6f5c','#f0b84f','#f0b84f','#3ecf8e','#3ecf8e'];
+      let breach=null;
+      try{ const hash=await sha1hex(pw); const r=await fetch('https://api.pwnedpasswords.com/range/'+hash.slice(0,5)); const txt=await r.text(); const suf=hash.slice(5); for(const line of txt.split('\n')){ const [s,c]=line.trim().split(':'); if(s===suf){ breach=parseInt(c,10); break; } } if(breach===null)breach=0; }catch(e){ breach=null; }
+      out.innerHTML=`
+        <div class="checkout" style="margin-top:0">
+          <div class="row"><span>Strength</span><span style="color:${colors[strength]};font-weight:800">${labels[strength]}</span></div>
+          <div class="row"><span>Found in known breaches</span><span style="font-weight:800;color:${breach>0?'#ef6f5c':(breach===0?'#3ecf8e':'#9db3aa')}">${breach>0?(breach.toLocaleString()+' times ⚠️'):(breach===0?'No ✓':'—')}</span></div>
+        </div>
+        <p class="sec-sub" style="font-size:13px;margin-top:8px">${breach>0?'This password is compromised — never use it. This is exactly the kind of risk we fix.':'We harden accounts with 2FA and strong-password policies.'}</p>`;
+    }
+    pwBtn.addEventListener('click',runPw);
+    document.getElementById('pwIn').addEventListener('keydown',e=>{if(e.key==='Enter')runPw();});
+
+    // AI triage
+    document.getElementById('aiBtn').addEventListener('click',()=>{
+      const text=document.getElementById('aiIn').value.trim(); const out=document.getElementById('aiOut');
+      if(text.length<6){ out.innerHTML='<div class="notice info">Describe a problem to analyze.</div>'; return; }
+      const a=triage(text,'normal'); const pcol=a.priority>=8?'#ef6f5c':a.priority>=5?'#f0b84f':'#3ecf8e';
+      out.innerHTML=`<div class="ai-box"><h4>🤖 AI result (instant)</h4>
+        <p><b>Service:</b> ${esc(a.category)}</p>
+        <p><b>Priority:</b> <span style="color:${pcol};font-weight:800">${a.priority}/10</span> &nbsp; <b>Est.:</b> ${esc(a.estimate)}</p>
+        <p style="margin-top:6px;color:var(--muted);font-size:13px">This is the same engine that triages every real request in seconds.</p></div>`;
+    });
+
+    // Automation: data extraction workflow (with visible steps)
+    document.getElementById('exBtn').addEventListener('click', async ()=>{
+      const text=document.getElementById('exIn').value; const out=document.getElementById('exOut');
+      if(text.trim().length<5){ out.innerHTML='<div class="notice info">Paste some text to process.</div>'; return; }
+      const steps=['Scanning input','Extracting emails','Extracting phone numbers','Finding links','De-duplicating & formatting'];
+      out.innerHTML='<div class="ai-box"><div id="exSteps"></div></div>';
+      const stepsEl=document.getElementById('exSteps');
+      for(let i=0;i<steps.length;i++){ stepsEl.innerHTML=steps.map((s,j)=>`<div style="color:${j<=i?'#3ecf8e':'#6f857c'};font-size:13px;padding:2px 0">${j<i?'✓':(j===i?'⏳':'○')} ${s}</div>`).join(''); await new Promise(r=>setTimeout(r,220)); }
+      const emails=[...new Set((text.match(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g)||[]).map(s=>s.toLowerCase()))];
+      const phones=[...new Set((text.match(/\+?\d[\d\s().-]{6,}\d/g)||[]).map(s=>s.trim()).filter(s=>s.replace(/\D/g,'').length>=7))];
+      const urls=[...new Set((text.match(/https?:\/\/[^\s"'<>]+/g)||[]).map(u=>u.replace(/[.,;:!?)]+$/,'')))];
+      const list=(arr)=>arr.length?arr.map(x=>`<div style="font-size:13px;padding:1px 0">${esc(x)}</div>`).join(''):'<span class="sec-sub" style="font-size:13px">none found</span>';
+      out.innerHTML=`<div class="ai-box">
+        <h4>✓ Automation complete — ${emails.length+phones.length+urls.length} items extracted</h4>
+        <p style="color:var(--green);font-size:12px;text-transform:uppercase;letter-spacing:.05em;margin-top:6px">Emails (${emails.length})</p>${list(emails)}
+        <p style="color:var(--green);font-size:12px;text-transform:uppercase;letter-spacing:.05em;margin-top:8px">Phone numbers (${phones.length})</p>${list(phones)}
+        <p style="color:var(--green);font-size:12px;text-transform:uppercase;letter-spacing:.05em;margin-top:8px">Links (${urls.length})</p>${list(urls)}
+        <button class="btn ghost sm" id="exCopy" style="margin-top:10px">Copy as CSV</button></div>`;
+      document.getElementById('exCopy').onclick=()=>{ const csv='type,value\n'+[...emails.map(e=>'email,'+e),...phones.map(p=>'phone,'+p),...urls.map(u=>'url,'+u)].join('\n'); navigator.clipboard.writeText(csv); const b=document.getElementById('exCopy'); b.textContent='Copied ✓'; setTimeout(()=>b.textContent='Copy as CSV',1400); };
+    });
+
+    // Website scanner
+    document.getElementById('scanBtn').addEventListener('click',async()=>{
+      const url=document.getElementById('scanIn').value.trim(); const out=document.getElementById('scanOut');
+      if(!url){ out.innerHTML='<div class="notice info">Enter a website to scan.</div>'; return; }
+      out.innerHTML='<div class="sec-sub">Scanning…</div>';
+      try{
+        const d=await api('/api/tools/scan?url='+encodeURIComponent(url));
+        const sh=Object.entries(d.securityHeaders).map(([k,v])=>`<div class="row"><span>${esc(k)}</span><span style="color:${v?'#3ecf8e':'#ef6f5c'};font-weight:800">${v?'✓':'✗'}</span></div>`).join('');
+        out.innerHTML=`<div class="checkout" style="margin-top:0">
+          <div class="row"><span>HTTPS</span><span style="color:${d.https?'#3ecf8e':'#ef6f5c'};font-weight:800">${d.https?'Secure ✓':'Not secure ✗'}</span></div>
+          <div class="row"><span>Response time</span><span style="font-weight:800">${d.responseMs} ms</span></div>
+          <div class="row"><span>Cloudflare protected</span><span style="font-weight:800;color:${d.cloudflare?'#3ecf8e':'#f0b84f'}">${d.cloudflare?'Yes ✓':'No'}</span></div>
+          ${sh}
+        </div>${!d.cloudflare?'<p class="sec-sub" style="font-size:13px;margin-top:8px">Not behind Cloudflare — we can add DDoS protection & a WAF.</p>':''}`;
+      }catch(e){ out.innerHTML=`<div class="notice err">${esc(e.message)}</div>`; }
+    });
+
+    // Live status (auto-refresh)
+    async function loadStatus(){
+      const out=document.getElementById('statusOut'); if(!out)return;
+      try{
+        const d=await api('/api/tools/status');
+        out.innerHTML=d.sites.map(s=>{const host=s.url.replace(/^https?:\/\//,'');return `<div class="checkout" style="margin:0 0 8px;padding:12px 14px"><div class="row" style="padding:0"><span><b>${esc(host)}</b></span><span style="font-weight:800;color:${s.up?'#3ecf8e':'#ef6f5c'}">${s.up?'● UP':'● DOWN'} ${s.up?`<span style="color:var(--muted);font-weight:600">${s.ms}ms</span>`:''}</span></div></div>`;}).join('')+`<p class="sec-sub" style="font-size:12px;margin-top:4px">Last checked ${new Date(d.checkedAt).toLocaleTimeString()} · auto-refreshes</p>`;
+      }catch(e){ out.innerHTML=`<div class="notice err">Couldn't load status.</div>`; }
+    }
+    loadStatus(); statusTimer=setInterval(loadStatus, 15000);
+  }
+
+  function renderHome(){
+    app.innerHTML = `
+      <section class="hero">
+        <div>
+          <h1>IT, Cyber &amp; Automation, <span>handled for you.</span></h1>
+          <p class="lead">Account security, servers &amp; RDP, automation, Docker, Cloudflare and monitoring. Create an account, request a service, and track it — our AI triages every request instantly.</p>
+          <div class="hero-actions">
+            <button class="btn primary" onclick="startRequest()">Request a service →</button>
+            ${me&&me.role==='CUSTOMER'?`<button class="btn ghost" onclick="go('mine')">My Requests</button>`:`<button class="btn ghost" onclick="openAuth('register')">Create account</button>`}
+          </div>
+        </div>
+        <div class="card">
+          <p style="color:var(--green);font-weight:800;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">How it works</p>
+          <ol style="list-style:none;display:grid;gap:14px">
+            <li><b>1 · Create an account &amp; request</b><br><span style="color:var(--muted);font-size:14px">Pick a service and describe your problem.</span></li>
+            <li><b>2 · AI triages it instantly</b><br><span style="color:var(--muted);font-size:14px">Category, urgency, estimate, and next questions.</span></li>
+            <li><b>3 · We deliver &amp; you track it</b><br><span style="color:var(--muted);font-size:14px">Watch the status update in My Requests.</span></li>
+          </ol>
+        </div>
+      </section>
+      <section id="services"><h2 class="sec">Our services</h2><p class="sec-sub">Pick the closest one when you request — including our all-in-one website plan from just $5/month.</p><div class="grid" id="svcGrid"></div></section>
+      <section id="work"><h2 class="sec">Our work</h2><p class="sec-sub">Real projects we've delivered — proof, not promises.</p><div class="grid" id="caseGrid"></div></section>`;
+    const g = document.getElementById('svcGrid');
+    g.innerHTML = services.map(s=>`<div class="svc"><h3>${esc(s.name)}</h3><p>${esc(s.description)}</p><span class="price">${esc(s.basePrice)}</span><button class="btn ghost sm" onclick="startRequest('${esc(s.name)}')">Request this</button></div>`).join('') || '<p class="sec-sub">Loading…</p>';
+    document.getElementById('caseGrid').innerHTML = CASES.map(c=>`<div class="svc"><span class="price" style="color:var(--blue)">${esc(c.tag)}</span><h3 style="margin-top:2px">${esc(c.title)}</h3><p>${esc(c.body)}</p><div style="color:var(--green);font-weight:700;font-size:13px;margin-bottom:12px">✓ ${esc(c.result)}</div>${c.link?`<a class="btn ghost sm" href="${c.link}" target="_blank" rel="noopener">View live →</a>`:''}</div>`).join('');
+  }
+
+  function startRequest(preselect){ pending = { preselect: preselect||'' }; if(!me){ openAuth('register','Create an account to request a service.'); return; } renderRequest(); }
+
+  function renderRequest(){
+    if(!me){ openAuth('login'); return renderHome(); }
+    const opts = services.map(s=>`<option ${pending&&pending.preselect===s.name?'selected':''}>${esc(s.name)}</option>`).join('');
+    app.innerHTML = `
+      <section style="max-width:720px;margin:0 auto">
+        <h2 class="sec">Request a service</h2><p class="sec-sub">Our AI reviews it the moment you submit. Free during beta.</p>
+        <div class="card">
+          <div id="reqNotice"></div>
+          <form id="reqForm">
+            <div class="form-grid">
+              <label>Full name<input name="name" value="${esc(me.username)}" placeholder="Jane Cohen" required></label>
+              <label>Contact email<input name="email" type="email" placeholder="you@email.com" required></label>
+            </div>
+            <label>Service<select name="serviceType" id="svcSel" required><option value="">Choose…</option>${opts}</select></label>
+            <label>Describe your problem<textarea name="problem" placeholder="e.g. I keep getting login attempts on my accounts and want to secure them." required></textarea></label>
+            <div class="form-grid">
+              <label>Urgency<select name="urgency"><option value="low">Low</option><option value="normal" selected>Normal</option><option value="high">High</option><option value="urgent">Urgent</option></select></label>
+              <label>Phone<input name="phone" placeholder="+1 555 123 4567" required></label>
+            </div>
+            <label>Approximate budget<input name="budget" placeholder="$500 (optional)"></label>
+            <div id="checkoutArea"></div>
+            <button class="btn primary" type="submit" style="width:100%;margin-top:6px" id="reqSubmit">Continue to checkout →</button>
+          </form>
+        </div>
+      </section>`;
+    document.getElementById('reqForm').addEventListener('submit', onRequestSubmit);
+  }
+
+  let checkoutReady = false;
+  async function onRequestSubmit(e){
+    e.preventDefault();
+    const form = e.target;
+    const data = Object.fromEntries(new FormData(form).entries());
+    const notice = document.getElementById('reqNotice');
+    notice.innerHTML='';
+    if(!data.serviceType){ notice.innerHTML='<div class="notice err">Please choose a service.</div>'; return; }
+    if((data.problem||'').trim().length<10){ notice.innerHTML='<div class="notice err">Please describe your problem (at least 10 characters).</div>'; return; }
+
+    if(!checkoutReady){
+      // Show the free "checkout" summary first
+      const svc = serviceMap[data.serviceType] || {};
+      document.getElementById('checkoutArea').innerHTML = `
+        <div class="checkout">
+          <div class="row"><span>Service</span><span>${esc(data.serviceType)}</span></div>
+          <div class="row"><span>Starting price</span><span>${esc(svc.basePrice||'—')}</span></div>
+          <div class="row total"><span>Due today <span class="beta">BETA</span></span><span class="free">FREE</span></div>
+        </div>
+        <p class="sec-sub" style="margin:10px 0 0;font-size:13px">No payment required during beta. Click below to place your request.</p>`;
+      document.getElementById('reqSubmit').textContent = 'Place request (free) →';
+      checkoutReady = true;
+      return;
+    }
+
+    const btn = document.getElementById('reqSubmit');
+    btn.disabled=true; btn.textContent='Placing…';
+    try{
+      const res = await api('/api/leads',{method:'POST',body:JSON.stringify(data)});
+      const a = res.analysis||{};
+      app.innerHTML = `
+        <section style="max-width:640px;margin:0 auto">
+          <div class="card" style="text-align:center">
+            <div style="font-size:44px">✅</div>
+            <h2 class="sec" style="margin-top:8px">Request placed!</h2>
+            <p class="sec-sub">${esc(res.message)}</p>
+            <div class="ai-box" style="text-align:left">
+              <h4>🤖 Our AI reviewed your request</h4>
+              <p><b>Category:</b> ${esc(a.category)} · <b>Urgency:</b> ${esc(a.urgencyLabel)} · <b>Est.:</b> ${esc(a.estimateHours)}</p>
+              ${a.questions?`<p style="margin-top:8px;color:var(--muted)">To move faster, please have these ready:</p><ul style="margin:6px 0 0 18px;color:var(--muted)">${a.questions.split('\n').map(q=>`<li>${esc(q)}</li>`).join('')}</ul>`:''}
+            </div>
+            <div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+              <button class="btn primary" onclick="go('mine')">Track my requests</button>
+              <button class="btn ghost" onclick="go('home')">Back home</button>
+            </div>
+          </div>
+        </section>`;
+      checkoutReady=false; pending=null;
+    }catch(err){
+      btn.disabled=false; btn.textContent='Place request (free) →';
+      document.getElementById('reqNotice').innerHTML = `<div class="notice err">${esc(err.message)}</div>`;
+    }
+  }
+
+  async function renderMine(){
+    if(!me){ openAuth('login'); return renderHome(); }
+    app.innerHTML = `<section><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px"><h2 class="sec">My requests</h2><button class="btn primary sm" onclick="startRequest()">+ New request</button></div><div id="mineList" style="margin-top:16px"><div class="empty">Loading…</div></div></section>`;
+    try{
+      const { leads } = await api('/api/my/leads');
+      const box = document.getElementById('mineList');
+      if(!leads.length){ box.innerHTML = `<div class="empty">You haven't requested anything yet. <a style="color:var(--green);cursor:pointer" onclick="startRequest()">Request a service →</a></div>`; return; }
+      box.innerHTML = leads.map(l=>{
+        const a=l.analysis||{}; const cls='b-'+(l.statusLabel||'').replace(/\s/g,'');
+        return `<div class="req">
+          <div class="top"><h3>${esc(a.category||l.serviceType)}</h3><span class="badge ${cls}">${esc(l.statusLabel)}</span></div>
+          <div class="meta">Requested ${new Date(l.createdAt).toLocaleDateString()} · Est. ${esc(a.estimateHours||'—')} · Urgency ${esc(a.urgencyLabel||l.urgency)}</div>
+          <p>${esc(l.problem)}</p>
+          ${a.questions?`<div class="ai-box"><h4>What we still need from you</h4><ul style="margin:0 0 0 18px;color:var(--muted)">${a.questions.split('\n').map(q=>`<li>${esc(q)}</li>`).join('')}</ul></div>`:''}
+        </div>`;
+      }).join('');
+    }catch(e){ document.getElementById('mineList').innerHTML=`<div class="notice err">${esc(e.message)}</div>`; }
+  }
+
+  // ---- Auth modal ----
+  let authMode='login';
+  function openAuth(mode, msg){
+    authMode = mode;
+    document.getElementById('authModal').classList.add('open');
+    document.getElementById('authTitle').textContent = mode==='login'?'Log in':'Create your account';
+    document.getElementById('authSub').textContent = msg || (mode==='login'?'Welcome back.':'Sign up to request and track services. It\'s free.');
+    document.getElementById('authBtn').textContent = mode==='login'?'Log in':'Create account';
+    document.getElementById('authNotice').innerHTML = msg?`<div class="notice info">${esc(msg)}</div>`:'';
+    document.getElementById('authSwitch').innerHTML = mode==='login'
+      ? `New here? <a onclick="openAuth('register')">Create an account</a>`
+      : `Already have an account? <a onclick="openAuth('login')">Log in</a>`;
+    document.getElementById('authUser').value=''; document.getElementById('authPass').value='';
+    document.getElementById('authPass').setAttribute('autocomplete', mode==='login'?'current-password':'new-password');
+    setTimeout(()=>document.getElementById('authUser').focus(),50);
+  }
+  function closeAuth(){ document.getElementById('authModal').classList.remove('open'); }
+  document.getElementById('authBtn').addEventListener('click', doAuth);
+  document.getElementById('authPass').addEventListener('keydown', e=>{ if(e.key==='Enter') doAuth(); });
+  async function doAuth(){
+    const username = document.getElementById('authUser').value.trim();
+    const password = document.getElementById('authPass').value;
+    const notice = document.getElementById('authNotice');
+    if(username.length<3){ notice.innerHTML='<div class="notice err">Username must be at least 3 characters.</div>'; return; }
+    if(authMode==='register' && password.length<8){ notice.innerHTML='<div class="notice err">Password must be at least 8 characters.</div>'; return; }
+    if(!password){ notice.innerHTML='<div class="notice err">Please enter your password.</div>'; return; }
+    const btn=document.getElementById('authBtn'); btn.disabled=true; btn.textContent='…';
+    try{
+      await api(authMode==='login'?'/api/auth/login':'/api/auth/register',{method:'POST',body:JSON.stringify({username,password})});
+      await loadMe();
+      closeAuth();
+      if(pending){ renderRequest(); } else { go('mine'); }
+    }catch(err){
+      notice.innerHTML=`<div class="notice err">${esc(err.message)}</div>`;
+      btn.disabled=false; btn.textContent=authMode==='login'?'Log in':'Create account';
+    }
+  }
+  async function logout(){ await api('/api/auth/logout',{method:'POST'}); me=null; renderNav(); go('home'); }
+
+  (async function init(){ await loadServices(); await loadMe(); renderHome(); })();
+</script>
+</body>
+</html>

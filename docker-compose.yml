@@ -1,0 +1,43 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: leadflow
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-this-db-password}
+      POSTGRES_DB: leadflow
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U leadflow"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgresql://leadflow:${POSTGRES_PASSWORD:-change-this-db-password}@db:5432/leadflow
+      SESSION_SECRET: ${SESSION_SECRET:-change-this-long-random-secret}
+      WEBHOOK_URL: ${WEBHOOK_URL:-}
+      HIGH_PRIORITY_THRESHOLD: ${HIGH_PRIORITY_THRESHOLD:-8}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID:-}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-465}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      MAIL_FROM: ${MAIL_FROM:-}
+      MAIL_TO: ${MAIL_TO:-}
+      AUTO_REPLY: ${AUTO_REPLY:-true}
+    ports:
+      - "127.0.0.1:8090:3000"   # Nginx proxies your domain to this port
+
+volumes:
+  pgdata:

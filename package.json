@@ -1,0 +1,22 @@
+{
+  "name": "leadflow-ai",
+  "version": "1.0.0",
+  "description": "LeadFlow AI — smart lead management system with a rule-based AI agent, for an IT/cyber/automation services company.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "seed": "node scripts/seed.js",
+    "setup": "node scripts/seed.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.4.1",
+    "nodemailer": "^6.10.1",
+    "pg": "^8.13.1",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.5"
+  }
+}
