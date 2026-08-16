@@ -381,10 +381,10 @@
             <label>Service<select name="serviceType" id="svcSel" required><option value="">Choose…</option>${opts}</select></label>
             <label>Describe your problem<textarea name="problem" placeholder="e.g. I keep getting login attempts on my accounts and want to secure them." required></textarea></label>
             <div class="form-grid">
-              <label>How urgent is it? <span style="color:var(--soft);font-weight:400;font-size:12px">(optional — our AI also assesses this)</span><select name="urgency"><option value="low">Low</option><option value="normal" selected>Normal</option><option value="high">High</option><option value="urgent">Urgent</option></select></label>
               <label>Phone<input name="phone" placeholder="+1 555 123 4567" required></label>
+              <label>Approximate budget<input name="budget" placeholder="$500 (optional)"></label>
             </div>
-            <label>Approximate budget<input name="budget" placeholder="$500 (optional)"></label>
+            <p style="color:var(--soft);font-size:12px;margin-top:-4px">Our AI reads your request and sets the urgency and priority automatically — no need to pick.</p>
             <div id="checkoutArea"></div>
             <button class="btn primary" type="submit" style="width:100%;margin-top:6px" id="reqSubmit">Continue to checkout →</button>
           </form>
@@ -431,7 +431,7 @@
             <p class="sec-sub">${esc(res.message)}</p>
             <div class="ai-box" style="text-align:left">
               <h4>🤖 Our AI reviewed your request</h4>
-              <p><b>Category:</b> ${esc(a.category)} · <b>Urgency:</b> ${esc(a.urgencyLabel)} · <b>Est.:</b> ${esc(a.estimateHours)}</p>
+              <p><b>Category:</b> ${esc(a.category)} · <b>Est.:</b> ${esc(a.estimateHours)}</p>
               ${a.questions?`<p style="margin-top:8px;color:var(--muted)">To move faster, please have these ready:</p><ul style="margin:6px 0 0 18px;color:var(--muted)">${a.questions.split('\n').map(q=>`<li>${esc(q)}</li>`).join('')}</ul>`:''}
             </div>
             <div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
@@ -458,7 +458,7 @@
         const a=l.analysis||{}; const cls='b-'+(l.statusLabel||'').replace(/\s/g,'');
         return `<div class="req">
           <div class="top"><h3>${esc(a.category||l.serviceType)}</h3><span class="badge ${cls}">${esc(l.statusLabel)}</span></div>
-          <div class="meta">Requested ${new Date(l.createdAt).toLocaleDateString()} · Est. ${esc(a.estimateHours||'—')} · Urgency ${esc(a.urgencyLabel||l.urgency)}</div>
+          <div class="meta">Requested ${new Date(l.createdAt).toLocaleDateString()} · Est. ${esc(a.estimateHours||'—')} · Urgency ${esc(a.aiUrgency||a.urgencyLabel||l.urgency)}</div>
           <p>${esc(l.problem)}</p>
           ${a.questions?`<div class="ai-box"><h4>What we still need from you</h4><ul style="margin:0 0 0 18px;color:var(--muted)">${a.questions.split('\n').map(q=>`<li>${esc(q)}</li>`).join('')}</ul></div>`:''}
         </div>`;

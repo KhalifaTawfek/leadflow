@@ -205,8 +205,7 @@
       <div class="muted">${esc(lead.email)} · ${esc(lead.phone)}</div>
       <div class="kv">
         <span class="k">Service</span><span>${esc(a.category||lead.serviceType)}</span>
-        <span class="k">Urgency <span style="color:var(--soft);font-size:11px">(customer)</span></span><span>${esc(a.urgencyLabel||lead.urgency)}</span>
-        <span class="k">Urgency <span style="color:var(--soft);font-size:11px">(AI detected)</span></span><span>${esc(a.aiUrgency||'—')}</span>
+        <span class="k">Urgency <span style="color:var(--soft);font-size:11px">(AI detected)</span></span><span>${esc(a.aiUrgency||a.urgencyLabel||'—')}</span>
         <span class="k">Priority <span style="color:var(--soft);font-size:11px">(AI agent)</span></span><span><b>${a.priority||'—'}/10</b></span>
         <span class="k">Budget</span><span>${esc(lead.budget)}</span>
         <span class="k">Estimate</span><span>${esc(a.estimateHours||'—')}</span>
