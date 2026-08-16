@@ -31,11 +31,21 @@
   .item .when{color:var(--soft);font-size:12px;white-space:nowrap}
   .msg{color:var(--soft);font-size:14px;margin-top:10px}
   a{color:var(--green)}
+  .topnav{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:14px 0 22px}
+  .topnav a{padding:7px 12px;border:1px solid var(--line);border-radius:8px;color:var(--ink);text-decoration:none;font-size:13px;font-weight:600;white-space:nowrap}
+  .topnav a:hover{border-color:var(--green);color:var(--green)}
+  .topnav a.active{background:var(--green);color:#062018;border-color:transparent}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="brand"><span class="mark">LF</span> LeadFlow AI</div>
+  <nav class="topnav">
+    <a href="/">🌐 Website</a>
+    <a href="/admin">🛡 CRM</a>
+    <a href="/alerts" class="active">🔔 Alerts</a>
+    <a href="/status">📊 Status</a>
+  </nav>
   <h1>Alerts</h1>
   <p class="sub">Recent new-lead and daily-report notifications.</p>
 
@@ -43,8 +53,6 @@
     <button class="btn" id="testBtn">Send test Telegram</button>
     <button class="btn ghost" id="refreshBtn">Refresh</button>
     <span class="pill" id="tgPill">Telegram: …</span>
-    <span style="flex:1"></span>
-    <a href="/admin" class="pill">Open CRM →</a>
   </div>
 
   <div id="list"></div>

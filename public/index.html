@@ -137,7 +137,11 @@
   function renderNav(){
     const el = document.getElementById('navLinks');
     let s = `<a onclick="go('home')">Services</a><a onclick="go('demos')">Live Demos</a><a onclick="go('home');setTimeout(()=>document.getElementById('work')&&document.getElementById('work').scrollIntoView({behavior:'smooth'}),60)">Our Work</a><a onclick="go('contact')">Contact</a>`;
-    if(me && me.role==='CUSTOMER'){
+    if(me && (me.role==='ADMIN' || me.role==='SALES')){
+      s += `<a class="btn primary sm" href="/admin" style="text-decoration:none">🛡 Admin panel</a>
+            <span class="chip"><span class="av">${esc((me.username[0]||'?').toUpperCase())}</span>${esc(me.username)}</span>
+            <a onclick="logout()">Log out</a>`;
+    } else if(me && me.role==='CUSTOMER'){
       s += `<a onclick="go('mine')">My Requests</a>
             <span class="chip"><span class="av">${esc((me.username[0]||'?').toUpperCase())}</span>${esc(me.username)}</span>
             <a onclick="logout()">Log out</a>`;

@@ -28,6 +28,10 @@
   .card .num{font-size:26px;font-weight:800;color:var(--ink)}
   .grid4{grid-template-columns:1fr 1fr 1fr 1fr}
   @media(max-width:520px){.grid4{grid-template-columns:1fr 1fr}}
+  .topnav{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:14px 0 22px}
+  .topnav a{padding:7px 12px;border:1px solid var(--line);border-radius:8px;color:var(--ink);text-decoration:none;font-size:13px;font-weight:600;white-space:nowrap}
+  .topnav a:hover{border-color:var(--green);color:var(--green)}
+  .topnav a.active{background:var(--green);color:#062018;border-color:transparent}
   .meta{color:var(--soft);font-size:13px;margin-top:18px;text-align:center}
   @media(max-width:520px){.grid{grid-template-columns:1fr}}
 </style>
@@ -35,6 +39,12 @@
 <body>
 <div class="wrap">
   <div class="brand"><span class="mark">LF</span> LeadFlow AI</div>
+  <nav class="topnav">
+    <a href="/">🌐 Website</a>
+    <a href="/admin">🛡 CRM</a>
+    <a href="/alerts">🔔 Alerts</a>
+    <a href="/status" class="active">📊 Status</a>
+  </nav>
   <h1>System status</h1>
   <p class="sub">Live health of the platform's core components — refreshes automatically.</p>
 

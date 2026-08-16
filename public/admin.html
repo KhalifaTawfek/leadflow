@@ -21,6 +21,10 @@
   .brand{display:inline-flex;align-items:center;gap:9px;font-weight:800}
   .brand .mark{width:30px;height:30px;display:grid;place-items:center;background:var(--green);color:#062018;border-radius:8px;font-weight:900;font-size:12px}
   .topbar .right{margin-left:auto;display:flex;align-items:center;gap:12px;color:var(--muted);font-size:14px}
+  .topnav{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-left:8px}
+  .topnav a{padding:7px 12px;border:1px solid var(--line);border-radius:8px;color:var(--ink);text-decoration:none;font-size:13px;font-weight:600;white-space:nowrap}
+  .topnav a:hover{border-color:var(--green);color:var(--green)}
+  .topnav a.active{background:var(--green);color:#062018;border-color:transparent}
   .btn{border:0;border-radius:9px;padding:10px 16px;font-weight:800;cursor:pointer;font-size:14px}
   .btn.primary{background:var(--green);color:#062018}.btn.primary:hover{background:var(--green2)}
   .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
@@ -123,8 +127,13 @@
     app.innerHTML=`
       <div class="topbar">
         <a class="brand" href="/"><span class="mark">LF</span> LeadFlow AI</a>
-        <span class="badge st-QUALIFIED">CRM</span>
-        <div class="right"><a href="/alerts" class="btn ghost sm" style="text-decoration:none">🔔 Alerts</a><span>${esc(me.username)} · ${esc(me.role)}</span><button class="btn ghost sm" id="logout">Log out</button></div>
+        <nav class="topnav">
+          <a href="/">🌐 Website</a>
+          <a href="/admin" class="active">🛡 CRM</a>
+          <a href="/alerts">🔔 Alerts</a>
+          <a href="/status">📊 Status</a>
+        </nav>
+        <div class="right"><span>${esc(me.username)} · ${esc(me.role)}</span><button class="btn ghost sm" id="logout">Log out</button></div>
       </div>
       <div class="wrap">
         <div class="metrics" id="metrics"></div>
