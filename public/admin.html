@@ -205,7 +205,8 @@
       <div class="muted">${esc(lead.email)} · ${esc(lead.phone)}</div>
       <div class="kv">
         <span class="k">Service</span><span>${esc(a.category||lead.serviceType)}</span>
-        <span class="k">Urgency</span><span>${esc(a.urgencyLabel||lead.urgency)}</span>
+        <span class="k">Urgency <span style="color:var(--soft);font-size:11px">(customer)</span></span><span>${esc(a.urgencyLabel||lead.urgency)}</span>
+        <span class="k">Priority <span style="color:var(--soft);font-size:11px">(AI agent)</span></span><span><b>${a.priority||'—'}/10</b></span>
         <span class="k">Budget</span><span>${esc(lead.budget)}</span>
         <span class="k">Estimate</span><span>${esc(a.estimateHours||'—')}</span>
       </div>
@@ -213,6 +214,7 @@
       <div class="ai">
         <h4>🤖 AI analysis</h4>
         <p style="font-size:14px">${esc(a.summary||'No analysis yet.')}</p>
+        ${a.priorityReason?`<p style="margin-top:10px;color:var(--soft);font-size:12px;text-transform:uppercase;letter-spacing:.05em">How the agent scored priority</p><div style="font-size:14px;color:var(--muted);background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-top:4px">${esc(a.priorityReason)}</div>`:''}
         ${a.questions?`<p style="margin-top:10px;color:var(--soft);font-size:12px;text-transform:uppercase;letter-spacing:.05em">Follow-up questions</p><ul style="margin:6px 0 0 18px;font-size:14px;color:var(--muted)">${a.questions.split('\n').map(q=>`<li>${esc(q)}</li>`).join('')}</ul>`:''}
         ${a.draftReply?`<p style="margin-top:10px;color:var(--soft);font-size:12px;text-transform:uppercase;letter-spacing:.05em">Draft reply</p><div class="reply">${esc(a.draftReply)}</div><button class="btn ghost sm" id="copyReply" style="margin-top:8px">Copy reply</button>`:''}
       </div>

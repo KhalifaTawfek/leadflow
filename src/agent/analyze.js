@@ -120,15 +120,39 @@ const URGENCY_WEIGHT = { urgent: 4, high: 3, normal: 1, low: 0 };
 const URGENCY_LABEL = { urgent: "Urgent", high: "High", normal: "Normal", low: "Low" };
 
 // Step 2 — priority 1-10 from urgency + budget + security sensitivity + detail.
-function scorePriority(lead, category) {
+// Returns both the score and a human-readable breakdown of how it was reached,
+// so the CRM can show WHY the agent chose the number (not the customer).
+function explainPriority(lead, category) {
+  const factors = [];
   let score = 3;
-  score += URGENCY_WEIGHT[String(lead.urgency).toLowerCase()] ?? 1;
-  score += budgetWeight(lead.budget);
-  // Security incidents are time-sensitive — bump them.
-  if (category === "Account Security" || category === "Cloudflare / Network") score += 1;
-  // A detailed problem description signals a serious lead.
-  if (String(lead.problem).length > 160) score += 1;
-  return Math.max(1, Math.min(10, score));
+  factors.push("base 3");
+
+  const uw = URGENCY_WEIGHT[String(lead.urgency).toLowerCase()] ?? 1;
+  score += uw;
+  const uLabel = URGENCY_LABEL[String(lead.urgency).toLowerCase()] || "Normal";
+  factors.push(`${uLabel} urgency ${uw >= 0 ? "+" : ""}${uw}`);
+
+  const bw = budgetWeight(lead.budget);
+  if (bw > 0) factors.push(`budget ${lead.budget} +${bw}`);
+  score += bw;
+
+  if (category === "Account Security" || category === "Cloudflare / Network") {
+    score += 1;
+    factors.push("security-sensitive +1");
+  }
+  if (String(lead.problem).length > 160) {
+    score += 1;
+    factors.push("detailed description +1");
+  }
+
+  const clamped = Math.max(1, Math.min(10, score));
+  const reason = `${clamped}/10 — ${factors.join(", ")}`;
+  return { score: clamped, reason };
+}
+
+// Backwards-compatible helper that returns just the number.
+function scorePriority(lead, category) {
+  return explainPriority(lead, category).score;
 }
 
 // Step 3 — a one-line summary a busy salesperson can scan.
@@ -160,7 +184,7 @@ function draftReply(lead, category, estimate, questions) {
 function analyzeLead(lead) {
   const text = `${lead.serviceType || ""} ${lead.problem || ""}`;
   const rule = classify(text);                       // 1
-  const priority = scorePriority(lead, rule.category); // 2
+  const { score: priority, reason: priorityReason } = explainPriority(lead, rule.category); // 2
   const summary = summarize(lead, rule.category);      // 3
   const questions = rule.questions;                    // 4
   const estimateHours = rule.estimate;                 // 6
@@ -169,6 +193,7 @@ function analyzeLead(lead) {
   return {
     category: rule.category,
     priority,
+    priorityReason,
     urgencyLabel: URGENCY_LABEL[String(lead.urgency).toLowerCase()] || "Normal",
     estimateHours,
     summary,
@@ -177,4 +202,4 @@ function analyzeLead(lead) {
   };
 }
 
-module.exports = { analyzeLead, classify, scorePriority };
+module.exports = { analyzeLead, classify, scorePriority, explainPriority };

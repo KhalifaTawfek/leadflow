@@ -57,7 +57,8 @@ const AiAnalysis = sequelize.define("AiAnalysis", {
   estimateHours: { type: DataTypes.STRING, allowNull: false },
   summary: { type: DataTypes.TEXT, allowNull: false },
   questions: { type: DataTypes.TEXT, allowNull: false },
-  draftReply: { type: DataTypes.TEXT, allowNull: false }
+  draftReply: { type: DataTypes.TEXT, allowNull: false },
+  priorityReason: { type: DataTypes.TEXT, allowNull: true }   // how the agent reached the priority
 }, { tableName: "ai_analysis" });
 
 const ActivityLog = sequelize.define("ActivityLog", {
@@ -88,6 +89,9 @@ ActivityLog.belongsTo(User, { foreignKey: "userId" });
 async function initDb() {
   await sequelize.authenticate();
   await sequelize.sync();
+  // Safe, idempotent additive migration for the priority-reason column
+  // (so existing databases pick it up without a destructive sync/alter).
+  await sequelize.query('ALTER TABLE ai_analysis ADD COLUMN IF NOT EXISTS priority_reason TEXT');
 }
 
 module.exports = { sequelize, initDb, User, Service, Lead, LeadNote, AiAnalysis, ActivityLog };
