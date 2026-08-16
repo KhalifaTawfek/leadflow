@@ -42,6 +42,26 @@ app.use((req, res, next) => {
   res.setHeader("Content-Security-Policy", CSP);
   next();
 });
+// ---------- CORS ----------
+// The front-end is served from the SAME origin as the API, so cross-origin
+// access is locked to an explicit allowlist — never "*". Because the app uses
+// cookies, the allowed origin is reflected (a wildcard can't be used with
+// credentials) and preflight requests are answered.
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || "https://shop.cookblog.net,http://localhost:8090")
+  .split(",").map((s) => s.trim()).filter(Boolean);
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && ALLOWED_ORIGINS.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Vary", "Origin");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Allow-Methods", "GET,POST,PATCH,DELETE,OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  }
+  if (req.method === "OPTIONS") return res.sendStatus(204);
+  next();
+});
+
 app.use(cookieParser());
 app.use(express.json({ limit: "200kb" }));
 app.use(express.static(path.join(__dirname, "..", "public")));
