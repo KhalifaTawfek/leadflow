@@ -219,24 +219,6 @@
           </div>
 
           <div class="card">
-            <span class="price" style="color:var(--blue)">Automation</span>
-            <h3 style="margin:4px 0 6px">🤖 AI request triage</h3>
-            <p class="sec-sub" style="font-size:14px">Describe any IT problem — our AI classifies it, scores urgency, and estimates the work, instantly.</p>
-            <textarea id="aiIn" placeholder="e.g. My WordPress site is down and Cloudflare shows a 522 error" style="min-height:80px"></textarea>
-            <button class="btn primary sm" id="aiBtn" style="margin-top:10px">Analyze it</button>
-            <div id="aiOut" style="margin-top:12px"></div>
-          </div>
-
-          <div class="card">
-            <span class="price" style="color:var(--blue)">Automation</span>
-            <h3 style="margin:4px 0 6px">⚙️ Data extraction automation</h3>
-            <p class="sec-sub" style="font-size:14px">Paste any messy text — this automation extracts and de-duplicates every email, phone number and link, then formats it. The kind of repetitive job we automate for clients.</p>
-            <textarea id="exIn" placeholder="Paste notes, a contact list, an email thread…" style="min-height:80px"></textarea>
-            <button class="btn primary sm" id="exBtn" style="margin-top:10px">Run automation</button>
-            <div id="exOut" style="margin-top:12px"></div>
-          </div>
-
-          <div class="card">
             <span class="price" style="color:var(--blue)">Cloudflare / Network</span>
             <h3 style="margin:4px 0 6px">🌐 Website security scanner</h3>
             <p class="sec-sub" style="font-size:14px">Enter any website — we check HTTPS, response time, Cloudflare protection, and security headers.</p>
@@ -275,38 +257,6 @@
     }
     pwBtn.addEventListener('click',runPw);
     document.getElementById('pwIn').addEventListener('keydown',e=>{if(e.key==='Enter')runPw();});
-
-    // AI triage
-    document.getElementById('aiBtn').addEventListener('click',()=>{
-      const text=document.getElementById('aiIn').value.trim(); const out=document.getElementById('aiOut');
-      if(text.length<6){ out.innerHTML='<div class="notice info">Describe a problem to analyze.</div>'; return; }
-      const a=triage(text,'normal'); const pcol=a.priority>=8?'#ef6f5c':a.priority>=5?'#f0b84f':'#3ecf8e';
-      out.innerHTML=`<div class="ai-box"><h4>🤖 AI result (instant)</h4>
-        <p><b>Service:</b> ${esc(a.category)}</p>
-        <p><b>Priority:</b> <span style="color:${pcol};font-weight:800">${a.priority}/10</span> &nbsp; <b>Est.:</b> ${esc(a.estimate)}</p>
-        <p style="margin-top:6px;color:var(--muted);font-size:13px">This is the same engine that triages every real request in seconds.</p></div>`;
-    });
-
-    // Automation: data extraction workflow (with visible steps)
-    document.getElementById('exBtn').addEventListener('click', async ()=>{
-      const text=document.getElementById('exIn').value; const out=document.getElementById('exOut');
-      if(text.trim().length<5){ out.innerHTML='<div class="notice info">Paste some text to process.</div>'; return; }
-      const steps=['Scanning input','Extracting emails','Extracting phone numbers','Finding links','De-duplicating & formatting'];
-      out.innerHTML='<div class="ai-box"><div id="exSteps"></div></div>';
-      const stepsEl=document.getElementById('exSteps');
-      for(let i=0;i<steps.length;i++){ stepsEl.innerHTML=steps.map((s,j)=>`<div style="color:${j<=i?'#3ecf8e':'#6f857c'};font-size:13px;padding:2px 0">${j<i?'✓':(j===i?'⏳':'○')} ${s}</div>`).join(''); await new Promise(r=>setTimeout(r,220)); }
-      const emails=[...new Set((text.match(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g)||[]).map(s=>s.toLowerCase()))];
-      const phones=[...new Set((text.match(/\+?\d[\d\s().-]{6,}\d/g)||[]).map(s=>s.trim()).filter(s=>s.replace(/\D/g,'').length>=7))];
-      const urls=[...new Set((text.match(/https?:\/\/[^\s"'<>]+/g)||[]).map(u=>u.replace(/[.,;:!?)]+$/,'')))];
-      const list=(arr)=>arr.length?arr.map(x=>`<div style="font-size:13px;padding:1px 0">${esc(x)}</div>`).join(''):'<span class="sec-sub" style="font-size:13px">none found</span>';
-      out.innerHTML=`<div class="ai-box">
-        <h4>✓ Automation complete — ${emails.length+phones.length+urls.length} items extracted</h4>
-        <p style="color:var(--green);font-size:12px;text-transform:uppercase;letter-spacing:.05em;margin-top:6px">Emails (${emails.length})</p>${list(emails)}
-        <p style="color:var(--green);font-size:12px;text-transform:uppercase;letter-spacing:.05em;margin-top:8px">Phone numbers (${phones.length})</p>${list(phones)}
-        <p style="color:var(--green);font-size:12px;text-transform:uppercase;letter-spacing:.05em;margin-top:8px">Links (${urls.length})</p>${list(urls)}
-        <button class="btn ghost sm" id="exCopy" style="margin-top:10px">Copy as CSV</button></div>`;
-      document.getElementById('exCopy').onclick=()=>{ const csv='type,value\n'+[...emails.map(e=>'email,'+e),...phones.map(p=>'phone,'+p),...urls.map(u=>'url,'+u)].join('\n'); navigator.clipboard.writeText(csv); const b=document.getElementById('exCopy'); b.textContent='Copied ✓'; setTimeout(()=>b.textContent='Copy as CSV',1400); };
-    });
 
     // Website scanner
     document.getElementById('scanBtn').addEventListener('click',async()=>{
