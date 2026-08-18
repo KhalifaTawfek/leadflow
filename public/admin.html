@@ -219,7 +219,6 @@
         <p style="font-size:14px">${esc(a.summary||'No analysis yet.')}</p>
         ${a.priorityReason?`<p style="margin-top:10px;color:var(--soft);font-size:12px;text-transform:uppercase;letter-spacing:.05em">How the agent scored priority</p><div style="font-size:14px;color:var(--muted);background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-top:4px">${esc(a.priorityReason)}</div>`:''}
         ${a.questions?`<p style="margin-top:10px;color:var(--soft);font-size:12px;text-transform:uppercase;letter-spacing:.05em">Follow-up questions</p><ul style="margin:6px 0 0 18px;font-size:14px;color:var(--muted)">${a.questions.split('\n').map(q=>`<li>${esc(q)}</li>`).join('')}</ul>`:''}
-        ${a.draftReply?`<p style="margin-top:10px;color:var(--soft);font-size:12px;text-transform:uppercase;letter-spacing:.05em">Draft reply</p><div class="reply">${esc(a.draftReply)}</div><button class="btn ghost sm" id="copyReply" style="margin-top:8px">Copy reply</button>`:''}
       </div>
       <div class="row-actions">
         <select id="statusSel">${STATUSES.map(s=>`<option value="${s}" ${s===lead.status?'selected':''}>${s.replace('_',' ')}</option>`).join('')}</select>
@@ -229,8 +228,8 @@
       </div>
       <div style="margin-top:16px">
         <h4 style="color:var(--green);font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Reply to customer</h4>
-        ${lead.reply?`<div class="note" style="border:0;background:rgba(62,207,142,.08);border-radius:8px;padding:10px"><span style="color:var(--soft);font-size:12px">Sent ${new Date(lead.repliedAt).toLocaleString()}</span><div style="white-space:pre-wrap;margin-top:4px">${esc(lead.reply)}</div></div>`:'<div class="muted" style="font-size:13px">No reply sent yet — the customer sees this in their “My Requests”.</div>'}
-        <div style="margin-top:10px"><textarea id="replyText" placeholder="Write a reply the customer will see…" style="min-height:70px">${esc(lead.reply||a.draftReply||'')}</textarea><button class="btn primary sm" id="sendReply" style="margin-top:8px">Send reply to customer</button></div>
+        ${lead.reply?`<div class="note" style="border:0;background:rgba(62,207,142,.08);border-radius:8px;padding:10px"><span style="color:var(--soft);font-size:12px">🤖 AI replied automatically · ${new Date(lead.repliedAt).toLocaleString()} · shown in the customer's “My Requests”</span><div style="white-space:pre-wrap;margin-top:4px">${esc(lead.reply)}</div></div>`:'<div class="muted" style="font-size:13px">No reply yet.</div>'}
+        <div style="margin-top:10px"><textarea id="replyText" placeholder="Revise the reply the customer sees…" style="min-height:70px">${esc(lead.reply||'')}</textarea><button class="btn primary sm" id="sendReply" style="margin-top:8px">Update reply to customer</button></div>
       </div>
       <div style="margin-top:16px">
         <h4 style="color:var(--green);font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Internal notes</h4>
@@ -240,7 +239,6 @@
     document.getElementById('saveLead').onclick=async()=>{await api('/api/leads/'+id,{method:'PATCH',body:JSON.stringify({status:document.getElementById('statusSel').value,assignedToId:document.getElementById('assignSel').value})});await loadStats();await loadLeads();openLead(id);};
     document.getElementById('reAnalyze').onclick=async()=>{await api('/api/leads/'+id+'/analyze',{method:'POST'});openLead(id);};
     document.getElementById('addNote').onclick=async()=>{const t=document.getElementById('noteText').value.trim();if(!t)return;await api('/api/leads/'+id+'/notes',{method:'POST',body:JSON.stringify({text:t})});openLead(id);loadLeads();};
-    const cr=document.getElementById('copyReply'); if(cr)cr.onclick=()=>{navigator.clipboard.writeText(a.draftReply);cr.textContent='Copied ✓';setTimeout(()=>cr.textContent='Copy reply',1400);};
     const sr=document.getElementById('sendReply'); if(sr)sr.onclick=async()=>{const t=document.getElementById('replyText').value.trim();if(!t)return;sr.textContent='Sending…';try{await api('/api/leads/'+id+'/reply',{method:'POST',body:JSON.stringify({text:t})});await loadLeads();openLead(id);}catch(e){sr.textContent='Send reply to customer';alert(e.message);}};
   }
 

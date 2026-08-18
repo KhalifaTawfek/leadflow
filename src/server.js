@@ -7,7 +7,7 @@ const rateLimit = require("express-rate-limit");
 
 const { initDb, sequelize, User, Service, Lead, LeadNote, AiAnalysis, ActivityLog } = require("./db");
 const { analyzeLead } = require("./agent/analyze");
-const { analyzeLeadGraph } = require("./agent/graph");
+const { analyzeLeadGraph, agentChat } = require("./agent/graph");
 const { onNewLead, startDailyReportJob } = require("./automation");
 const { sendTelegram, telegramEnabled } = require("./telegram");
 const { Op } = require("sequelize");
@@ -173,6 +173,14 @@ app.post("/api/leads", leadLimiter, requireAuth, async (req, res) => {
   // Run the AI agent flow and store the result.
   const analysis = await analyzeLeadGraph(lead);
   await AiAnalysis.create({ leadId: lead.id, ...analysis });
+
+  // The agent's reply is sent to the customer automatically (visible in "My Requests").
+  if (analysis.draftReply) {
+    lead.reply = String(analysis.draftReply).slice(0, 4000);
+    lead.repliedAt = new Date();
+    await lead.save();
+  }
+
   await logActivity(req.user.id, "NEW_LEAD", `${name} · ${analysis.category} · P${analysis.priority}`, lead.id);
 
   // Fire automations (webhook + high-priority alert + email) without blocking the response.
@@ -180,15 +188,31 @@ app.post("/api/leads", leadLimiter, requireAuth, async (req, res) => {
 
   res.status(201).json({
     ok: true,
-    message: "Your request has been received — our team will be in touch shortly.",
+    message: "Your request has been received — our AI has already sent you a reply, and our team will follow up.",
     lead: { id: lead.id },
     analysis: {
       category: analysis.category,
       estimateHours: analysis.estimateHours,
       urgencyLabel: analysis.urgencyLabel,
-      questions: analysis.questions
+      questions: analysis.questions,
+      reply: lead.reply
     }
   });
+});
+
+// Live AI chat for the request page (LangGraph + LangChain).
+const chatLimiter = rateLimit({ windowMs: 10 * 60 * 1000, max: 40, standardHeaders: true, legacyHeaders: false, message: { error: "Too many messages — please wait a moment." } });
+app.post("/api/agent/chat", chatLimiter, requireAuth, async (req, res) => {
+  const history = Array.isArray(req.body.messages) ? req.body.messages : [];
+  const clean = history
+    .filter((m) => m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string")
+    .slice(-12)
+    .map((m) => ({ role: m.role, content: String(m.content).slice(0, 1000) }));
+  if (!clean.length || clean[clean.length - 1].role !== "user") {
+    return res.status(400).json({ error: "Send a message to the assistant." });
+  }
+  const out = await agentChat(clean);
+  res.json({ reply: out.reply, engine: out.engine });
 });
 
 // Customer: my own requests, with a friendly status.

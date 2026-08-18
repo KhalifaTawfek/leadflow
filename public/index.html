@@ -321,6 +321,16 @@
     app.innerHTML = `
       <section style="max-width:720px;margin:0 auto">
         <h2 class="sec">Request a service</h2><p class="sec-sub">Our AI reviews it the moment you submit. Free during beta.</p>
+        <div class="card" style="margin-bottom:16px">
+          <h3 style="margin:0 0 4px">💬 Not sure what you need? Ask our AI</h3>
+          <p class="sec-sub" style="font-size:14px;margin-bottom:12px">Describe your problem and our AI assistant will suggest the right service — live.</p>
+          <div id="chatBox" style="max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:4px 2px"></div>
+          <div id="chatTyping" class="sec-sub" style="font-size:13px;display:none;margin-top:6px">AI is typing…</div>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <input id="chatIn" placeholder="e.g. I need to monitor my websites and servers with alerts" style="flex:1" onkeydown="if(event.key==='Enter'){event.preventDefault();sendChat();}">
+            <button class="btn primary sm" onclick="sendChat()">Send</button>
+          </div>
+        </div>
         <div class="card">
           <div id="reqNotice"></div>
           <form id="reqForm">
@@ -341,6 +351,34 @@
         </div>
       </section>`;
     document.getElementById('reqForm').addEventListener('submit', onRequestSubmit);
+    chatMessages=[{role:'assistant',content:"Hi! Tell me what you're trying to solve and I'll point you to the right service — for example: “I need to monitor my websites and servers with alerts.”"}];
+    renderChat();
+  }
+
+  // ---- Live AI chat (LangGraph + LangChain) ----
+  let chatMessages=[];
+  function renderChat(){
+    const box=document.getElementById('chatBox'); if(!box)return;
+    box.innerHTML=chatMessages.map(m=>{
+      const mine=m.role==='user';
+      return `<div style="align-self:${mine?'flex-end':'flex-start'};max-width:85%;background:${mine?'var(--green)':'var(--panel2)'};color:${mine?'#062018':'var(--ink)'};border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:14px;white-space:pre-wrap">${esc(m.content)}</div>`;
+    }).join('');
+    box.scrollTop=box.scrollHeight;
+  }
+  async function sendChat(){
+    const inp=document.getElementById('chatIn'); if(!inp)return;
+    const text=inp.value.trim(); if(!text)return;
+    inp.value='';
+    chatMessages.push({role:'user',content:text}); renderChat();
+    const typing=document.getElementById('chatTyping'); if(typing)typing.style.display='block';
+    try{
+      const r=await api('/api/agent/chat',{method:'POST',body:JSON.stringify({messages:chatMessages})});
+      chatMessages.push({role:'assistant',content:r.reply||'…'});
+    }catch(e){
+      chatMessages.push({role:'assistant',content:'Sorry, I had trouble responding just now — please try again, or fill in the form below and our team will follow up.'});
+    }
+    if(typing)typing.style.display='none';
+    renderChat();
   }
 
   let checkoutReady = false;
@@ -382,7 +420,8 @@
             <div class="ai-box" style="text-align:left">
               <h4>🤖 Our AI reviewed your request</h4>
               <p><b>Category:</b> ${esc(a.category)} · <b>Est.:</b> ${esc(a.estimateHours)}</p>
-              ${a.questions?`<p style="margin-top:8px;color:var(--muted)">To move faster, please have these ready:</p><ul style="margin:6px 0 0 18px;color:var(--muted)">${a.questions.split('\n').map(q=>`<li>${esc(q)}</li>`).join('')}</ul>`:''}
+              ${a.reply?`<p style="margin-top:10px;color:var(--soft);font-size:12px;text-transform:uppercase;letter-spacing:.05em">Our reply to you</p><p style="white-space:pre-wrap;margin-top:4px">${esc(a.reply)}</p>`:''}
+              ${a.questions?`<p style="margin-top:10px;color:var(--muted)">To move faster, please have these ready:</p><ul style="margin:6px 0 0 18px;color:var(--muted)">${a.questions.split('\n').map(q=>`<li>${esc(q)}</li>`).join('')}</ul>`:''}
             </div>
             <div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
               <button class="btn primary" onclick="go('mine')">Track my requests</button>
