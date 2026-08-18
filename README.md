@@ -66,7 +66,7 @@ on every push to `main`.
 |--------------|------------------------------------------|
 | Backend      | Node.js + Express                        |
 | Database     | PostgreSQL via **Sequelize ORM** (parameterized queries → SQL-injection safe) |
-| AI Agent     | Rule-based "agent flow" in plain JS — **no API key or cost** |
+| AI Agent     | **LangGraph** flow (LangGraph.js) orchestrating the pipeline, with **LangChain** (ChatOpenAI) powering the LLM steps — falls back to built-in rule logic when no key is set |
 | Auth         | Session cookie (HMAC-signed, httpOnly) + **bcrypt** hashing · roles ADMIN / SALES / CUSTOMER |
 | Frontend     | Vanilla HTML/CSS/JS (public site + admin SPA) · **installable PWA** |
 | Infra        | Docker Compose · Nginx · Cloudflare · Certbot SSL · Ubuntu VPS (non-root `deploy` user, ufw, SSH keys) |
@@ -80,7 +80,7 @@ on every push to `main`.
 
 - ✅ Company website: landing, services, **approximate pricing**, contact, and the **lead form** (7 fields)
 - ✅ **Customer accounts** — register / log in, submit requests, track them in a **"My Requests"** portal
-- ✅ **AI Agent** — 6-step flow (classify → priority → summary → questions → draft reply → estimate)
+- ✅ **AI Agent** — a **LangGraph** flow (classify → priority → summarize → questions → draft reply) with **LangChain** LLM steps and a rule-based fallback
 - ✅ Admin **CRM**: login, lead list, detail, status pipeline, internal notes, assignment
 - ✅ Filters: by status, service, and minimum priority
 - ✅ **Stats page**: total / high-value / urgent / won / lost / conversion + a 14-day leads line chart
@@ -244,22 +244,31 @@ Relations: a lead has one analysis, many notes, an optional assignee (staff) and
 
 ---
 
-## AI Agent flow
+## AI Agent flow (LangGraph + LangChain)
 
-The agent (`src/agent/analyze.js`) is a deterministic rule-based flow — no external API, no key, no
-cost — that mirrors the LangGraph flow in the brief:
+The agent is a real **LangGraph** `StateGraph` (`src/agent/graph.js`) that runs the brief's pipeline
+as a directed flow of nodes:
 
-1. **Classify service** — keyword overlap against the catalog (Account Security, Servers/RDP, Automation, Docker/DevOps, Cloudflare/Network, Monitoring, Website+Domain+Protection).
-2. **Score priority (1–10)** — from urgency + budget + security-sensitivity + description detail.
-3. **Summarize** — a one-line summary for the salesperson.
-4. **Follow-up questions** — tailored to the detected service.
-5. **Draft reply** — a ready-to-send professional response.
-6. **Hours estimate** — a range based on the service type.
+```
+START → classify → priority → summarize → questions → draftReply → END
+```
+
+- **classify** and **priority** are deterministic (keyword classification against the service
+  catalog; a transparent 1–10 score from urgency + budget + security-sensitivity + detail, including
+  AI urgency detection from the text).
+- **summarize**, **questions** and **draftReply** call an **LLM through LangChain** (`ChatOpenAI`)
+  when `OPENAI_API_KEY` is set. `LLM_BASE_URL` allows any OpenAI-compatible provider (OpenAI, Groq,
+  OpenRouter, or a local model).
+- Every LLM node **falls back to the built-in rule logic** (`src/agent/analyze.js`) if no key is set
+  or the call errors — so the agent always produces a result and never blocks a lead. The response's
+  `engine` field reports which path ran (`langgraph+llm` or `langgraph+rules`).
 
 Example — input *"I keep getting login attempts on my Gmail and Facebook and I want to secure my
 accounts"* → **Account Security · Priority 8 · Urgent · 2–4 hours** + tailored questions + a drafted
-reply. The result is saved to `ai_analysis` and shown in the CRM. (Swappable for a real LLM later —
-same `analyzeLead()` interface.)
+reply. The result is saved to `ai_analysis` and shown in the CRM.
+
+To enable the real LLM: set `OPENAI_API_KEY` (and optionally `LLM_MODEL` / `LLM_BASE_URL`) in `.env`,
+then redeploy. No key → the same LangGraph flow runs on rule logic, free and offline.
 
 ---
 

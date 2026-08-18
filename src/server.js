@@ -7,6 +7,7 @@ const rateLimit = require("express-rate-limit");
 
 const { initDb, sequelize, User, Service, Lead, LeadNote, AiAnalysis, ActivityLog } = require("./db");
 const { analyzeLead } = require("./agent/analyze");
+const { analyzeLeadGraph } = require("./agent/graph");
 const { onNewLead, startDailyReportJob } = require("./automation");
 const { sendTelegram, telegramEnabled } = require("./telegram");
 const { Op } = require("sequelize");
@@ -170,7 +171,7 @@ app.post("/api/leads", leadLimiter, requireAuth, async (req, res) => {
   const lead = await Lead.create({ name, phone, email, serviceType, problem, urgency, budget: budget || "Not stated", customerId: req.user.id });
 
   // Run the AI agent flow and store the result.
-  const analysis = analyzeLead(lead);
+  const analysis = await analyzeLeadGraph(lead);
   await AiAnalysis.create({ leadId: lead.id, ...analysis });
   await logActivity(req.user.id, "NEW_LEAD", `${name} · ${analysis.category} · P${analysis.priority}`, lead.id);
 
@@ -291,7 +292,7 @@ app.post("/api/leads/:id/reply", requireStaff, async (req, res) => {
 app.post("/api/leads/:id/analyze", requireStaff, async (req, res) => {
   const lead = await Lead.findByPk(req.params.id);
   if (!lead) return res.status(404).json({ error: "Lead not found." });
-  const analysis = analyzeLead(lead);
+  const analysis = await analyzeLeadGraph(lead);
   const existing = await AiAnalysis.findOne({ where: { leadId: lead.id } });
   const saved = existing ? await existing.update(analysis) : await AiAnalysis.create({ leadId: lead.id, ...analysis });
   res.json({ analysis: saved });
