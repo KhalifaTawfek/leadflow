@@ -215,7 +215,7 @@
       </div>
       <div><span class="k" style="color:var(--soft);font-size:13px">Problem</span><p style="margin-top:4px">${esc(lead.problem)}</p></div>
       <div class="ai">
-        <h4>🤖 AI analysis</h4>
+        <h4>🤖 AI analysis ${a.engine?`<span title="Which agent path ran" style="font-size:11px;font-weight:700;color:${String(a.engine).includes('llm')?'#062018':'var(--muted)'};background:${String(a.engine).includes('llm')?'var(--green)':'transparent'};border:1px solid var(--line);border-radius:6px;padding:2px 7px;margin-left:6px">${esc(a.engine)}</span>`:''}</h4>
         <p style="font-size:14px">${esc(a.summary||'No analysis yet.')}</p>
         ${a.priorityReason?`<p style="margin-top:10px;color:var(--soft);font-size:12px;text-transform:uppercase;letter-spacing:.05em">How the agent scored priority</p><div style="font-size:14px;color:var(--muted);background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-top:4px">${esc(a.priorityReason)}</div>`:''}
         ${a.questions?`<p style="margin-top:10px;color:var(--soft);font-size:12px;text-transform:uppercase;letter-spacing:.05em">Follow-up questions</p><ul style="margin:6px 0 0 18px;font-size:14px;color:var(--muted)">${a.questions.split('\n').map(q=>`<li>${esc(q)}</li>`).join('')}</ul>`:''}

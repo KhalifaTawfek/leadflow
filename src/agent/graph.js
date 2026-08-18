@@ -43,7 +43,8 @@ const S = Annotation.Root({
   estimateHours: Annotation(),
   summary: Annotation(),
   questions: Annotation(),
-  draftReply: Annotation()
+  draftReply: Annotation(),
+  llmUsed: Annotation()        // true once any node actually gets an LLM response
 });
 
 // Node 1 — classify + compute the rule baseline (deterministic).
@@ -73,7 +74,7 @@ async function summarizeNode(state) {
         `Category: ${state.category}. Customer: ${state.lead.name}. Budget: ${state.lead.budget || "not stated"}.\n\n` +
         `Request: "${state.lead.problem}"`
       );
-      if (s) return { summary: s };
+      if (s) return { summary: s, llmUsed: true };
     } catch (e) { console.error("[graph] summarize LLM failed:", e.message); }
   }
   return { summary: state.base.summary };
@@ -88,7 +89,7 @@ async function questionsNode(state) {
         `Return each question on its own line, no numbering.\n\nRequest: "${state.lead.problem}"`
       );
       const lines = q.split("\n").map((l) => l.replace(/^[\-\d.)\s]+/, "").trim()).filter(Boolean);
-      if (lines.length) return { questions: lines.slice(0, 4).join("\n") };
+      if (lines.length) return { questions: lines.slice(0, 4).join("\n"), llmUsed: true };
     } catch (e) { console.error("[graph] questions LLM failed:", e.message); }
   }
   return { questions: state.base.questions };
@@ -105,7 +106,7 @@ async function draftReplyNode(state) {
         `and ask for the key details needed. Sign off as "The Team". Keep it under 120 words.\n\n` +
         `Their message: "${state.lead.problem}"`
       );
-      if (r) return { draftReply: r };
+      if (r) return { draftReply: r, llmUsed: true };
     } catch (e) { console.error("[graph] draftReply LLM failed:", e.message); }
   }
   return { draftReply: state.base.draftReply };
@@ -141,7 +142,8 @@ async function analyzeLeadGraph(lead) {
       summary: out.summary,
       questions: out.questions,
       draftReply: out.draftReply,
-      engine: LLM_ENABLED ? "langgraph+llm" : "langgraph+rules"
+      // engine reflects what ACTUALLY ran: the LLM only counts if a node got a real response.
+      engine: out.llmUsed ? "langgraph+llm" : "langgraph+rules"
     };
   } catch (e) {
     // Absolute fallback: never fail a lead because of the agent.

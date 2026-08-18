@@ -61,7 +61,8 @@ const AiAnalysis = sequelize.define("AiAnalysis", {
   questions: { type: DataTypes.TEXT, allowNull: false },
   draftReply: { type: DataTypes.TEXT, allowNull: false },
   priorityReason: { type: DataTypes.TEXT, allowNull: true },   // how the agent reached the priority
-  aiUrgency: { type: DataTypes.STRING, allowNull: true }       // urgency the AI detected from the text
+  aiUrgency: { type: DataTypes.STRING, allowNull: true },      // urgency the AI detected from the text
+  engine: { type: DataTypes.STRING, allowNull: true }          // which agent path ran (langgraph+llm / langgraph+rules)
 }, { tableName: "ai_analysis" });
 
 const ActivityLog = sequelize.define("ActivityLog", {
@@ -100,6 +101,7 @@ async function initDb() {
   await sequelize.query('ALTER TABLE leads ADD COLUMN IF NOT EXISTS reply TEXT');
   await sequelize.query('ALTER TABLE leads ADD COLUMN IF NOT EXISTS replied_at TIMESTAMP');
   await sequelize.query('ALTER TABLE activity_logs ADD COLUMN IF NOT EXISTS lead_id UUID');
+  await sequelize.query('ALTER TABLE ai_analysis ADD COLUMN IF NOT EXISTS engine VARCHAR(255)');
 }
 
 module.exports = { sequelize, initDb, User, Service, Lead, LeadNote, AiAnalysis, ActivityLog };
