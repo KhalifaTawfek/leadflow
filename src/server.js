@@ -11,6 +11,7 @@ const { analyzeLeadGraph, agentChat } = require("./agent/graph");
 const { onNewLead, startDailyReportJob } = require("./automation");
 const { sendTelegram, telegramEnabled } = require("./telegram");
 const { firebaseEnabled, verifyIdToken } = require("./firebase");
+const { probe, analyzeSite, domainCheck, friendlyError } = require("./tools");
 const { Op } = require("sequelize");
 
 const app = express();
@@ -259,7 +260,18 @@ app.post("/api/leads", leadLimiter, requireAuth, async (req, res) => {
 
 // Live AI chat for the request page (LangGraph + LangChain).
 const chatLimiter = rateLimit({ windowMs: 10 * 60 * 1000, max: 40, standardHeaders: true, legacyHeaders: false, message: { error: "Too many messages - please wait a moment." } });
-app.post("/api/agent/chat", chatLimiter, requireAuth, async (req, res) => {
+// Service catalogue for the chat assistant (cached briefly - it rarely changes).
+let serviceCache = { at: 0, list: [] };
+async function chatServices() {
+  if (Date.now() - serviceCache.at < 5 * 60 * 1000 && serviceCache.list.length) return serviceCache.list;
+  try {
+    const rows = await Service.findAll({ attributes: ["name", "basePrice"], order: [["name", "ASC"]] });
+    serviceCache = { at: Date.now(), list: rows.map((r) => ({ name: r.name, basePrice: r.basePrice })) };
+  } catch {}
+  return serviceCache.list;
+}
+// Site chat assistant - open to visitors too (rate-limited per IP).
+app.post("/api/agent/chat", chatLimiter, async (req, res) => {
   const history = Array.isArray(req.body.messages) ? req.body.messages : [];
   const clean = history
     .filter((m) => m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string")
@@ -268,7 +280,7 @@ app.post("/api/agent/chat", chatLimiter, requireAuth, async (req, res) => {
   if (!clean.length || clean[clean.length - 1].role !== "user") {
     return res.status(400).json({ error: "Send a message to the assistant." });
   }
-  const out = await agentChat(clean);
+  const out = await agentChat(clean, await chatServices());
   res.json({ reply: out.reply, engine: out.engine });
 });
 
@@ -458,57 +470,18 @@ app.get("/api/stats", requireStaff, async (_req, res) => {
 });
 
 // ================= LIVE DEMO TOOLS =================
-// Server-side URL checks power the "Website Scanner" and "Live Status" demos.
-// An SSRF guard blocks private/loopback hosts so the scanner can't be abused.
-const net = require("net");
-const dnsp = require("dns").promises;
-function isPrivateIp(ip) {
-  if (ip.startsWith("::ffff:")) ip = ip.slice(7);
-  if (net.isIP(ip) === 4) {
-    const [a, b] = ip.split(".").map(Number);
-    return a === 0 || a === 10 || a === 127 || (a === 100 && b >= 64 && b <= 127) ||
-      (a === 169 && b === 254) || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168);
-  }
-  const v6 = ip.toLowerCase();
-  return v6 === "::" || v6 === "::1" || v6.startsWith("fc") || v6.startsWith("fd") || v6.startsWith("fe80");
-}
-async function assertPublicHost(host) {
-  if (host === "localhost" || host.endsWith(".local") || host.endsWith(".internal")) throw new Error("blocked");
-  const addrs = net.isIP(host) ? [host] : (await dnsp.lookup(host, { all: true })).map((a) => a.address);
-  if (!addrs.length || addrs.some(isPrivateIp)) throw new Error("blocked");
-}
-
-async function probe(rawUrl) {
-  let url;
-  try { url = new URL(/^https?:\/\//.test(rawUrl) ? rawUrl : "https://" + rawUrl); } catch { throw new Error("Enter a valid domain, e.g. example.com"); }
-  if (!/^https?:$/.test(url.protocol)) throw new Error("Only http/https URLs are supported.");
-  await assertPublicHost(url.hostname);
-  const started = Date.now();
-  const r = await fetch(url.toString(), { redirect: "follow", signal: AbortSignal.timeout(8000), headers: { "user-agent": "LeadFlow-Scanner/1.0" } });
-  const ms = Date.now() - started;
-  const h = {}; r.headers.forEach((v, k) => { h[k] = v; });
-  const cloudflare = !!(h["cf-ray"] || String(h["server"] || "").toLowerCase().includes("cloudflare"));
-  return {
-    url: url.toString(), finalUrl: r.url, status: r.status, https: r.url.startsWith("https:"),
-    responseMs: ms, server: h["server"] || "unknown", cloudflare,
-    securityHeaders: {
-      "HSTS (Strict-Transport-Security)": !!h["strict-transport-security"],
-      "X-Content-Type-Options": !!h["x-content-type-options"],
-      "X-Frame-Options": !!h["x-frame-options"],
-      "Content-Security-Policy": !!h["content-security-policy"]
-    }
+// The fetch-based tools live in tools.js (SSRF-guarded on every redirect hop,
+// size- and time-capped). Each tool is rate-limited per IP.
+const toolLimiter = rateLimit({ windowMs: 10 * 60 * 1000, max: 25, standardHeaders: true, legacyHeaders: false, message: { ok: false, error: "Too many checks from this network - please wait a few minutes." } });
+function toolRoute(fn) {
+  return async (req, res) => {
+    try { res.json({ ok: true, ...(await fn(String(req.query.url || req.query.domain || ""))) }); }
+    catch (e) { res.status(400).json({ ok: false, error: friendlyError(e) }); }
   };
 }
-
-app.get("/api/tools/scan", async (req, res) => {
-  try {
-    const data = await probe(String(req.query.url || ""));
-    res.json({ ok: true, ...data });
-  } catch (e) {
-    const msg = e.message === "blocked" ? "That host isn't allowed." : (e.name === "TimeoutError" ? "The site took too long to respond." : (e.message || "Could not reach the site."));
-    res.status(400).json({ ok: false, error: msg });
-  }
-});
+app.get("/api/tools/scan", toolLimiter, toolRoute(probe));
+app.get("/api/tools/analyze", toolLimiter, toolRoute(analyzeSite));
+app.get("/api/tools/domain", toolLimiter, toolRoute(domainCheck));
 
 // Live status of our own hosted sites (proof of monitoring + multi-site hosting).
 const MONITOR_SITES = (process.env.MONITOR_SITES || "https://cookblog.net,https://shop.cookblog.net,https://google.com,https://github.com,https://cloudflare.com")

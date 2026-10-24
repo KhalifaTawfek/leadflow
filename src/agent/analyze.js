@@ -28,7 +28,7 @@ const SERVICE_RULES = [
   },
   {
     category: "Automation",
-    keywords: ["automate", "automation", "workflow", "script", "bot", "integrate", "zapier", "n8n", "repetitive", "scrape"],
+    keywords: ["automate", "automation", "workflow", "script", "zapier", "n8n", "repetitive", "scrape", "spreadsheet", "every day"],
     estimate: "6-12 hours",
     questions: [
       "Which task would you like to automate, step by step?",
@@ -64,6 +64,36 @@ const SERVICE_RULES = [
       "What would you like to monitor - a website, a server, or an API?",
       "How would you like to be alerted (email, Telegram, SMS)?",
       "Do you have any monitoring in place today?"
+    ]
+  },
+  {
+    category: "Chatbots & Integrations",
+    keywords: ["chatbot", "chat bot", "bot", "telegram", "whatsapp", "discord", "messenger", "integration", "api", "webhook", "connect my"],
+    estimate: "4-10 hours",
+    questions: [
+      "Where should the bot live - your website, Telegram, WhatsApp or Discord?",
+      "What should it handle: questions, orders, bookings or notifications?",
+      "Which tools or systems should it connect to?"
+    ]
+  },
+  {
+    category: "Cloud Infrastructure",
+    keywords: ["cloud", "aws", "azure", "gcp", "hetzner", "digitalocean", "scale", "scaling", "infrastructure", "migrate", "migration", "s3"],
+    estimate: "4-8 hours",
+    questions: [
+      "Which provider are you on today, or would you like a recommendation?",
+      "What needs to run in the cloud - a website, an app or a database?",
+      "Roughly how many users or how much traffic do you expect?"
+    ]
+  },
+  {
+    category: "Domain Transfer & Setup",
+    keywords: ["transfer", "registrar", "nameserver", "move my domain", "move domain", "buy a domain", "register a domain", "godaddy", "namecheap", "domain expired"],
+    estimate: "1-2 hours",
+    questions: [
+      "Which domain is it, and where is it registered today?",
+      "Do you have access to the current registrar account?",
+      "Is email running on this domain that we need to keep working?"
     ]
   },
   {

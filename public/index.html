@@ -150,6 +150,78 @@
   .foot-grid a{color:var(--muted)}.foot-grid a:hover{color:var(--ink)}
   .foot-links{display:flex;gap:22px;flex-wrap:wrap}
 
+  /* live tools */
+  .tool{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:26px;display:flex;flex-direction:column;gap:16px;min-width:0;scroll-margin-top:84px}
+  .tool-wide{margin-bottom:16px}
+  .tool h3{font-size:20px;font-weight:700;letter-spacing:-.2px;margin:4px 0}
+  .tool p.desc{color:var(--muted);font-size:15px}
+  .tool-kicker{color:var(--accent);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+  .tool-icon{width:42px;height:42px;border-radius:11px;border:1px solid rgba(82,184,224,.4);background:rgba(82,184,224,.06);display:grid;place-items:center;color:var(--accent);margin-bottom:14px}
+  .tool-input{display:flex;gap:10px}.tool-input input{flex:1;min-width:0}
+  .tool-try{display:flex;flex-wrap:wrap;gap:8px;align-items:center;color:var(--soft);font-size:13px;margin-top:-6px}
+  .tool-try a{cursor:pointer;color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:3px 11px}.tool-try a:hover{color:var(--accent);border-color:var(--accent)}
+  .tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .an-head{display:flex;gap:14px;align-items:center;padding:16px;border:1px solid var(--line2);border-radius:12px;background:var(--panel2)}
+  .an-head img{width:42px;height:42px;border-radius:10px;background:#fff;object-fit:contain;padding:5px;flex:none}
+  .an-head b{display:block;font-size:17px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.an-head a{color:var(--muted);font-size:13px;word-break:break-all}
+  .an-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .pill{display:inline-flex;align-items:center;border:1px solid var(--line2);border-radius:999px;padding:3px 10px;font-size:12px;font-weight:600;color:var(--muted)}
+  .pill.ok{color:var(--ok);border-color:rgba(52,211,153,.35)}.pill.bad{color:var(--red);border-color:rgba(239,111,92,.35)}
+  .an-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;margin-top:16px}
+  .an-box{border:1px solid var(--line2);border-radius:12px;padding:18px;background:var(--bg);min-width:0}
+  .an-box h4{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--soft);margin-bottom:12px}
+  .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:10px}
+  .swatch{background:transparent;border:1px solid var(--line2);border-radius:10px;padding:0;overflow:hidden;cursor:pointer;text-align:left;color:var(--ink);font:inherit}
+  .swatch span{display:block;height:54px;border-bottom:1px solid var(--line2)}
+  .swatch b{display:block;font:600 13px ui-monospace,Consolas,monospace;padding:7px 9px 0}
+  .swatch small{display:block;padding:0 9px 8px;color:var(--soft);font-size:11px;text-transform:capitalize}
+  .swatch:hover{border-color:var(--accent)}
+  .token{display:grid;grid-template-columns:14px minmax(0,1fr) auto;gap:10px;align-items:center;font-size:13px;padding:7px 0;border-bottom:1px solid var(--line)}
+  .token .dot{width:14px;height:14px;border-radius:4px;border:1px solid var(--line2)}
+  .token code{font-family:ui-monospace,Consolas,monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .token span:last-child{color:var(--soft);font:12px ui-monospace,Consolas,monospace;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .font-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+  .font-row span{font-size:20px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.font-row small{color:var(--soft)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip2{border:1px solid var(--line2);border-radius:8px;padding:5px 10px;font-size:13px;font-weight:600;background:var(--panel2)}
+  .kv{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .kv div{border:1px solid var(--line2);border-radius:10px;padding:10px 12px}
+  .kv b{display:block;font-size:20px}.kv span{color:var(--soft);font-size:12px}
+  .check{display:grid;grid-template-columns:22px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .check .ic{font-weight:800}.check small{display:block;color:var(--soft);font-size:13px;word-break:break-word}
+  .score{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+  .score b{font-size:40px;font-weight:800;letter-spacing:-1px}
+  .spinner{display:inline-block;width:15px;height:15px;border:2px solid rgba(82,184,224,.3);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;vertical-align:-2px;margin-right:9px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--accent);color:#04111C;font-weight:700;padding:10px 16px;border-radius:10px;z-index:90;opacity:0;transition:opacity .2s;pointer-events:none}
+  .toast.show{opacity:1}
+  .tool-teaser{cursor:pointer;transition:border-color .15s,background .15s}.tool-teaser:hover{border-color:rgba(82,184,224,.45);background:#0F1826}
+  .tool-teaser .go{display:inline-block;color:var(--accent);font-weight:700;font-size:14px;margin-top:14px}
+
+  /* chat widget */
+  .chat-fab{position:fixed;right:22px;bottom:22px;width:58px;height:58px;border-radius:50%;border:0;background:var(--accent);color:#04111C;display:grid;place-items:center;cursor:pointer;z-index:55;box-shadow:0 10px 30px rgba(0,0,0,.45);transition:background .15s,transform .15s}
+  .chat-fab:hover{background:var(--accent2);transform:translateY(-2px)}
+  .chat-panel{position:fixed;right:22px;bottom:92px;width:370px;height:min(560px,calc(100vh - 120px));background:var(--panel);border:1px solid var(--line2);border-radius:16px;display:none;flex-direction:column;overflow:hidden;z-index:56;box-shadow:0 24px 60px rgba(0,0,0,.55)}
+  .chat-panel.open{display:flex}
+  .chat-head{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line)}
+  .chat-head .x{margin-left:auto;float:none;background:none;border:0}
+  .chat-av{width:36px;height:36px;border-radius:10px;background:var(--accent);color:#04111C;display:grid;place-items:center;font-weight:900;font-size:13px;flex:none}
+  .chat-head b{display:block;font-size:15px}.chat-head small{color:var(--muted);font-size:12px;display:flex;align-items:center;gap:6px}
+  .online{width:7px;height:7px;border-radius:50%;background:var(--ok)}
+  .chat-body{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+  .bub{max-width:86%;padding:9px 13px;border-radius:14px;font-size:14px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+  .bub.bot{align-self:flex-start;background:var(--panel2);border:1px solid var(--line2);border-bottom-left-radius:4px}
+  .bub.me{align-self:flex-end;background:var(--accent);color:#04111C;border-bottom-right-radius:4px}
+  .typing span{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--muted);margin:0 2px;animation:blink 1.2s infinite}
+  .typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
+  @keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
+  .chat-chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 12px}
+  .chat-chips:empty{display:none}
+  .chat-chips button{background:transparent;border:1px solid var(--line2);color:var(--muted);border-radius:999px;padding:5px 11px;font:inherit;font-size:13px;cursor:pointer}
+  .chat-chips button:hover{color:var(--accent);border-color:var(--accent)}
+  .chat-input{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line)}
+  .chat-input input{padding:10px 12px}
+
   /* responsive */
   @media(max-width:900px){
     .menu-btn{display:grid;place-items:center}
@@ -164,6 +236,7 @@
     .stats{grid-template-columns:1fr 1fr}
     .stat:nth-child(3){border-left:0}.stat:nth-child(n+3){border-top:1px solid var(--line)}
     .form-grid{grid-template-columns:1fr}
+    .tools-grid,.an-grid{grid-template-columns:1fr}
   }
   @media(max-width:560px){
     .wrap,.nav{padding-left:16px;padding-right:16px}
@@ -172,6 +245,11 @@
     .stat{padding:18px}.stat b{font-size:26px}
     .subs-inner{padding:30px 18px}
     .cta{padding:40px 18px}
+    .tool{padding:20px}
+    .tool-input{flex-direction:column}
+    .kv{grid-template-columns:1fr 1fr}
+    .chat-panel{left:10px;right:10px;width:auto;bottom:84px;height:calc(100vh - 110px)}
+    .chat-fab{right:14px;bottom:14px}
   }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -214,6 +292,15 @@
     <div id="authNotice"></div>
     <div id="authBody"></div>
   </div>
+</div>
+
+<!-- Chat widget -->
+<button class="chat-fab" id="chatFab" aria-label="Chat with us" aria-expanded="false" aria-controls="chatPanel"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
+<div class="chat-panel" id="chatPanel" role="dialog" aria-label="Chat with LeadFlow">
+  <div class="chat-head"><div class="chat-av">LF</div><div><b>LeadFlow assistant</b><small><span class="online"></span>Usually replies instantly</small></div><button class="x" aria-label="Close chat" onclick="toggleWidget(false)">×</button></div>
+  <div class="chat-body" id="wBody" aria-live="polite"></div>
+  <div class="chat-chips" id="wChips"></div>
+  <form class="chat-input" id="wForm"><input id="wIn" placeholder="Type a message…" autocomplete="off" maxlength="600" aria-label="Message"><button class="btn primary sm" type="submit">Send</button></form>
 </div>
 
 <script>
@@ -306,7 +393,7 @@
   async function loadMe(){ try{ const d=await api('/api/auth/me'); me=d.user; backendFirebase=!!d.firebase; }catch(e){ me=null; } renderNav(); }
   function renderNav(){
     const el = document.getElementById('navLinks');
-    let s = `<a onclick="go('home')">Services</a><a onclick="goToSection('pricing')">Plans</a><a onclick="go('demos')">Live Demos</a><a onclick="goToSection('work')">Our Work</a><a onclick="go('contact')">Contact</a>`;
+    let s = `<a onclick="go('home')">Services</a><a onclick="goToSection('pricing')">Plans</a><a onclick="go('demos')">Live Tools</a><a onclick="goToSection('work')">Our Work</a><a onclick="go('contact')">Contact</a>`;
     if(me && (me.role==='ADMIN' || me.role==='SALES')){
       s += `<a class="btn primary sm" href="/admin" style="text-decoration:none">🛡 Admin panel</a>
             <span class="chip"><span class="av">${esc((me.username[0]||'?').toUpperCase())}</span>${esc(me.username)}</span>
@@ -327,7 +414,7 @@
 
   let statusTimer = null, mineTimer = null;
   function clearTimers(){ if(statusTimer){ clearInterval(statusTimer); statusTimer=null; } if(mineTimer){ clearInterval(mineTimer); mineTimer=null; } }
-  function go(view, arg){ window.scrollTo(0,0); clearTimers(); if(view==='home')return renderHome(); if(view==='request')return renderRequest(); if(view==='mine')return renderMine(); if(view==='demos')return renderDemos(); if(view==='contact')return renderContact(); }
+  function go(view, arg){ window.scrollTo(0,0); clearTimers(); if(view==='home')return renderHome(); if(view==='request')return renderRequest(); if(view==='mine')return renderMine(); if(view==='demos')return renderDemos(arg); if(view==='contact')return renderContact(); }
   // Jump to a section on the home page (nav links for Pricing / Our Work).
   function goToSection(id){ go('home'); setTimeout(()=>{ const el=document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth'}); },60); }
 
@@ -374,88 +461,181 @@
     return s;
   }
 
-  function renderDemos(){
+  // ---------- Small UI helpers ----------
+  const IC = {
+    palette: '<circle cx="13.5" cy="6.5" r="1.5"/><circle cx="17.5" cy="10.5" r="1.5"/><circle cx="8.5" cy="7.5" r="1.5"/><circle cx="6.5" cy="12.5" r="1.5"/><path d="M12 2a10 10 0 0 0 0 20c1.1 0 2-.9 2-2 0-.5-.2-1-.5-1.3-.3-.4-.5-.8-.5-1.3 0-1.1.9-2 2-2h2.4A5.6 5.6 0 0 0 22 9.8C22 5.5 17.5 2 12 2z"/>',
+    mail: '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/>',
+    shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>',
+    key: '<circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6M15.5 7.5l3 3L22 7l-3-3"/>',
+    pulse: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',
+    chat: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'
+  };
+  function icon(name, s=20){ return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[name]}</svg>`; }
+  const safeHex = h => /^#[0-9a-f]{6}$/i.test(h||'') ? h : '#000000';
+  const safeUrl = u => /^https?:\/\//i.test(u||'') ? u : '';
+  const spin = t => `<div class="sec-sub" style="margin:0;font-size:14px"><span class="spinner"></span>${t}</div>`;
+  function checkRow(ok, label, detail){
+    const c = ok===null ? 'var(--muted)' : (ok ? 'var(--ok)' : 'var(--red)');
+    return `<div class="check"><span class="ic" style="color:${c}">${ok===null?'•':(ok?'✓':'✗')}</span><div>${esc(label)}${detail?`<small>${esc(detail)}</small>`:''}</div></div>`;
+  }
+  async function copyText(text, msg){
+    try{ await navigator.clipboard.writeText(text); }
+    catch(e){ const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); }catch(_){} ta.remove(); }
+    toast(msg||'Copied');
+  }
+  function toast(msg){
+    let t=document.getElementById('toast');
+    if(!t){ t=document.createElement('div'); t.id='toast'; t.className='toast'; document.body.appendChild(t); }
+    t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),1600);
+  }
+
+  // ---------- LIVE TOOLS ----------
+  function renderDemos(focus){
     app.innerHTML = `
-      <section style="padding-top:34px">
-        <h2 class="sec">Live demos - see it actually work</h2>
-        <p class="sec-sub">These run for real, right now, in your browser. No sign-up needed.</p>
-        <div class="grid" style="grid-template-columns:1fr 1fr;gap:18px">
+      <section style="padding-top:56px">
+        <div class="eyebrow">Live tools</div>
+        <h2 class="sec">See what we do, live</h2>
+        <p class="sec-sub">These run for real on our servers against any website or domain you enter. No sign-up needed.</p>
 
-          <div class="card">
-            <span class="price" style="color:var(--blue)">Account Security</span>
-            <h3 style="margin:4px 0 6px">🔒 Password security checker</h3>
-            <p class="sec-sub" style="font-size:14px">Type a password - we score its strength and check it against real breach databases (privacy-safe, only a hash prefix is sent).</p>
-            <input type="password" id="pwIn" placeholder="Type a test password…">
-            <button class="btn primary sm" id="pwBtn" style="margin-top:10px">Check it</button>
-            <div id="pwOut" style="margin-top:12px"></div>
+        <div class="tool tool-wide" id="tool-analyze">
+          <div><div class="tool-icon">${icon('palette')}</div><span class="tool-kicker">Design &amp; tech stack</span><h3>Website reverse-engineer</h3><p class="desc">Pull any site's colour palette, fonts, corner radii, design tokens and tech stack in a few seconds.</p></div>
+          <form class="tool-input" id="anForm"><input id="anIn" placeholder="e.g. stripe.com" autocomplete="off" inputmode="url"><button class="btn primary" type="submit" id="anBtn">Analyze</button></form>
+          <div class="tool-try">Try: <a data-try="stripe.com">stripe.com</a><a data-try="linear.app">linear.app</a><a data-try="github.com">github.com</a></div>
+          <div id="anOut"></div>
+        </div>
+
+        <div class="tools-grid">
+          <div class="tool" id="tool-domain">
+            <div><div class="tool-icon">${icon('mail')}</div><span class="tool-kicker">Domain &amp; email</span><h3>Domain health check</h3><p class="desc">Checks DNS, the SSL certificate and whether the domain can send and receive email safely (MX, SPF, DMARC).</p></div>
+            <form class="tool-input" id="dmForm"><input id="dmIn" placeholder="e.g. yourcompany.com" autocomplete="off" inputmode="url"><button class="btn primary" type="submit" id="dmBtn">Check</button></form>
+            <div id="dmOut"></div>
           </div>
-
-          <div class="card">
-            <span class="price" style="color:var(--blue)">Cloudflare / Network</span>
-            <h3 style="margin:4px 0 6px">🌐 Website security scanner</h3>
-            <p class="sec-sub" style="font-size:14px">Enter any website - we check HTTPS, response time, Cloudflare protection, and security headers.</p>
-            <input id="scanIn" placeholder="example.com">
-            <button class="btn primary sm" id="scanBtn" style="margin-top:10px">Scan site</button>
-            <div id="scanOut" style="margin-top:12px"></div>
+          <div class="tool" id="tool-scan">
+            <div><div class="tool-icon">${icon('shield')}</div><span class="tool-kicker">Cloudflare &amp; network</span><h3>Website security scanner</h3><p class="desc">Checks HTTPS, response time, Cloudflare protection and the security headers browsers rely on.</p></div>
+            <form class="tool-input" id="scanForm"><input id="scanIn" placeholder="e.g. example.com" autocomplete="off" inputmode="url"><button class="btn primary" type="submit" id="scanBtn">Scan</button></form>
+            <div id="scanOut"></div>
           </div>
-
-          <div class="card">
-            <span class="price" style="color:var(--blue)">Monitoring · Servers</span>
-            <h3 style="margin:4px 0 6px">📡 Live system status</h3>
-            <p class="sec-sub" style="font-size:14px">Real-time uptime of the sites we host - pinged live, refreshing automatically.</p>
-            <div id="statusOut"><div class="sec-sub">Checking…</div></div>
+          <div class="tool" id="tool-pw">
+            <div><div class="tool-icon">${icon('key')}</div><span class="tool-kicker">Account security</span><h3>Password breach checker</h3><p class="desc">Scores a password and checks it against known breaches. Only a 5-character hash prefix ever leaves your browser.</p></div>
+            <form class="tool-input" id="pwForm"><input type="password" id="pwIn" placeholder="Type a test password" autocomplete="off"><button class="btn primary" type="submit" id="pwBtn">Check</button></form>
+            <div id="pwOut"></div>
           </div>
-
+          <div class="tool" id="tool-status">
+            <div><div class="tool-icon">${icon('pulse')}</div><span class="tool-kicker">Monitoring</span><h3>Live system status</h3><p class="desc">Real-time uptime of sites we watch, pinged live and refreshed automatically.</p></div>
+            <div id="statusOut">${spin('Checking…')}</div>
+          </div>
         </div>
       </section>`;
 
-    // Password checker
-    const pwBtn=document.getElementById('pwBtn');
-    async function runPw(){
-      const pw=document.getElementById('pwIn').value; const out=document.getElementById('pwOut');
-      if(!pw){ out.innerHTML='<div class="notice info">Type a password to check.</div>'; return; }
-      out.innerHTML='<div class="sec-sub">Checking…</div>';
-      const strength=pwStrength(pw);
-      const labels=['Very weak','Weak','Fair','Good','Strong','Very strong'];
-      const colors=['#ef6f5c','#ef6f5c','#f0b84f','#f0b84f','#52B8E0','#52B8E0'];
-      let breach=null;
-      try{ const hash=await sha1hex(pw); const r=await fetch('https://api.pwnedpasswords.com/range/'+hash.slice(0,5)); const txt=await r.text(); const suf=hash.slice(5); for(const line of txt.split('\n')){ const [s,c]=line.trim().split(':'); if(s===suf){ breach=parseInt(c,10); break; } } if(breach===null)breach=0; }catch(e){ breach=null; }
-      out.innerHTML=`
-        <div class="checkout" style="margin-top:0">
-          <div class="row"><span>Strength</span><span style="color:${colors[strength]};font-weight:800">${labels[strength]}</span></div>
-          <div class="row"><span>Found in known breaches</span><span style="font-weight:800;color:${breach>0?'#ef6f5c':(breach===0?'#52B8E0':'#8DA4BF')}">${breach>0?(breach.toLocaleString()+' times ⚠️'):(breach===0?'No ✓':'-')}</span></div>
-        </div>
-        <p class="sec-sub" style="font-size:13px;margin-top:8px">${breach>0?'This password is compromised - never use it. This is exactly the kind of risk we fix.':'We harden accounts with 2FA and strong-password policies.'}</p>`;
-    }
-    pwBtn.addEventListener('click',runPw);
-    document.getElementById('pwIn').addEventListener('keydown',e=>{if(e.key==='Enter')runPw();});
-
-    // Website scanner
-    document.getElementById('scanBtn').addEventListener('click',async()=>{
-      const url=document.getElementById('scanIn').value.trim(); const out=document.getElementById('scanOut');
-      if(!url){ out.innerHTML='<div class="notice info">Enter a website to scan.</div>'; return; }
-      out.innerHTML='<div class="sec-sub">Scanning…</div>';
+    // Website reverse-engineer
+    document.getElementById('anForm').onsubmit = e => { e.preventDefault(); runAnalyze(); };
+    document.querySelectorAll('#tool-analyze [data-try]').forEach(a => a.onclick = () => { document.getElementById('anIn').value = a.dataset.try; runAnalyze(); });
+    // Domain check
+    document.getElementById('dmForm').onsubmit = async e => {
+      e.preventDefault();
+      const v=document.getElementById('dmIn').value.trim(), out=document.getElementById('dmOut'), btn=document.getElementById('dmBtn');
+      if(!v){ out.innerHTML='<div class="notice info">Enter a domain to check.</div>'; return; }
+      btn.disabled=true; out.innerHTML=spin('Looking up DNS, email records and the certificate…');
       try{
-        const d=await api('/api/tools/scan?url='+encodeURIComponent(url));
-        const sh=Object.entries(d.securityHeaders).map(([k,v])=>`<div class="row"><span>${esc(k)}</span><span style="color:${v?'#52B8E0':'#ef6f5c'};font-weight:800">${v?'✓':'✗'}</span></div>`).join('');
-        out.innerHTML=`<div class="checkout" style="margin-top:0">
-          <div class="row"><span>HTTPS</span><span style="color:${d.https?'#52B8E0':'#ef6f5c'};font-weight:800">${d.https?'Secure ✓':'Not secure ✗'}</span></div>
-          <div class="row"><span>Response time</span><span style="font-weight:800">${d.responseMs} ms</span></div>
-          <div class="row"><span>Cloudflare protected</span><span style="font-weight:800;color:${d.cloudflare?'#52B8E0':'#f0b84f'}">${d.cloudflare?'Yes ✓':'No'}</span></div>
-          ${sh}
-        </div>${!d.cloudflare?'<p class="sec-sub" style="font-size:13px;margin-top:8px">Not behind Cloudflare - we can add DDoS protection & a WAF.</p>':''}`;
-      }catch(e){ out.innerHTML=`<div class="notice err">${esc(e.message)}</div>`; }
-    });
-
+        const d=await api('/api/tools/domain?domain='+encodeURIComponent(v));
+        const col = d.score>=80 ? 'var(--ok)' : (d.score>=50 ? 'var(--amber)' : 'var(--red)');
+        out.innerHTML = `<div class="score"><b style="color:${col}">${d.score}%</b><div><div style="font-weight:700">${esc(d.domain)}</div><small style="color:var(--muted)">${d.dnsHost?'DNS hosted on '+esc(d.dnsHost):esc((d.ns||[])[0]||'')}</small></div></div>`
+          + d.checks.map(c=>checkRow(c.ok,c.label,c.detail)).join('')
+          + (d.tips.length ? `<div class="notice info" style="margin:14px 0 0">${d.tips.map(esc).join('<br>')}</div><button class="btn ghost sm" style="margin-top:12px" onclick="startRequest('Domain Transfer & Setup')">Fix this for me →</button>` : '');
+      }catch(err){ out.innerHTML=`<div class="notice err">${esc(err.message)}</div>`; }
+      btn.disabled=false;
+    };
+    // Security scanner
+    document.getElementById('scanForm').onsubmit = async e => {
+      e.preventDefault();
+      const v=document.getElementById('scanIn').value.trim(), out=document.getElementById('scanOut'), btn=document.getElementById('scanBtn');
+      if(!v){ out.innerHTML='<div class="notice info">Enter a website to scan.</div>'; return; }
+      btn.disabled=true; out.innerHTML=spin('Scanning…');
+      try{
+        const d=await api('/api/tools/scan?url='+encodeURIComponent(v));
+        out.innerHTML = checkRow(d.https,'HTTPS',d.https?'Secure connection':'Not using HTTPS')
+          + checkRow(null,'Response time',d.responseMs+' ms')
+          + checkRow(d.cloudflare,'Cloudflare protection',d.cloudflare?'Behind Cloudflare':'Not behind Cloudflare. We can add DDoS protection and a WAF.')
+          + Object.entries(d.securityHeaders).map(([k,v])=>checkRow(v,k,v?'Present':'Missing')).join('');
+      }catch(err){ out.innerHTML=`<div class="notice err">${esc(err.message)}</div>`; }
+      btn.disabled=false;
+    };
+    // Password checker (k-anonymity: only a 5-char SHA-1 prefix is sent)
+    document.getElementById('pwForm').onsubmit = async e => {
+      e.preventDefault();
+      const pw=document.getElementById('pwIn').value, out=document.getElementById('pwOut');
+      if(!pw){ out.innerHTML='<div class="notice info">Type a password to check.</div>'; return; }
+      out.innerHTML=spin('Checking…');
+      const strength=pwStrength(pw), labels=['Very weak','Weak','Fair','Good','Strong','Very strong'];
+      let breach=null;
+      try{ const hash=await sha1hex(pw); const r=await fetch('https://api.pwnedpasswords.com/range/'+hash.slice(0,5)); const txt=await r.text(); const suf=hash.slice(5); for(const line of txt.split('\n')){ const [s,c]=line.trim().split(':'); if(s===suf){ breach=parseInt(c,10); break; } } if(breach===null)breach=0; }catch(err){ breach=null; }
+      out.innerHTML = checkRow(strength>=4,'Strength',labels[strength])
+        + checkRow(breach===null?null:breach===0,'Known breaches',breach===null?'Could not check right now':(breach>0?`Seen ${breach.toLocaleString()} times. Never use this password.`:'Not found in any known breach'));
+    };
     // Live status (auto-refresh)
     async function loadStatus(){
       const out=document.getElementById('statusOut'); if(!out)return;
       try{
         const d=await api('/api/tools/status');
-        out.innerHTML=d.sites.map(s=>{const host=s.url.replace(/^https?:\/\//,'');return `<div class="checkout" style="margin:0 0 8px;padding:12px 14px"><div class="row" style="padding:0"><span><b>${esc(host)}</b></span><span style="font-weight:800;color:${s.up?'#52B8E0':'#ef6f5c'}">${s.up?'● UP':'● DOWN'} ${s.up?`<span style="color:var(--muted);font-weight:600">${s.ms}ms</span>`:''}</span></div></div>`;}).join('')+`<p class="sec-sub" style="font-size:12px;margin-top:4px">Last checked ${new Date(d.checkedAt).toLocaleTimeString()} · auto-refreshes</p>`;
-      }catch(e){ out.innerHTML=`<div class="notice err">Couldn't load status.</div>`; }
+        out.innerHTML = d.sites.map(s=>checkRow(s.up, s.url.replace(/^https?:\/\//,''), s.up?`Up · ${s.ms} ms`:'Down')).join('')
+          + `<p class="sec-sub" style="font-size:12px;margin:10px 0 0">Last checked ${new Date(d.checkedAt).toLocaleTimeString()} · refreshes every 15s</p>`;
+      }catch(err){ out.innerHTML='<div class="notice err">Couldn\'t load status.</div>'; }
     }
     loadStatus(); statusTimer=setInterval(loadStatus, 15000);
+
+    if(focus) setTimeout(()=>{ const el=document.getElementById('tool-'+focus); if(el){ el.scrollIntoView({block:'start'}); const inp=el.querySelector('input'); if(inp) inp.focus({preventScroll:true}); } }, 30);
+  }
+
+  let lastAnalysis = null;
+  async function runAnalyze(){
+    const v=document.getElementById('anIn').value.trim(), out=document.getElementById('anOut'), btn=document.getElementById('anBtn');
+    if(!v){ out.innerHTML='<div class="notice info">Enter a website to analyze.</div>'; return; }
+    btn.disabled=true; out.innerHTML=spin('Fetching the page and its stylesheets…');
+    try{
+      const d=await api('/api/tools/analyze?url='+encodeURIComponent(v));
+      lastAnalysis=d; out.innerHTML=analysisHTML(d);
+      out.querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>copyText(b.dataset.copy, b.dataset.copy+' copied'));
+      const c=out.querySelector('#anCopy'); if(c) c.onclick=()=>copyText(designCss(lastAnalysis),'CSS variables copied');
+    }catch(err){ out.innerHTML=`<div class="notice err">${esc(err.message)}</div>`; }
+    btn.disabled=false;
+  }
+  // Everything below comes from a third-party site, so every value is escaped or validated.
+  function analysisHTML(d){
+    const fav=safeUrl(d.favicon);
+    let host=d.finalUrl; try{ host=new URL(d.finalUrl).host; }catch(e){}
+    const missing=Object.values(d.securityHeaders||{}).filter(v=>!v).length;
+    const none = t => `<p class="sec-sub" style="margin:0;font-size:14px">${t}</p>`;
+    const swatches = d.colors.length ? `<div class="swatches">${d.colors.map(c=>{ const h=safeHex(c.hex); return `<button class="swatch" type="button" data-copy="${h}" title="Copy ${h}"><span style="background:${h}"></span><b>${h}</b><small>${esc(c.role)} · ${Number(c.count)}×</small></button>`; }).join('')}</div>` : none('No colours found in the page CSS.');
+    const fonts = d.fonts.length ? d.fonts.map(f=>{ const n=String(f.name).replace(/[^\w\s-]/g,''); return `<div class="font-row"><span style="font-family:'${n}',sans-serif">${esc(f.name)}</span><small>${Number(f.count)}×</small></div>`; }).join('') : none('System fonts, or fonts loaded by script.');
+    const chips = (arr, empty) => arr.length ? `<div class="chips">${arr.map(x=>`<span class="chip2">${esc(x)}</span>`).join('')}</div>` : none(empty);
+    const tokens = d.tokens.length ? `<div class="an-box" style="margin-top:16px"><h4>Design tokens (CSS variables)</h4>${d.tokens.map(t=>`<div class="token"><span class="dot" style="background:${safeHex(t.hex)}"></span><code>${esc(t.name)}</code><span>${esc(t.value)}</span></div>`).join('')}</div>` : '';
+    return `
+      <div class="an-head">${fav?`<img src="${esc(fav)}" alt="" onerror="this.style.display='none'">`:''}
+        <div style="min-width:0"><b>${esc(d.title||host)}</b><a href="${esc(safeUrl(d.finalUrl))}" target="_blank" rel="noopener noreferrer">${esc(host)}</a>
+          <div class="an-meta"><span class="pill ${d.https?'ok':'bad'}">${d.https?'HTTPS':'No HTTPS'}</span><span class="pill">${Number(d.responseMs)} ms</span><span class="pill">${Number(d.sizeKB)} KB HTML · ${Number(d.cssKB)} KB CSS</span>${d.cloudflare?'<span class="pill ok">Cloudflare</span>':''}<span class="pill ${missing?'bad':'ok'}">${missing?missing+' security header'+(missing>1?'s':'')+' missing':'Security headers OK'}</span></div>
+        </div></div>
+      ${d.description?`<p class="sec-sub" style="margin:14px 0 0;font-size:15px">${esc(d.description)}</p>`:''}
+      <div class="an-grid">
+        <div class="an-box"><h4>Colour palette</h4>${swatches}</div>
+        <div class="an-box"><h4>Typography</h4>${fonts}<h4 style="margin-top:18px">Corner radius</h4>${chips(d.radii.map(r=>r.value),'None found.')}</div>
+      </div>
+      ${tokens}
+      <div class="an-grid">
+        <div class="an-box"><h4>Tech stack</h4>${chips(d.tech,'Nothing recognised (likely a custom build).')}</div>
+        <div class="an-box"><h4>Page</h4><div class="kv"><div><b>${Number(d.counts.scripts)}</b><span>Scripts</span></div><div><b>${Number(d.counts.stylesheets)}</b><span>Stylesheets</span></div><div><b>${Number(d.counts.images)}</b><span>Images</span></div><div><b>${Number(d.counts.links)}</b><span>Links</span></div></div></div>
+      </div>
+      <div class="hero-actions" style="margin-top:16px"><button class="btn ghost sm" type="button" id="anCopy">Copy as CSS variables</button><button class="btn primary sm" type="button" onclick="startRequest('Website + Domain + Protection')">Want a site like this? →</button></div>`;
+  }
+  function designCss(d){
+    const by = r => d.colors.filter(c=>c.role===r);
+    const lines=[];
+    if(by('dark')[0]) lines.push(`  --color-dark: ${by('dark')[0].hex};`);
+    if(by('light')[0]) lines.push(`  --color-light: ${by('light')[0].hex};`);
+    by('accent').slice(0,3).forEach((c,i)=>lines.push(`  --color-accent${i?'-'+(i+1):''}: ${c.hex};`));
+    d.tokens.slice(0,10).forEach(t=>lines.push(`  ${t.name}: ${t.value};`));
+    if(d.fonts[0]) lines.push(`  --font-sans: '${d.fonts[0].name}', sans-serif;`);
+    if(d.radii[0]) lines.push(`  --radius: ${d.radii[0].value};`);
+    return `/* Design tokens extracted from ${d.finalUrl} */\n:root {\n${lines.join('\n')}\n}\n`;
   }
 
   // Hero graphic: the customer's business in the middle, linked to what we run for it.
@@ -507,6 +687,16 @@
           <div class="step"><div class="n">1</div><h3>Tell us what you need</h3><p>Pick a service or plan and describe the problem in a few lines.</p></div>
           <div class="step"><div class="n">2</div><h3>Get a clear offer</h3><p>We review it, reply within a day, and set up a call on Google Meet or Discord if needed.</p></div>
           <div class="step"><div class="n">3</div><h3>We deliver, you track</h3><p>Follow progress and message the team any time in My Requests.</p></div>
+        </div>
+      </section>
+      <section id="tools">
+        <div class="eyebrow">Live tools</div>
+        <h2 class="sec">Try what we do, right now</h2>
+        <p class="sec-sub">Free tools that run live on our servers. No sign-up needed.</p>
+        <div class="steps">
+          <div class="step tool-teaser" onclick="go('demos','analyze')"><div class="tool-icon">${icon('palette')}</div><h3>Reverse-engineer a website</h3><p>See any site's colours, fonts and tech stack in seconds.</p><span class="go">Try it →</span></div>
+          <div class="step tool-teaser" onclick="go('demos','domain')"><div class="tool-icon">${icon('mail')}</div><h3>Check your domain &amp; email</h3><p>DNS, SSL, and whether your email setup is safe.</p><span class="go">Try it →</span></div>
+          <div class="step tool-teaser" onclick="go('demos','scan')"><div class="tool-icon">${icon('shield')}</div><h3>Scan a site's security</h3><p>HTTPS, Cloudflare and security headers at a glance.</p><span class="go">Try it →</span></div>
         </div>
       </section>
       <section id="services">
@@ -804,6 +994,43 @@
     try{ await api('/api/auth/logout',{method:'POST'}); }catch(e){}
     me=null; fbUser=null; renderNav(); go('home');
   }
+
+  // ---------- Site chat widget (every page) ----------
+  const W_GREETING = "Hi! I'm the LeadFlow assistant. Ask me about our services, prices or how it works.";
+  const W_CHIPS = ["What do you offer?", "How much does it cost?", "Can we book a call?", "Show me the live tools"];
+  let wMsgs = [], wBusy = false;
+  try { wMsgs = JSON.parse(sessionStorage.getItem('lfChat') || '[]'); if(!Array.isArray(wMsgs)) wMsgs = []; } catch(e) { wMsgs = []; }
+  function wSave(){ try{ sessionStorage.setItem('lfChat', JSON.stringify(wMsgs.slice(-30))); }catch(e){} }
+  function wRender(){
+    const body=document.getElementById('wBody');
+    body.innerHTML = [{role:'assistant',content:W_GREETING}, ...wMsgs].map(m=>`<div class="bub ${m.role==='user'?'me':'bot'}">${esc(m.content)}</div>`).join('')
+      + (wBusy ? '<div class="bub bot typing"><span></span><span></span><span></span></div>' : '');
+    body.scrollTop = body.scrollHeight;
+    document.getElementById('wChips').innerHTML = wMsgs.length ? '' : W_CHIPS.map(c=>`<button type="button">${esc(c)}</button>`).join('');
+    document.querySelectorAll('#wChips button').forEach(b=>b.onclick=()=>wSend(b.textContent));
+  }
+  function toggleWidget(open){
+    const p=document.getElementById('chatPanel');
+    const show = open===undefined ? !p.classList.contains('open') : open;
+    p.classList.toggle('open', show);
+    document.getElementById('chatFab').setAttribute('aria-expanded', String(show));
+    if(show){ wRender(); setTimeout(()=>document.getElementById('wIn').focus(), 30); }
+  }
+  async function wSend(text){
+    text = String(text||'').trim(); if(!text || wBusy) return;
+    wMsgs.push({role:'user', content:text.slice(0,600)}); wBusy=true; wRender();
+    const started=Date.now();
+    let reply;
+    try{
+      const r = await api('/api/agent/chat', {method:'POST', body:JSON.stringify({messages:[{role:'assistant',content:W_GREETING}, ...wMsgs].slice(-12)})});
+      reply = r.reply || "Sorry, I didn't catch that. Could you rephrase?";
+    }catch(e){ reply = e.message && /too many/i.test(e.message) ? e.message : "Sorry, I couldn't answer just now. You can still send a request and the team will reply within a day."; }
+    const wait = 600 - (Date.now()-started); if(wait>0) await new Promise(r=>setTimeout(r,wait));   // feels less robotic
+    wMsgs.push({role:'assistant', content:reply}); wBusy=false; wSave(); wRender();
+  }
+  document.getElementById('chatFab').onclick = () => toggleWidget();
+  document.getElementById('wForm').onsubmit = e => { e.preventDefault(); const i=document.getElementById('wIn'); const t=i.value; i.value=''; wSend(t); };
+  document.addEventListener('keydown', e => { if(e.key==='Escape') toggleWidget(false); });
 
   (async function init(){
     await loadServices();

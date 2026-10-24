@@ -12,6 +12,7 @@ const { StateGraph, Annotation, START, END } = require("@langchain/langgraph");
 const { ChatOpenAI } = require("@langchain/openai");
 const { SystemMessage, HumanMessage, AIMessage } = require("@langchain/core/messages");
 const rules = require("./analyze");
+const { ruleReply, factSheet } = require("./faq");
 
 const LLM_ENABLED = !!process.env.OPENAI_API_KEY;
 
@@ -155,29 +156,23 @@ async function analyzeLeadGraph(lead) {
 
 // ==========================================================================
 // Live chat agent - a LangGraph flow whose node answers the customer with an
-// LLM (LangChain). Used by the "Chat with our AI" box on the request page.
+// LLM (LangChain) when a key is set, else instant FAQ + rule answers (faq.js).
+// Used by the site-wide chat widget and the chat box on the request page.
 // ==========================================================================
-const SERVICE_LIST = "Account Security, Servers/RDP, Automation, Docker/DevOps, Cloudflare/Network, Monitoring, and Website+Domain+Protection";
-const CHAT_SYSTEM = [
-  "You are the friendly AI assistant for LeadFlow AI, an IT / cyber / automation services company.",
-  `The services offered are: ${SERVICE_LIST}.`,
-  "Help the customer describe what they need, ask one or two clarifying questions, and tell them which service fits.",
-  "Keep replies short (2-4 sentences), warm and practical. When they seem ready, invite them to submit the request form below so the team can follow up.",
-  "Never invent prices; if asked, say the team will confirm a quote after reviewing the request."
-].join(" ");
-
 const ChatState = Annotation.Root({
   history: Annotation(),   // [{role:'user'|'assistant', content}]
+  services: Annotation(),  // live service catalogue (name + basePrice)
   reply: Annotation()
 });
 
 async function chatRespond(state) {
   const history = Array.isArray(state.history) ? state.history : [];
+  const services = Array.isArray(state.services) ? state.services : [];
   const lastUser = [...history].reverse().find((m) => m.role === "user");
 
   if (LLM_ENABLED) {
     try {
-      const msgs = [new SystemMessage(CHAT_SYSTEM)];
+      const msgs = [new SystemMessage(factSheet(services))];
       for (const m of history.slice(-10)) {
         msgs.push(m.role === "assistant" ? new AIMessage(String(m.content)) : new HumanMessage(String(m.content)));
       }
@@ -186,15 +181,8 @@ async function chatRespond(state) {
       if (text) return { reply: text };
     } catch (e) { console.error("[chat] LLM failed:", e.message); }
   }
-
-  // Fallback (no LLM): classify their message with rules and reply helpfully.
-  const text = lastUser ? String(lastUser.content) : "";
-  const rule = rules.classify(text);
-  const q = (rule.questions && rule.questions[0]) || "Could you tell me a bit more about what you need?";
-  return {
-    reply: `Thanks! This sounds like a **${rule.category}** request. ${q} ` +
-           `When you're ready, fill in the request form below and our team will follow up with a quote.`
-  };
+  // No LLM (or it failed): instant FAQ answers, then match the problem to a service.
+  return { reply: ruleReply(lastUser ? lastUser.content : "", services) };
 }
 
 const chatApp = new StateGraph(ChatState)
@@ -203,13 +191,13 @@ const chatApp = new StateGraph(ChatState)
   .addEdge("respond", END)
   .compile();
 
-async function agentChat(history) {
+async function agentChat(history, services = []) {
   try {
-    const out = await chatApp.invoke({ history });
+    const out = await chatApp.invoke({ history, services });
     return { reply: out.reply, engine: LLM_ENABLED ? "langgraph+llm" : "langgraph+rules" };
   } catch (e) {
     console.error("[chat] flow failed:", e.message);
-    return { reply: "Thanks for your message - please fill in the request form below and our team will follow up.", engine: "rules(fallback)" };
+    return { reply: ruleReply(([...history].reverse().find((m) => m.role === "user") || {}).content, services), engine: "rules(fallback)" };
   }
 }
 

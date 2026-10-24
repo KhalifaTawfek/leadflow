@@ -258,6 +258,9 @@ git add . && git commit -m "…" && git push
 | GET  | `/api/alerts` | staff | Recent new-lead / daily-report alerts |
 | POST | `/api/telegram/test` | staff | Send a test Telegram message |
 | GET  | `/api/tools/scan` | – | Website security scanner (SSRF-guarded) |
+| GET  | `/api/tools/analyze?url=` | – | Website reverse-engineer: palette, fonts, radii, design tokens, tech stack |
+| GET  | `/api/tools/domain?domain=` | – | Domain & email health: DNS, SSL expiry, MX, SPF, DMARC |
+| POST | `/api/agent/chat` | – | Site chat assistant (FAQ + rules, or an LLM when `OPENAI_API_KEY` is set) |
 | GET  | `/api/tools/status` | – | Live up/down of monitored sites |
 | GET  | `/api/health` | – | Health of API / DB / agent + live counts |
 
