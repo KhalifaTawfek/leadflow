@@ -1,11 +1,11 @@
-// LeadFlow AI Agent — a real LangGraph flow (LangGraph.js) that orchestrates the
+// LeadFlow AI Agent - a real LangGraph flow (LangGraph.js) that orchestrates the
 // brief's pipeline as a StateGraph, and uses LangChain (ChatOpenAI) to power the
 // text-generation steps when an LLM key is configured.
 //
 //   classify → priority → summarize → questions → draftReply
 //
 // If OPENAI_API_KEY is not set (or the LLM errors), each node falls back to the
-// deterministic rule-based logic in ./analyze.js — so the system always works,
+// deterministic rule-based logic in ./analyze.js - so the system always works,
 // with or without an LLM, and never blocks a lead from being saved.
 
 const { StateGraph, Annotation, START, END } = require("@langchain/langgraph");
@@ -48,7 +48,7 @@ const S = Annotation.Root({
   llmUsed: Annotation()        // true once any node actually gets an LLM response
 });
 
-// Node 1 — classify + compute the rule baseline (deterministic).
+// Node 1 - classify + compute the rule baseline (deterministic).
 async function classifyNode(state) {
   const base = rules.analyzeLead(state.lead);
   return {
@@ -60,13 +60,13 @@ async function classifyNode(state) {
   };
 }
 
-// Node 2 — priority 1–10 (kept deterministic; a numeric score is more reliable
+// Node 2 - priority 1–10 (kept deterministic; a numeric score is more reliable
 // as a rule than as free-form LLM output, and the reasoning is transparent).
 async function priorityNode(state) {
   return { priority: state.base.priority, priorityReason: state.base.priorityReason };
 }
 
-// Node 3 — one-line summary for the salesperson (LLM, else rule).
+// Node 3 - one-line summary for the salesperson (LLM, else rule).
 async function summarizeNode(state) {
   if (LLM_ENABLED) {
     try {
@@ -81,7 +81,7 @@ async function summarizeNode(state) {
   return { summary: state.base.summary };
 }
 
-// Node 4 — follow-up questions (LLM, else rule).
+// Node 4 - follow-up questions (LLM, else rule).
 async function questionsNode(state) {
   if (LLM_ENABLED) {
     try {
@@ -96,7 +96,7 @@ async function questionsNode(state) {
   return { questions: state.base.questions };
 }
 
-// Node 5 — ready-to-send draft reply (LLM, else rule).
+// Node 5 - ready-to-send draft reply (LLM, else rule).
 async function draftReplyNode(state) {
   if (LLM_ENABLED) {
     try {
@@ -129,7 +129,7 @@ const workflow = new StateGraph(S)
 
 const app = workflow.compile();
 
-// Public API — same shape as the rule-based analyzeLead, but async.
+// Public API - same shape as the rule-based analyzeLead, but async.
 async function analyzeLeadGraph(lead) {
   try {
     const out = await app.invoke({ lead });
@@ -154,7 +154,7 @@ async function analyzeLeadGraph(lead) {
 }
 
 // ==========================================================================
-// Live chat agent — a LangGraph flow whose node answers the customer with an
+// Live chat agent - a LangGraph flow whose node answers the customer with an
 // LLM (LangChain). Used by the "Chat with our AI" box on the request page.
 // ==========================================================================
 const SERVICE_LIST = "Account Security, Servers/RDP, Automation, Docker/DevOps, Cloudflare/Network, Monitoring, and Website+Domain+Protection";
@@ -209,7 +209,7 @@ async function agentChat(history) {
     return { reply: out.reply, engine: LLM_ENABLED ? "langgraph+llm" : "langgraph+rules" };
   } catch (e) {
     console.error("[chat] flow failed:", e.message);
-    return { reply: "Thanks for your message — please fill in the request form below and our team will follow up.", engine: "rules(fallback)" };
+    return { reply: "Thanks for your message - please fill in the request form below and our team will follow up.", engine: "rules(fallback)" };
   }
 }
 

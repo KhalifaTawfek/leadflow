@@ -1,4 +1,4 @@
-// LeadFlow AI Agent — a rule-based "agent flow" (no external API key required).
+// LeadFlow AI Agent - a rule-based "agent flow" (no external API key required).
 // It runs a lead's raw request through 6 steps and returns a structured analysis,
 // mirroring the LangGraph flow in the brief:
 //   1. Classify service   2. Score priority (1-10)   3. Summarize
@@ -43,7 +43,7 @@ const SERVICE_RULES = [
     questions: [
       "What are you trying to containerize or deploy?",
       "Do you already have a Dockerfile or compose file?",
-      "Where should this run — your own server or a cloud provider?"
+      "Where should this run - your own server or a cloud provider?"
     ]
   },
   {
@@ -61,7 +61,7 @@ const SERVICE_RULES = [
     keywords: ["monitor", "monitoring", "uptime", "alert", "grafana", "prometheus", "logs", "health", "netdata", "status"],
     estimate: "3-5 hours",
     questions: [
-      "What would you like to monitor — a website, a server, or an API?",
+      "What would you like to monitor - a website, a server, or an API?",
       "How would you like to be alerted (email, Telegram, SMS)?",
       "Do you have any monitoring in place today?"
     ]
@@ -72,7 +72,7 @@ const SERVICE_RULES = [
     estimate: "3-7 days setup",
     questions: [
       "Do you already have a domain, or do you need one registered?",
-      "What kind of site — business, portfolio, or shop?",
+      "What kind of site - business, portfolio, or shop?",
       "Any specific pages or features you need?"
     ]
   }
@@ -95,7 +95,7 @@ function scoreText(text, keywords) {
   return hits;
 }
 
-// Step 1 — classify the requested service by keyword overlap.
+// Step 1 - classify the requested service by keyword overlap.
 function classify(text) {
   let best = null;
   let bestHits = 0;
@@ -120,7 +120,7 @@ const URGENCY_WEIGHT = { urgent: 4, high: 3, normal: 1, low: 0 };
 const URGENCY_LABEL = { urgent: "Urgent", high: "High", normal: "Normal", low: "Low" };
 const URGENCY_RANK = { low: 0, normal: 1, high: 2, urgent: 3 };
 
-// The agent forms its OWN urgency opinion by reading the request text — so a
+// The agent forms its OWN urgency opinion by reading the request text - so a
 // customer who under-states urgency ("Low" while their account is hacked) is
 // still triaged correctly. Words are matched case-insensitively.
 const URGENT_SIGNALS = ["hacked", "breach", "compromis", "urgent", "asap", "immediately", "right now", "cant work", "can't work", "server down", "site down", "is down", "outage", "lost access", "locked out", "emergency", "critical", "losing money", "being attacked", "ddos", "ransom"];
@@ -139,7 +139,7 @@ function effectiveUrgency(customer, ai) {
   return (URGENCY_RANK[ai] ?? 1) > (URGENCY_RANK[c] ?? 1) ? ai : c;
 }
 
-// Step 2 — priority 1-10 from urgency + budget + security sensitivity + detail.
+// Step 2 - priority 1-10 from urgency + budget + security sensitivity + detail.
 // Returns both the score and a human-readable breakdown of how it was reached,
 // so the CRM can show WHY the agent chose the number (not the customer).
 function explainPriority(lead, category, actingUrgency) {
@@ -167,7 +167,7 @@ function explainPriority(lead, category, actingUrgency) {
   }
 
   const clamped = Math.max(1, Math.min(10, score));
-  const reason = `${clamped}/10 — ${factors.join(", ")}`;
+  const reason = `${clamped}/10 - ${factors.join(", ")}`;
   return { score: clamped, reason };
 }
 
@@ -176,14 +176,14 @@ function scorePriority(lead, category) {
   return explainPriority(lead, category).score;
 }
 
-// Step 3 — a one-line summary a busy salesperson can scan.
+// Step 3 - a one-line summary a busy salesperson can scan.
 function summarize(lead, category) {
   const problem = String(lead.problem).trim().replace(/\s+/g, " ");
   const shortProblem = problem.length > 120 ? problem.slice(0, 117) + "…" : problem;
-  return `${lead.name} needs help with ${category.toLowerCase()} — "${shortProblem}" (urgency: ${URGENCY_LABEL[String(lead.urgency).toLowerCase()] || "Normal"}, budget: ${lead.budget || "not stated"}).`;
+  return `${lead.name} needs help with ${category.toLowerCase()} - "${shortProblem}" (urgency: ${URGENCY_LABEL[String(lead.urgency).toLowerCase()] || "Normal"}, budget: ${lead.budget || "not stated"}).`;
 }
 
-// Step 5 — a ready-to-send professional reply draft.
+// Step 5 - a ready-to-send professional reply draft.
 function draftReply(lead, category, estimate, questions) {
   const firstName = String(lead.name).trim().split(/\s+/)[0] || "there";
   return [
@@ -221,7 +221,7 @@ function analyzeLead(lead) {
     category: rule.category,
     priority,
     priorityReason: aiRaised
-      ? `${priorityReason} — AI raised urgency to ${URGENCY_LABEL[acting]} from the request wording`
+      ? `${priorityReason} - AI raised urgency to ${URGENCY_LABEL[acting]} from the request wording`
       : priorityReason,
     urgencyLabel: URGENCY_LABEL[customerUrgency] || "Normal",      // what the customer picked
     aiUrgency: URGENCY_LABEL[aiUrgency] || "Normal",              // what the AI detected from the text

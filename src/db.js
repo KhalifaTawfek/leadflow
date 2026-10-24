@@ -1,4 +1,4 @@
-// Data layer — Sequelize ORM over PostgreSQL.
+// Data layer - Sequelize ORM over PostgreSQL.
 // Sequelize parameterizes every query, which is how the app prevents SQL
 // injection (a brief requirement). Models below map to the required tables:
 // users, services, leads, lead_notes, ai_analysis, activity_logs.

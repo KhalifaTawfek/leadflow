@@ -1,6 +1,6 @@
 // Real email sending via SMTP (nodemailer).
 // Configure with env vars (see .env.example). If SMTP isn't configured, every
-// call is a no-op that just logs — so the app still works without email set up.
+// call is a no-op that just logs - so the app still works without email set up.
 
 const nodemailer = require("nodemailer");
 
@@ -22,7 +22,7 @@ if (SMTP_HOST && SMTP_USER && SMTP_PASS) {
   });
   transporter.verify().then(() => console.log("[email] SMTP ready:", SMTP_HOST)).catch((e) => console.error("[email] SMTP verify failed:", e.message));
 } else {
-  console.log("[email] SMTP not configured — emails will be logged, not sent.");
+  console.log("[email] SMTP not configured - emails will be logged, not sent.");
 }
 
 const emailEnabled = () => !!transporter;
@@ -42,7 +42,7 @@ async function sendMail({ to, subject, text, replyTo }) {
 
 // Notify the shop owner that a new enquiry arrived, with the AI analysis attached.
 async function notifyOwnerOfLead(lead, analysis) {
-  const subject = `${analysis.priority >= 8 ? "🚨 HIGH-PRIORITY " : ""}New enquiry: ${lead.name} — ${analysis.category} (P${analysis.priority})`;
+  const subject = `${analysis.priority >= 8 ? "🚨 HIGH-PRIORITY " : ""}New enquiry: ${lead.name} - ${analysis.category} (P${analysis.priority})`;
   const text = [
     `New enquiry from your website:`,
     ``,
@@ -57,7 +57,7 @@ async function notifyOwnerOfLead(lead, analysis) {
     `Their message:`,
     lead.problem,
     ``,
-    `— AI summary —`,
+    `Summary:`,
     analysis.summary,
     ``,
     `Suggested reply:`,
@@ -71,10 +71,23 @@ async function notifyOwnerOfLead(lead, analysis) {
 // Send the customer an automatic acknowledgement with the drafted reply.
 async function autoReplyToCustomer(lead, analysis) {
   if (!AUTO_REPLY) return false;
+  const text = [
+    `Hi ${lead.name},`,
+    ``,
+    `Thanks for your request about "${analysis.category}". Here is our first reply:`,
+    ``,
+    analysis.draftReply,
+    ``,
+    analysis.questions ? `To move faster, please have these ready:\n${analysis.questions}` : ``,
+    ``,
+    `You can track your request any time by signing in and opening "My Requests".`,
+    ``,
+    `The LeadFlow team`
+  ].filter((l) => l !== undefined).join("\n");
   return sendMail({
     to: lead.email,
-    subject: "Thanks for your request — LeadFlow AI",
-    text: analysis.draftReply,
+    subject: "Thanks for your request - LeadFlow",
+    text,
     replyTo: MAIL_TO
   });
 }

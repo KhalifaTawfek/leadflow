@@ -1,6 +1,6 @@
 // Telegram notifications via the Bot API.
 // Configure with env vars TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID.
-// If either is missing, every call is a no-op that just logs — so the app
+// If either is missing, every call is a no-op that just logs - so the app
 // still runs fine without Telegram set up.
 //
 // Unlike a generic webhook, Telegram's sendMessage needs a specific shape:
@@ -53,9 +53,9 @@ async function notifyLeadTelegram(lead, analysis) {
   const high = analysis.priority >= 8 ? "🚨 <b>HIGH PRIORITY</b>\n" : "🟢 <b>New lead</b>\n";
   const text = [
     high,
-    `<b>${esc(lead.name)}</b> — ${esc(analysis.category)}`,
+    `<b>${esc(lead.name)}</b> - ${esc(analysis.category)}`,
     `Priority ${analysis.priority}/10 · ${esc(analysis.urgencyLabel)}`,
-    `Budget: ${esc(lead.budget || "—")} · Estimate: ${esc(analysis.estimateHours)}`,
+    `Budget: ${esc(lead.budget || "-")} · Estimate: ${esc(analysis.estimateHours)}`,
     `📞 ${esc(lead.phone)}  ✉️ ${esc(lead.email)}`,
     ``,
     `“${esc(String(lead.problem).slice(0, 240))}”`

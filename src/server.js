@@ -24,7 +24,7 @@ app.set("trust proxy", 1); // behind Nginx/Cloudflare
 // CSP is tailored to what the site actually loads: inline scripts/styles, Google
 // Fonts, images over https, and the HaveIBeenPwned API used by the security demo.
 // Firebase sign-in (when enabled) loads the SDK from gstatic, talks to Google's
-// identity APIs, and opens a Google popup/iframe — so those hosts are allowed.
+// identity APIs, and opens a Google popup/iframe - so those hosts are allowed.
 const CSP = [
   "default-src 'self'",
   "base-uri 'self'",
@@ -49,7 +49,7 @@ app.use((req, res, next) => {
 });
 // ---------- CORS ----------
 // The front-end is served from the SAME origin as the API, so cross-origin
-// access is locked to an explicit allowlist — never "*". Because the app uses
+// access is locked to an explicit allowlist - never "*". Because the app uses
 // cookies, the allowed origin is reflected (a wildcard can't be used with
 // credentials) and preflight requests are answered.
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || "https://shop.cookblog.net,http://localhost:8090")
@@ -148,7 +148,7 @@ async function requireAuth(req, res, next) {
   req.user = user;
   next();
 }
-// Staff-only (ADMIN or SALES) — protects the CRM from customer accounts.
+// Staff-only (ADMIN or SALES) - protects the CRM from customer accounts.
 async function requireStaff(req, res, next) {
   const user = await getSessionUser(req);
   if (!user) return res.status(401).json({ error: "Please log in." });
@@ -239,7 +239,7 @@ app.post("/api/leads", leadLimiter, requireAuth, async (req, res) => {
 
   res.status(201).json({
     ok: true,
-    message: "Your request has been received. We've already sent you a first reply, and our team will follow up.",
+    message: "Your request has been received. We've emailed you a copy and saved it under My Requests, where our team will follow up.",
     lead: { id: lead.id },
     analysis: {
       category: analysis.category,
@@ -252,7 +252,7 @@ app.post("/api/leads", leadLimiter, requireAuth, async (req, res) => {
 });
 
 // Live AI chat for the request page (LangGraph + LangChain).
-const chatLimiter = rateLimit({ windowMs: 10 * 60 * 1000, max: 40, standardHeaders: true, legacyHeaders: false, message: { error: "Too many messages — please wait a moment." } });
+const chatLimiter = rateLimit({ windowMs: 10 * 60 * 1000, max: 40, standardHeaders: true, legacyHeaders: false, message: { error: "Too many messages - please wait a moment." } });
 app.post("/api/agent/chat", chatLimiter, requireAuth, async (req, res) => {
   const history = Array.isArray(req.body.messages) ? req.body.messages : [];
   const clean = history
@@ -507,7 +507,7 @@ app.get("/api/health", async (_req, res) => {
 });
 
 // ================= ALERTS (staff) =================
-// Recent notable events (new leads, high-priority, daily reports) — powers the
+// Recent notable events (new leads, high-priority, daily reports) - powers the
 // in-app Alerts page and demonstrates the notification pipeline.
 app.get("/api/alerts", requireStaff, async (_req, res) => {
   const logs = await ActivityLog.findAll({
@@ -529,8 +529,8 @@ app.get("/api/alerts", requireStaff, async (_req, res) => {
 // Staff: send a test Telegram message to confirm the bot is wired up.
 app.post("/api/telegram/test", requireStaff, async (req, res) => {
   if (!telegramEnabled()) return res.status(400).json({ ok: false, error: "Telegram is not configured on the server (set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID)." });
-  const ok = await sendTelegram(`✅ <b>LeadFlow test</b>\nTelegram alerts are working — sent by ${req.user.username} at ${new Date().toLocaleString()}.`);
-  res.status(ok ? 200 : 502).json({ ok, message: ok ? "Test message sent — check your Telegram." : "Telegram rejected the message. Check the token and chat ID." });
+  const ok = await sendTelegram(`✅ <b>LeadFlow test</b>\nTelegram alerts are working - sent by ${req.user.username} at ${new Date().toLocaleString()}.`);
+  res.status(ok ? 200 : 502).json({ ok, message: ok ? "Test message sent - check your Telegram." : "Telegram rejected the message. Check the token and chat ID." });
 });
 
 // ---------- Admin SPA ----------

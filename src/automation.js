@@ -17,7 +17,7 @@ const HIGH_PRIORITY_THRESHOLD = Number(process.env.HIGH_PRIORITY_THRESHOLD || 8)
 async function postWebhook(text) {
   if (!WEBHOOK_URL) { console.log("[automation] (no WEBHOOK_URL) would send:", text.split("\n")[0]); return; }
   try {
-    // Generic JSON — works with Slack/Discord ("content"/"text") and custom endpoints.
+    // Generic JSON - works with Slack/Discord ("content"/"text") and custom endpoints.
     await fetch(WEBHOOK_URL, {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -33,13 +33,13 @@ async function onNewLead(lead, analysis) {
   const lines = [
     `🟢 New lead: ${lead.name}`,
     `Service: ${analysis.category} · Priority ${analysis.priority}/10 (${analysis.urgencyLabel})`,
-    `Budget: ${lead.budget || "—"} · Estimate: ${analysis.estimateHours}`,
+    `Budget: ${lead.budget || "-"} · Estimate: ${analysis.estimateHours}`,
     `"${lead.problem.slice(0, 140)}"`
   ];
   await postWebhook(lines.join("\n"));
 
   if (analysis.priority >= HIGH_PRIORITY_THRESHOLD) {
-    await postWebhook(`🚨 HIGH-PRIORITY lead (${analysis.priority}/10): ${lead.name} — ${analysis.category}. Contact ASAP.`);
+    await postWebhook(`🚨 HIGH-PRIORITY lead (${analysis.priority}/10): ${lead.name} - ${analysis.category}. Contact ASAP.`);
   }
 
   // Instant Telegram alert to the owner's phone (best-effort).
@@ -63,7 +63,7 @@ async function runDailyReport() {
     ]);
     const detail = `24h leads: ${todays} · total: ${total} · won: ${won}`;
     await ActivityLog.create({ action: "DAILY_REPORT", detail });
-    await postWebhook(`📊 Daily report — ${detail}`);
+    await postWebhook(`📊 Daily report - ${detail}`);
     console.log("[automation] daily report:", detail);
   } catch (err) {
     console.error("[automation] daily report failed:", err.message);

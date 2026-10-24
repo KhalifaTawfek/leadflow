@@ -442,7 +442,7 @@
             <label>Phone<input name="phone" placeholder="+40 712 345 678" required></label>
             <p style="color:var(--soft);font-size:12px;margin-top:-4px">We set the urgency and priority for you, no need to pick.</p>
             <div id="checkoutArea"></div>
-            <button class="btn primary" type="submit" style="width:100%;margin-top:6px" id="reqSubmit">Continue to checkout →</button>
+            <button class="btn primary" type="submit" style="width:100%;margin-top:6px" id="reqSubmit">Get my offer →</button>
           </form>
         </div>
       </section>`;
@@ -489,16 +489,15 @@
     if((data.problem||'').trim().length<10){ notice.innerHTML='<div class="notice err">Please describe your problem (at least 10 characters).</div>'; return; }
 
     if(!checkoutReady){
-      // Show the free "checkout" summary first
+      // Show the offer summary first
       const svc = serviceMap[data.serviceType] || {};
       document.getElementById('checkoutArea').innerHTML = `
         <div class="checkout">
           <div class="row"><span>Service</span><span>${esc(data.serviceType)}</span></div>
-          <div class="row"><span>Our offer</span><span>${esc(svc.basePrice||'On request')}</span></div>
-          <div class="row total"><span>Due today <span class="beta">BETA</span></span><span class="free">FREE</span></div>
+          <div class="row total"><span>Our offer</span><span class="free">${esc(svc.basePrice||'On request')}</span></div>
         </div>
-        <p class="sec-sub" style="margin:10px 0 0;font-size:13px">No payment required during beta. Click below to place your request.</p>`;
-      document.getElementById('reqSubmit').textContent = 'Place request (free) →';
+        <p class="sec-sub" style="margin:10px 0 0;font-size:13px">This is a starting price. Place your request and we'll email you a final quote to confirm, no payment now.</p>`;
+      document.getElementById('reqSubmit').textContent = 'Place request →';
       checkoutReady = true;
       return;
     }

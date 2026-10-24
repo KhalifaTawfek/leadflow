@@ -1,9 +1,9 @@
-// Firebase Admin — verifies Firebase ID tokens sent by the browser.
+// Firebase Admin - verifies Firebase ID tokens sent by the browser.
 //
 // This is OPTIONAL and dual-mode: if no Firebase service account is configured,
 // firebaseEnabled() is false and the app falls back to its built-in signed-cookie
 // auth, so the site keeps working. The moment you provide credentials, Firebase
-// sign-in becomes the primary login — no code change needed.
+// sign-in becomes the primary login - no code change needed.
 //
 // Configure ONE of these (see .env.example and README):
 //   FIREBASE_SERVICE_ACCOUNT_B64   base64 of the service-account JSON (easiest for env/CI)
@@ -14,7 +14,7 @@ let admin = null;
 try {
   admin = require("firebase-admin");
 } catch {
-  // Package not installed yet — stay in fallback (cookie) mode without crashing.
+  // Package not installed yet - stay in fallback (cookie) mode without crashing.
   admin = null;
 }
 
@@ -43,7 +43,7 @@ function loadCredential() {
       admin.initializeApp();
       enabled = true;
     }
-    if (enabled) console.log("[firebase] Admin initialised — Firebase sign-in is active.");
+    if (enabled) console.log("[firebase] Admin initialised - Firebase sign-in is active.");
   } catch (e) {
     console.error("[firebase] Admin init failed, staying in fallback auth:", e.message);
     enabled = false;
