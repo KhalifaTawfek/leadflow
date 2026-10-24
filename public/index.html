@@ -21,14 +21,16 @@
   body{font-family:"Sofia Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;font-size:16px;min-height:100vh;-webkit-font-smoothing:antialiased}
   body::before{content:"";position:fixed;left:0;right:0;top:0;height:640px;background:radial-gradient(ellipse 55% 60% at 75% 0%,rgba(82,184,224,.12),transparent 70%);pointer-events:none;z-index:-1}
   a{color:inherit;text-decoration:none}
-  .wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 24px}
 
   /* header */
   header{position:sticky;top:0;z-index:20;background:rgba(6,13,24,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
-  .nav{display:flex;align-items:center;gap:24px;padding:14px 24px;max-width:1160px;margin:0 auto;position:relative}
+  .nav{display:flex;align-items:center;gap:24px;padding:14px 24px;max-width:1240px;margin:0 auto;position:relative}
   .brand{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:21px;letter-spacing:-.3px}
   .brand .mark{width:34px;height:34px;display:grid;place-items:center;background:var(--accent);color:#04111C;border-radius:10px;font-weight:900;font-size:13px}
-  .nav .links{display:flex;gap:22px;margin-left:auto;color:var(--muted);font-weight:600;font-size:15px;align-items:center}
+  .nav .links{display:flex;align-items:center;flex:1;margin-left:24px}
+  .nav-main{display:flex;gap:30px;margin:0 auto;color:var(--muted);font-weight:500;font-size:15px}
+  .nav-auth{display:flex;align-items:center;gap:10px;color:var(--muted);font-weight:500;font-size:15px}
   .nav .links a{cursor:pointer;transition:color .15s}.nav .links a:hover{color:var(--ink)}
   .menu-btn{display:none;margin-left:auto;background:transparent;border:1px solid var(--line2);color:var(--ink);border-radius:10px;width:42px;height:42px;cursor:pointer;font-size:18px}
 
@@ -52,18 +54,7 @@
   .price{color:var(--accent);font-weight:700;font-size:14px}
 
   /* hero */
-  .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;padding:84px 0 48px}
-  .hero h1{font-size:clamp(44px,6.4vw,74px);line-height:1;letter-spacing:-2.5px;font-weight:800;margin-bottom:22px}
-  .hero h1 span{color:var(--accent)}
-  .hero p.lead{color:var(--muted);font-size:19px;max-width:48ch;margin-bottom:32px}
   .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
-  .hero-visual{border:1px solid var(--line);border-radius:20px;background:var(--panel);padding:14px;aspect-ratio:10/9}
-  .hero-visual svg{width:100%;height:100%;display:block;font-family:inherit}
-  .flow{stroke-dasharray:4 6;animation:flow 1.4s linear infinite}
-  .pulse{transform-box:fill-box;transform-origin:center;animation:pulse 2.6s ease-out infinite}
-  @keyframes flow{to{stroke-dashoffset:-20}}
-  @keyframes pulse{0%{transform:scale(.9);opacity:.9}100%{transform:scale(1.45);opacity:0}}
-  @media(prefers-reduced-motion:reduce){.flow,.pulse{animation:none}}
 
   /* stats strip */
   .stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r);background:var(--panel)}
@@ -150,6 +141,81 @@
   .foot-grid a{color:var(--muted)}.foot-grid a:hover{color:var(--ink)}
   .foot-links{display:flex;gap:22px;flex-wrap:wrap}
 
+  /* hero v2 */
+  .hero2{text-align:center;padding:96px 0 0;position:relative}
+  .hero-badge{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--line2);background:rgba(13,20,31,.7);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.04em;margin-bottom:28px}
+  .dotlive{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px rgba(52,211,153,.15)}
+  .hero-title{font-size:clamp(44px,7.2vw,92px);line-height:1.02;letter-spacing:-.035em;font-weight:700;color:#EAF1F8;max-width:15ch;margin:0 auto 24px}
+  .hero-title .dim{display:block;background:linear-gradient(180deg,#C5D2E2,#7B90AB);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero-sub{color:var(--muted);font-size:clamp(17px,1.6vw,20px);max-width:58ch;margin:0 auto 36px}
+  .hero-actions.center{justify-content:center}
+  .btn.lg{padding:15px 26px;font-size:16px;border-radius:12px}
+  .rise{opacity:0;animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:var(--d,0s)}
+  @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  .flow{position:relative;margin-top:44px;aspect-ratio:1200/380;max-height:420px}
+  .flow-svg{position:absolute;inset:0;width:100%;height:100%}
+  .flow-core{position:absolute;left:50%;top:79%;transform:translate(-50%,-50%);width:108px;height:108px;border-radius:26px;background:linear-gradient(180deg,#14223A,#0A1424);border:1px solid #2A3A52;display:grid;place-items:center;box-shadow:0 0 0 10px rgba(82,184,224,.035),0 24px 70px rgba(82,184,224,.18)}
+  .flow-core .mark{width:54px;height:54px;font-size:20px;border-radius:14px}
+  .ftile{position:absolute;width:58px;height:58px;border-radius:16px;background:#0C1524;border:1px solid #22324A;display:grid;place-items:center;transform:translate(-50%,-50%);animation:float 7s ease-in-out infinite;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+  @keyframes float{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-50%,calc(-50% - 9px))}}
+  @media(prefers-reduced-motion:reduce){.rise{animation:none;opacity:1}.ftile{animation:none}.pt{display:none}}
+
+  /* home layout with "On this page" */
+  .home-grid{display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:56px;margin-top:24px}
+  .home-main{min-width:0}
+  .toc{position:sticky;top:96px;align-self:start;padding-top:8px}
+  .toc h5{font-size:13px;font-weight:700;color:var(--ink);letter-spacing:.02em;margin:0 0 12px 16px}
+  .toc a{display:block;padding:10px 16px;border-left:2px solid var(--line2);color:var(--muted);font-size:14px;cursor:pointer;transition:color .2s,background .2s,border-color .2s}
+  .toc a:hover{color:var(--ink)}
+  .toc a.active{color:var(--ink);font-weight:600;border-left-color:var(--accent);background:linear-gradient(90deg,rgba(82,184,224,.10),rgba(82,184,224,0))}
+
+  /* scroll reveal */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0ms)}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+  /* cloud services (bento) */
+  .cloud-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .cloud-cell{background:var(--panel);padding:26px;transition:background .2s}
+  .cloud-cell:hover{background:#0F1826}
+  .cc-icon{color:var(--accent);margin-bottom:14px}
+  .cloud-cell h3{font-size:17px;font-weight:700;margin-bottom:6px}
+  .cloud-cell p{color:var(--muted);font-size:14.5px}
+
+  /* prompt engineering */
+  .split{display:grid;grid-template-columns:1fr 1.05fr;gap:48px;align-items:center}
+  .ticks{list-style:none;display:grid;gap:11px}
+  .ticks li{position:relative;padding-left:28px;font-size:16px}
+  .ticks li::before{content:"";position:absolute;left:0;top:7px;width:14px;height:8px;border-left:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(-45deg)}
+  .prompt-card{border:1px solid var(--line2);border-radius:16px;background:#08111E;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.4)}
+  .pc-bar{display:flex;align-items:center;gap:7px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--panel)}
+  .pc-bar i{width:10px;height:10px;border-radius:50%;background:#253247}
+  .pc-bar span{margin-left:8px;color:var(--soft);font-size:13px;font-family:ui-monospace,Consolas,monospace}
+  .pc-body{padding:22px 20px;font:13.5px/1.75 ui-monospace,Consolas,monospace;color:#C9D6E6;white-space:pre;overflow-x:auto;margin:0}
+  .pl{display:block;opacity:0;transform:translateX(-6px);transition:opacity .45s ease,transform .45s ease;transition-delay:var(--d)}
+  .pl:first-child{color:var(--accent);font-weight:700}
+  .prompt-card.in .pl{opacity:1;transform:none}
+  .caret{display:inline-block;width:8px;height:16px;background:var(--accent);vertical-align:-3px;animation:caret 1s steps(1) infinite}
+  @keyframes caret{50%{opacity:0}}
+  @media(prefers-reduced-motion:reduce){.pl{opacity:1;transform:none;transition:none}.caret{animation:none}}
+
+  /* guarantees + FAQ + audit */
+  .assure{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 28px;margin-top:26px;color:var(--muted);font-size:14.5px;font-weight:500}
+  .assure span::before{content:"✓";color:var(--ok);font-weight:800;margin-right:8px}
+  .faq{border-top:1px solid var(--line)}
+  .faq details{border-bottom:1px solid var(--line)}
+  .faq summary{list-style:none;cursor:pointer;padding:20px 40px 20px 0;font-size:17px;font-weight:600;position:relative}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"";position:absolute;right:6px;top:50%;width:10px;height:10px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:translateY(-70%) rotate(45deg);transition:transform .2s}
+  .faq details[open] summary::after{transform:translateY(-30%) rotate(-135deg)}
+  .faq summary:hover{color:var(--accent)}
+  .faq details p{color:var(--muted);padding:0 40px 22px 0;max-width:75ch}
+  .audit-score{display:flex;align-items:center;gap:22px;padding:20px;border:1px solid var(--line2);border-radius:14px;background:var(--panel2)}
+  .ring{--p:0;--c:var(--accent);width:92px;height:92px;border-radius:50%;flex:none;display:grid;place-items:center;background:conic-gradient(var(--c) calc(var(--p)*1%),#1F2A3A 0)}
+  .ring b{width:74px;height:74px;border-radius:50%;background:var(--panel2);display:grid;place-items:center;font-size:24px;font-weight:800}
+  .audit-score h4{font-size:19px;margin-bottom:4px}.audit-score p{color:var(--muted);font-size:14.5px}
+  .audit-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+
   /* live tools */
   .tool{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:26px;display:flex;flex-direction:column;gap:16px;min-width:0;scroll-margin-top:84px}
   .tool-wide{margin-bottom:16px}
@@ -223,14 +289,18 @@
   .chat-input input{padding:10px 12px}
 
   /* responsive */
+  @media(max-width:1180px){.home-grid{grid-template-columns:1fr}.toc{display:none}}
   @media(max-width:900px){
     .menu-btn{display:grid;place-items:center}
-    .nav .links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;margin:0;padding:6px 24px 18px;background:var(--bg);border-bottom:1px solid var(--line)}
+    .nav .links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;margin:0;flex:none;padding:6px 24px 18px;background:var(--bg);border-bottom:1px solid var(--line)}
     .nav.open .links{display:flex}
-    .nav .links>a,.nav .links>span{padding:13px 2px;border-bottom:1px solid var(--line)}
-    .nav .links>.btn{margin-top:12px}
-    .hero{grid-template-columns:1fr;gap:36px;padding:56px 0 32px}
-    .hero-visual{max-width:520px}
+    .nav-main,.nav-auth{flex-direction:column;align-items:stretch;gap:0;margin:0}
+    .nav-main>a,.nav-auth>a:not(.btn),.nav-auth>span{padding:13px 2px;border-bottom:1px solid var(--line)}
+    .nav-auth .btn{margin-top:10px}
+    .home-grid{grid-template-columns:1fr}.toc{display:none}
+    .split{grid-template-columns:1fr;gap:32px}
+    .cloud-grid{grid-template-columns:1fr 1fr}
+    .ftile{display:none}
     .grid,.steps{grid-template-columns:1fr 1fr}
     .price-grid{grid-template-columns:1fr}
     .stats{grid-template-columns:1fr 1fr}
@@ -246,6 +316,13 @@
     .subs-inner{padding:30px 18px}
     .cta{padding:40px 18px}
     .tool{padding:20px}
+    .hero-actions.center .btn.lg{width:100%;max-width:320px}
+    .audit-cols{grid-template-columns:1fr}
+    .audit-score{flex-direction:column;text-align:center}
+    .cloud-grid{grid-template-columns:1fr}
+    .hero2{padding-top:64px}
+    .flow{aspect-ratio:auto;height:230px}
+    .flow-core{width:84px;height:84px;border-radius:20px}
     .tool-input{flex-direction:column}
     .kv{grid-template-columns:1fr 1fr}
     .chat-panel{left:10px;right:10px;width:auto;bottom:84px;height:calc(100vh - 110px)}
@@ -344,6 +421,7 @@
           <h2 class="sec">Subscription plans</h2>
           <p class="sec-sub">Website, hosting, protection and domain, handled every month. Cancel anytime. One-off builds start at €250 (waived on a 12-month plan).</p>
           <div class="price-grid">${cards}</div>
+          <div class="assure"><span>Free migration of your current site</span><span>One flat monthly fee, no surprise bills</span><span>Cancel anytime</span><span>Reply within 1 business day</span></div>
           <p class="sec-sub" style="margin-top:16px;font-size:13px">Prices exclude VAT where applicable. "Protection" means backups, Cloudflare, updates and monitoring, not a guarantee against every attack. Full terms apply.</p>
         </div>
       </section>`;
@@ -393,30 +471,31 @@
   async function loadMe(){ try{ const d=await api('/api/auth/me'); me=d.user; backendFirebase=!!d.firebase; }catch(e){ me=null; } renderNav(); }
   function renderNav(){
     const el = document.getElementById('navLinks');
-    let s = `<a onclick="go('home')">Services</a><a onclick="goToSection('pricing')">Plans</a><a onclick="go('demos')">Live Tools</a><a onclick="goToSection('work')">Our Work</a><a onclick="go('contact')">Contact</a>`;
+    const main = `<div class="nav-main"><a onclick="goToSection('services')">Services</a><a onclick="goToSection('cloud')">Cloud</a><a onclick="goToSection('pricing')">Plans</a><a onclick="go('demos')">Live Tools</a><a onclick="go('contact')">Contact</a></div>`;
+    let auth;
     if(me && (me.role==='ADMIN' || me.role==='SALES')){
-      s += `<a class="btn primary sm" href="/admin" style="text-decoration:none">🛡 Admin panel</a>
+      auth = `<a class="btn primary sm" href="/admin" style="text-decoration:none">Admin panel</a>
             <span class="chip"><span class="av">${esc((me.username[0]||'?').toUpperCase())}</span>${esc(me.username)}</span>
-            <a onclick="logout()">Log out</a>`;
+            <a onclick="logout()" style="cursor:pointer">Log out</a>`;
     } else if(me && me.role==='CUSTOMER'){
-      s += `<a onclick="go('mine')">My Requests</a>
+      auth = `<a onclick="go('mine')" style="cursor:pointer">My Requests</a>
             <span class="chip"><span class="av">${esc((me.username[0]||'?').toUpperCase())}</span>${esc(me.username)}</span>
-            <a onclick="logout()">Log out</a>`;
+            <a onclick="logout()" style="cursor:pointer">Log out</a>`;
     } else {
-      s += `<a onclick="openAuth('login')">Log in</a><button class="btn primary sm" onclick="openAuth('register')">Sign up</button>`;
+      auth = `<button class="btn ghost sm" onclick="openAuth('login')">Log in</button><button class="btn primary sm" onclick="openAuth('register')">Get started</button>`;
     }
-    el.innerHTML = s;
+    el.innerHTML = main + `<div class="nav-auth">${auth}</div>`;
   }
 
   async function loadServices(){
     try{ services = (await api('/api/services')).services; serviceMap = {}; services.forEach(x=>serviceMap[x.name]=x); }catch(e){}
   }
 
-  let statusTimer = null, mineTimer = null;
-  function clearTimers(){ if(statusTimer){ clearInterval(statusTimer); statusTimer=null; } if(mineTimer){ clearInterval(mineTimer); mineTimer=null; } }
-  function go(view, arg){ window.scrollTo(0,0); clearTimers(); if(view==='home')return renderHome(); if(view==='request')return renderRequest(); if(view==='mine')return renderMine(); if(view==='demos')return renderDemos(arg); if(view==='contact')return renderContact(); }
+  let statusTimer = null, mineTimer = null, currentView = null;
+  function clearTimers(){ if(statusTimer){ clearInterval(statusTimer); statusTimer=null; } if(mineTimer){ clearInterval(mineTimer); mineTimer=null; } (window.homeObservers||[]).length; if(typeof homeObservers!=="undefined"){ homeObservers.forEach(o=>o.disconnect()); homeObservers=[]; } }
+  function go(view, arg){ window.scrollTo(0,0); clearTimers(); currentView=view; if(view==='home')return renderHome(); if(view==='request')return renderRequest(); if(view==='mine')return renderMine(); if(view==='demos')return renderDemos(arg); if(view==='contact')return renderContact(); }
   // Jump to a section on the home page (nav links for Pricing / Our Work).
-  function goToSection(id){ go('home'); setTimeout(()=>{ const el=document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth'}); },60); }
+  function goToSection(id){ const jump=()=>{ const el=document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth'}); }; if(currentView==='home' && document.getElementById(id)) return jump(); go('home'); setTimeout(jump,60); }
 
   function renderContact(){
     app.innerHTML = `
@@ -468,7 +547,17 @@
     shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>',
     key: '<circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6M15.5 7.5l3 3L22 7l-3-3"/>',
     pulse: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',
-    chat: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'
+    chat: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+    cloud: '<path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>',
+    bot: '<rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4M8 16h.01M16 16h.01"/>',
+    globe: '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+    server: '<rect x="2" y="3" width="20" height="8" rx="2"/><rect x="2" y="13" width="20" height="8" rx="2"/><path d="M6 7h.01M6 17h.01"/>',
+    box: '<path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 13v8"/>',
+    refresh: '<path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/>',
+    zap: '<path d="M13 2 3 14h9l-1 8 10-12h-9z"/>',
+    archive: '<rect x="2" y="3" width="20" height="5" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8M10 12h4"/>',
+    database: '<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/>',
+    move: '<path d="M5 12h14M13 6l6 6-6 6"/>'
   };
   function icon(name, s=20){ return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[name]}</svg>`; }
   const safeHex = h => /^#[0-9a-f]{6}$/i.test(h||'') ? h : '#000000';
@@ -496,6 +585,12 @@
         <div class="eyebrow">Live tools</div>
         <h2 class="sec">See what we do, live</h2>
         <p class="sec-sub">These run for real on our servers against any website or domain you enter. No sign-up needed.</p>
+
+        <div class="tool tool-wide" id="tool-audit">
+          <div><div class="tool-icon">${icon('shield')}</div><span class="tool-kicker">Free · instant</span><h3>Free website audit</h3><p class="desc">One check for the things that hurt small business sites most: HTTPS, DDoS protection, security headers, speed, SSL expiry and whether your email can be spoofed.</p></div>
+          <form class="tool-input" id="auForm"><input id="auIn" placeholder="e.g. yourbusiness.com" autocomplete="off" inputmode="url"><button class="btn primary" type="submit" id="auBtn">Run audit</button></form>
+          <div id="auOut"></div>
+        </div>
 
         <div class="tool tool-wide" id="tool-analyze">
           <div><div class="tool-icon">${icon('palette')}</div><span class="tool-kicker">Design &amp; tech stack</span><h3>Website reverse-engineer</h3><p class="desc">Pull any site's colour palette, fonts, corner radii, design tokens and tech stack in a few seconds.</p></div>
@@ -527,6 +622,8 @@
         </div>
       </section>`;
 
+    // Free audit: security scan + domain/email check + page weight, combined into one score
+    document.getElementById('auForm').onsubmit = e => { e.preventDefault(); runAudit(); };
     // Website reverse-engineer
     document.getElementById('anForm').onsubmit = e => { e.preventDefault(); runAnalyze(); };
     document.querySelectorAll('#tool-analyze [data-try]').forEach(a => a.onclick = () => { document.getElementById('anIn').value = a.dataset.try; runAnalyze(); });
@@ -586,6 +683,42 @@
     if(focus) setTimeout(()=>{ const el=document.getElementById('tool-'+focus); if(el){ el.scrollIntoView({block:'start'}); const inp=el.querySelector('input'); if(inp) inp.focus({preventScroll:true}); } }, 30);
   }
 
+  async function runAudit(){
+    const v=document.getElementById('auIn').value.trim(), out=document.getElementById('auOut'), btn=document.getElementById('auBtn');
+    if(!v){ out.innerHTML='<div class="notice info">Enter your website to audit it.</div>'; return; }
+    const host = v.replace(/^https?:[/][/]/i,'').split(/[/?#]/)[0];
+    btn.disabled=true; out.innerHTML=spin('Checking security, email, SSL and speed…');
+    const [sc, dm, an] = await Promise.allSettled([
+      api('/api/tools/scan?url='+encodeURIComponent(v)),
+      api('/api/tools/domain?domain='+encodeURIComponent(host)),
+      api('/api/tools/analyze?url='+encodeURIComponent(v))
+    ]);
+    btn.disabled=false;
+    if(sc.status!=='fulfilled' && dm.status!=='fulfilled'){ out.innerHTML=`<div class="notice err">${esc((sc.reason||dm.reason).message)}</div>`; return; }
+    const checks=[];
+    if(sc.status==='fulfilled'){
+      const d=sc.value, missing=Object.entries(d.securityHeaders).filter(([,x])=>!x).map(([k])=>k.replace(/ [(].*/,''));
+      checks.push({ok:d.https, label:'HTTPS enabled', fix:"Turn on HTTPS so browsers don't warn your visitors."});
+      checks.push({ok:d.cloudflare, label:'DDoS protection & CDN', fix:'Put the site behind Cloudflare for speed and attack protection.'});
+      checks.push({ok:!missing.length, label:'Security headers', fix:'Missing: '+missing.join(', ')+'.'});
+      checks.push({ok:d.responseMs<1200, label:'Fast server response', fix:`The server took ${d.responseMs} ms; aim for under one second.`});
+    }
+    if(dm.status==='fulfilled') dm.value.checks.forEach(c=>checks.push({ok:c.ok, label:c.label, fix:c.detail}));
+    if(an.status==='fulfilled'){ const kb=an.value.sizeKB+an.value.cssKB; checks.push({ok:kb<1500, label:'Page weight', fix:`Page and CSS weigh ${kb} KB; trimming it makes mobile loads faster.`}); }
+    const passed=checks.filter(c=>c.ok).length, score=Math.round(100*passed/checks.length);
+    const col = score>=90?'var(--ok)':(score>=60?'var(--amber)':'var(--red)');
+    const failed=checks.filter(c=>!c.ok), good=checks.filter(c=>c.ok);
+    const verdict = score>=90?'Looking healthy.':(score>=60?'A few things need attention.':'Your site needs some work.');
+    out.innerHTML = `
+      <div class="audit-score"><div class="ring" style="--p:${score};--c:${col}"><b>${score}</b></div>
+        <div><h4>${esc(host)}: ${verdict}</h4><p>${passed} of ${checks.length} checks passed${failed.length?`, ${failed.length} to fix`:''}.</p></div></div>
+      <div class="audit-cols">
+        <div class="an-box"><h4>To fix (${failed.length})</h4>${failed.length?failed.map(c=>checkRow(false,c.label,c.fix)).join(''):'<p class="sec-sub" style="margin:0;font-size:14px">Nothing urgent. Nice work.</p>'}</div>
+        <div class="an-box"><h4>Passed (${good.length})</h4>${good.map(c=>checkRow(true,c.label,'')).join('')}</div>
+      </div>
+      ${failed.length?`<div class="hero-actions" style="margin-top:16px"><button class="btn primary" onclick="startRequest('Website + Domain + Protection')">Fix these for me →</button><button class="btn ghost" onclick="document.getElementById('anIn').value='${esc(host)}';runAnalyze();document.getElementById('tool-analyze').scrollIntoView({behavior:'smooth'})">See the design &amp; tech breakdown</button></div>`:''}`;
+  }
+
   let lastAnalysis = null;
   async function runAnalyze(){
     const v=document.getElementById('anIn').value.trim(), out=document.getElementById('anOut'), btn=document.getElementById('anBtn');
@@ -596,6 +729,7 @@
       lastAnalysis=d; out.innerHTML=analysisHTML(d);
       out.querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>copyText(b.dataset.copy, b.dataset.copy+' copied'));
       const c=out.querySelector('#anCopy'); if(c) c.onclick=()=>copyText(designCss(lastAnalysis),'CSS variables copied');
+      const p=out.querySelector('#anPrompt'); if(p) p.onclick=()=>copyText(buildPrompt(lastAnalysis),'Build prompt copied');
     }catch(err){ out.innerHTML=`<div class="notice err">${esc(err.message)}</div>`; }
     btn.disabled=false;
   }
@@ -624,7 +758,38 @@
         <div class="an-box"><h4>Tech stack</h4>${chips(d.tech,'Nothing recognised (likely a custom build).')}</div>
         <div class="an-box"><h4>Page</h4><div class="kv"><div><b>${Number(d.counts.scripts)}</b><span>Scripts</span></div><div><b>${Number(d.counts.stylesheets)}</b><span>Stylesheets</span></div><div><b>${Number(d.counts.images)}</b><span>Images</span></div><div><b>${Number(d.counts.links)}</b><span>Links</span></div></div></div>
       </div>
-      <div class="hero-actions" style="margin-top:16px"><button class="btn ghost sm" type="button" id="anCopy">Copy as CSS variables</button><button class="btn primary sm" type="button" onclick="startRequest('Website + Domain + Protection')">Want a site like this? →</button></div>`;
+      <div class="hero-actions" style="margin-top:16px"><button class="btn primary sm" type="button" id="anPrompt">Copy build prompt</button><button class="btn ghost sm" type="button" id="anCopy">Copy as CSS variables</button><button class="btn ghost sm" type="button" onclick="startRequest('Website & App Prompt Engineering')">Have us write it for you →</button></div>`;
+  }
+  // A ready-to-paste prompt for AI site builders, based on the analysed design system.
+  function buildPrompt(d){
+    let host=d.finalUrl; try{ host=new URL(d.finalUrl).host; }catch(e){}
+    const by = r => d.colors.filter(c=>c.role===r).map(c=>c.hex);
+    const dark = by('dark'), light = by('light'), accent = by('accent');
+    const darkTheme = d.colors.filter(c=>c.role==='dark').reduce((n,c)=>n+c.count,0) > d.colors.filter(c=>c.role==='light').reduce((n,c)=>n+c.count,0);
+    const bg = darkTheme ? (dark[0]||'#0B0F17') : (light[0]||'#FFFFFF'), text = darkTheme ? (light[0]||'#F1F5F9') : (dark[0]||'#111827');
+    const fonts = d.fonts.map(f=>f.name).slice(0,2);
+    return [
+      `Build a modern, responsive website with a design system inspired by ${host}.`,
+      '',
+      'Visual style',
+      `- ${darkTheme?'Dark':'Light'} theme. Background ${bg}, primary text ${text}.`,
+      accent.length ? `- Accent colours: ${accent.slice(0,3).join(', ')} (use the first for primary buttons and links).` : '- Use one strong accent colour for primary actions.',
+      `- Typography: ${fonts.length?fonts.map(n=>'"'+n+'"').join(' for headings/body, ')+' with a sans-serif fallback':'a clean modern sans-serif'}. Large, confident headlines and readable 16-18px body text.`,
+      d.radii.length ? `- Corner radius scale: ${d.radii.slice(0,3).map(r=>r.value).join(', ')}.` : '- Rounded corners around 8-12px.',
+      '- Flat surfaces separated by thin borders, generous spacing, minimal shadows.',
+      '',
+      'Structure',
+      '- Sticky navigation with logo, 4-5 links and a primary call-to-action button.',
+      '- Hero: headline, one-sentence value proposition, primary and secondary buttons.',
+      '- Feature or service sections in cards, social proof, pricing, FAQ, and a footer.',
+      '',
+      'Implementation',
+      '- Define the colours, fonts and radii above as CSS variables and reuse them everywhere.',
+      d.tech.length ? `- The original uses: ${d.tech.slice(0,6).join(', ')}. Any modern stack is fine.` : '- Any modern stack is fine (for example React + Tailwind).',
+      '- Fully responsive, accessible contrast, visible focus states.',
+      '',
+      'Write your own text and use your own logo and images. Do not copy content, logos or images from the original site.'
+    ].join('\n');
   }
   function designCss(d){
     const by = r => d.colors.filter(c=>c.role===r);
@@ -638,92 +803,202 @@
     return `/* Design tokens extracted from ${d.finalUrl} */\n:root {\n${lines.join('\n')}\n}\n`;
   }
 
-  // Hero graphic: the customer's business in the middle, linked to what we run for it.
-  const NET_NODES = [['Cloudflare',72,62],['Servers',328,62],['Security',66,180],['Monitoring',334,180],['Backups',72,298],['Automation',328,298]];
-  function heroVisual(){
-    const lines = NET_NODES.map(([,x,y])=>`<line x1="200" y1="180" x2="${x}" y2="${y}" class="flow"/>`).join('');
-    const pills = NET_NODES.map(([t,x,y])=>`<rect x="${x-54}" y="${y-17}" width="108" height="34" rx="10" fill="#0D141F" stroke="#252E3B"/><circle cx="${x-38}" cy="${y}" r="3.5" fill="#52B8E0"/><text x="${x-28}" y="${y+4.5}" fill="#F1F5F9" font-size="13" font-weight="600">${t}</text>`).join('');
-    return `<svg viewBox="0 0 400 360" role="img" aria-label="Your business connected to Cloudflare, servers, security, monitoring, backups and automation">
-      <defs>
-        <pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1" fill="#1F2A3A"/></pattern>
-        <radialGradient id="glow"><stop offset="0" stop-color="#52B8E0" stop-opacity=".25"/><stop offset="1" stop-color="#52B8E0" stop-opacity="0"/></radialGradient>
-      </defs>
-      <rect width="400" height="360" fill="url(#dots)"/>
-      <circle cx="200" cy="180" r="125" fill="url(#glow)"/>
-      <g stroke="#52B8E0" stroke-opacity=".5" stroke-width="1.3">${lines}</g>
-      ${pills}
-      <circle cx="200" cy="180" r="48" fill="none" stroke="#52B8E0" stroke-width="1.5" class="pulse"/>
-      <circle cx="200" cy="180" r="40" fill="#52B8E0"/>
-      <text x="200" y="176" text-anchor="middle" fill="#04111C" font-size="12" font-weight="800">YOUR</text>
-      <text x="200" y="191" text-anchor="middle" fill="#04111C" font-size="12" font-weight="800">BUSINESS</text>
-    </svg>`;
+  // ---------- HOME ----------
+  // Hero graphic: thin lines of "signal" flowing in from both sides to the core tile.
+  function heroFlow(){
+    const W=1200, cx=600, cy=300, ys=[30,74,118,162,206,250,294,338];
+    let lines='', dots='', stars='';
+    ys.forEach((y,i)=>{
+      lines += `<path id="fl${i}" d="M0 ${y} C 380 ${y}, 430 ${cy}, ${cx-64} ${cy}" stroke="url(#gfl)"/>`
+             + `<path id="fr${i}" d="M${W} ${y} C ${W-380} ${y}, ${W-430} ${cy}, ${cx+64} ${cy}" stroke="url(#gfr)"/>`;
+    });
+    const cols=['#52B8E0','#34D399','#A78BFA','#F0B84F'];
+    [1,4,6].forEach((i,k)=>{
+      dots += `<circle r="2.2" fill="${cols[k]}" class="pt"><animateMotion dur="${6+k*1.3}s" begin="${k*1.1}s" repeatCount="indefinite"><mpath href="#fl${i}"/></animateMotion></circle>`
+            + `<circle r="2.2" fill="${cols[(k+1)%4]}" class="pt"><animateMotion dur="${6.6+k*1.2}s" begin="${k*0.9+0.6}s" repeatCount="indefinite"><mpath href="#fr${7-i}"/></animateMotion></circle>`;
+    });
+    for(let i=0;i<22;i++){ stars += `<circle cx="${(i*167+40)%1200}" cy="${(i*71)%300+12}" r="${i%3?0.9:1.4}" fill="#63BDE7" opacity="${i%4?0.14:0.3}"/>`; }
+    const grad = (id,x1) => `<linearGradient id="${id}" gradientUnits="userSpaceOnUse" x1="${x1}" y1="0" x2="${cx}" y2="0"><stop offset="0" stop-color="#63BDE7" stop-opacity="0"/><stop offset=".6" stop-color="#63BDE7" stop-opacity=".14"/><stop offset="1" stop-color="#63BDE7" stop-opacity=".5"/></linearGradient>`;
+    return `<svg class="flow-svg" viewBox="0 0 1200 380" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs>${grad('gfl',0)}${grad('gfr',W)}</defs>${stars}<g fill="none" stroke-width="1">${lines}</g>${dots}</svg>`;
   }
+  const FLOW_TILES = [['cloud','16%','40%','#52B8E0',0],['shield','7%','74%','#34D399',1.4],['bot','84%','34%','#A78BFA',.7],['globe','93%','70%','#F0B84F',2.1]];
+
+  const CLOUD = [
+    ['server','Cloud servers','Servers on Hetzner, AWS or DigitalOcean, hardened with SSH keys, a firewall and automatic updates.'],
+    ['box','Docker hosting','Apps packaged in containers, with one-command deploys and painless rollbacks.'],
+    ['refresh','Auto-deploy (CI/CD)','Push to GitHub and your site or app updates itself in minutes.'],
+    ['zap','Cloudflare & CDN','DNS, SSL, DDoS protection and caching, so pages load fast everywhere.'],
+    ['archive','Backups & recovery','Nightly off-site backups, with restores we actually test.'],
+    ['pulse','Monitoring & alerts','Uptime checks every minute and alerts on Telegram or email.'],
+    ['database','Managed databases','PostgreSQL or MySQL set up, tuned, secured and backed up.'],
+    ['mail','Domains & business email','Domains, DNS and email that lands in inboxes, not spam.'],
+    ['move','Cloud migrations','Move off shared hosting or another provider with zero downtime.']
+  ];
+  const PROMPT_LINES = [
+    '# Build prompt: premium dark landing page',
+    '',
+    'Palette  #060D18 bg · #F1F5F9 text · #52B8E0 accent',
+    'Type     Sofia Sans · 72px hero · 18px body',
+    'Shape    12px radius · flat cards · 1px borders',
+    'Layout   hero → services → pricing → FAQ → contact',
+    'Tone     confident, plain English, no jargon',
+    '',
+    'Do:    generous spacing, one clear CTA per section',
+    "Don't: copy logos, text or images from the source"
+  ];
+  const FAQ = [
+    ['How much does it cost?', 'Managed plans are €19, €39 or €79 a month. One-off projects start from €40, and you get an exact offer after you send a request. Nothing is paid up front.'],
+    ["What's included in a monthly plan?", 'Every plan covers hosting, SSL, Cloudflare protection, off-site backups and uptime monitoring. Business adds your domain, small content edits and a monthly report; Pro adds priority fixes, security hardening and business email.'],
+    ['Can you move my existing website?', 'Yes. When you join a plan we migrate your current site for you at no extra cost, and keep it online while we do it.'],
+    ['Can I cancel?', 'Any time, with no lock-in. Your plan simply runs until the end of the month you have paid for.'],
+    ['How fast do you reply?', 'Within one business day, and urgent problems go to the front of the queue. If a call helps, we set one up on Google Meet or Discord.'],
+    ['Do I need to be technical?', 'Not at all. Describe the problem in your own words and we handle the rest, then explain what we did in plain English.'],
+    ['Where is my data hosted?', 'On servers in the EU (Amsterdam), behind Cloudflare. We follow GDPR; the details are in our Privacy Policy.'],
+    ['Do you work with WordPress, Shopify or Wix?', 'Yes. We work with WordPress, custom-built sites and apps, and most hosting providers. On Shopify, Wix or Squarespace we can still handle your domain, email, integrations and chatbots.']
+  ];
+  const TOC = [['services','Services'],['cloud','Cloud services'],['prompts','Prompt engineering'],['how','How it works'],['tools','Live tools'],['pricing','Plans'],['work','Our work'],['faq','FAQ'],['start','Get started']];
 
   function renderHome(){
     app.innerHTML = `
-      <section class="hero">
-        <div>
-          <div class="eyebrow">IT · Cyber · Cloud · Automation</div>
-          <h1>Your tech, <span>handled.</span></h1>
-          <p class="lead">Websites, hosting, security, cloud, automation and chatbots for small businesses. Tell us what you need, get a clear offer, and track everything in one place.</p>
-          <div class="hero-actions">
-            <button class="btn primary" onclick="startRequest()">Request a service →</button>
-            <button class="btn ghost" onclick="goToSection('pricing')">View plans</button>
+      <section class="hero2" id="top">
+        <div class="hero-badge rise" style="--d:.05s"><span class="dotlive"></span>IT · Cloud · Security · Automation</div>
+        <h1 class="hero-title rise" style="--d:.15s">Your tech, handled<span class="dim">before it breaks.</span></h1>
+        <p class="hero-sub rise" style="--d:.3s">Websites, cloud hosting, security, automation and chatbots for growing businesses. One team, clear offers, and everything tracked in one place.</p>
+        <div class="hero-actions center rise" style="--d:.42s">
+          <button class="btn primary lg" onclick="startRequest()">Request a service <span aria-hidden="true">→</span></button>
+          <button class="btn ghost lg" onclick="go('demos','audit')">Get a free website audit</button>
+        </div>
+        <div class="flow rise" style="--d:.55s">${heroFlow()}
+          ${FLOW_TILES.map(([ic,x,y,c,d])=>`<div class="ftile" style="left:${x};top:${y};color:${c};animation-delay:${d}s">${icon(ic,22)}</div>`).join('')}
+          <div class="flow-core"><span class="mark">LF</span></div>
+        </div>
+      </section>
+
+      <div class="home-grid">
+        <div class="home-main">
+          <div class="stats">
+            <div class="stat"><b>${services.length||10}</b><span>Services, one team</span></div>
+            <div class="stat"><b>€19</b><span>Managed plans from / month</span></div>
+            <div class="stat"><b>&lt; 1 day</b><span>Typical response time</span></div>
+            <div class="stat"><b>24/7</b><span>Uptime monitoring</span></div>
           </div>
+
+          <section id="services">
+            <div class="eyebrow">Services</div>
+            <h2 class="sec">Everything your business needs online</h2>
+            <p class="sec-sub">One-off projects with a clear price up front. Prefer it handled every month? See the plans further down.</p>
+            <div class="grid" id="svcGrid"></div>
+          </section>
+
+          <section id="cloud">
+            <div class="eyebrow">Cloud services</div>
+            <h2 class="sec">Cloud, set up properly and looked after</h2>
+            <p class="sec-sub">From a single server to a multi-site setup: we build it, secure it and keep it running, so you never have to think about it.</p>
+            <div class="cloud-grid">${CLOUD.map(([i,t,d])=>`<div class="cloud-cell"><div class="cc-icon">${icon(i)}</div><h3>${t}</h3><p>${d}</p></div>`).join('')}</div>
+            <div class="hero-actions" style="margin-top:24px"><button class="btn primary" onclick="startRequest('Cloud Infrastructure')">Talk about your setup →</button></div>
+          </section>
+
+          <section id="prompts">
+            <div class="split">
+              <div>
+                <div class="eyebrow">Prompt engineering</div>
+                <h2 class="sec">Turn any website or app into a build-ready prompt</h2>
+                <p class="sec-sub">We study a site or app and write the exact prompt and design spec your team, or builders like Lovable, v0 and Claude, need to recreate the look and feel properly.</p>
+                <ul class="ticks">
+                  <li>Colours, type scale and spacing as design tokens</li>
+                  <li>Page structure, sections and components mapped out</li>
+                  <li>Tone of voice and calls to action</li>
+                  <li>A ready-to-paste prompt, tested and refined</li>
+                </ul>
+                <div class="hero-actions" style="margin-top:26px">
+                  <button class="btn primary" onclick="startRequest('Website & App Prompt Engineering')">Get a build prompt →</button>
+                  <button class="btn ghost" onclick="go('demos','analyze')">Try it on any site</button>
+                </div>
+              </div>
+              <div class="prompt-card">
+                <div class="pc-bar"><i></i><i></i><i></i><span>build-prompt.md</span></div>
+                <pre class="pc-body">${PROMPT_LINES.map((l,i)=>`<span class="pl" style="--d:${300+i*160}ms">${esc(l)||' '}</span>`).join('')}<span class="caret"></span></pre>
+              </div>
+            </div>
+          </section>
+
+          <section id="how">
+            <div class="eyebrow">How it works</div>
+            <h2 class="sec">From request to done in three steps</h2>
+            <p class="sec-sub">No email ping-pong. Everything happens in your account.</p>
+            <div class="steps">
+              <div class="step"><div class="n">1</div><h3>Tell us what you need</h3><p>Pick a service or plan and describe the problem in a few lines.</p></div>
+              <div class="step"><div class="n">2</div><h3>Get a clear offer</h3><p>We reply within a day, and set up a call on Google Meet or Discord if needed.</p></div>
+              <div class="step"><div class="n">3</div><h3>We deliver, you track</h3><p>Follow progress and message the team any time in My Requests.</p></div>
+            </div>
+          </section>
+
+          <section id="tools">
+            <div class="eyebrow">Live tools</div>
+            <h2 class="sec">Try what we do, right now</h2>
+            <p class="sec-sub">Free tools that run live on our servers. No sign-up needed.</p>
+            <div class="steps">
+              <div class="step tool-teaser" onclick="go('demos','analyze')"><div class="tool-icon">${icon('palette')}</div><h3>Reverse-engineer a website</h3><p>Colours, fonts, tech stack and a build prompt in seconds.</p><span class="go">Try it →</span></div>
+              <div class="step tool-teaser" onclick="go('demos','domain')"><div class="tool-icon">${icon('mail')}</div><h3>Check your domain &amp; email</h3><p>DNS, SSL, and whether your email setup is safe.</p><span class="go">Try it →</span></div>
+              <div class="step tool-teaser" onclick="go('demos','audit')"><div class="tool-icon">${icon('shield')}</div><h3>Free website audit</h3><p>Security, email, SSL and speed checked in one go, instantly.</p><span class="go">Run it →</span></div>
+            </div>
+          </section>
+
+          ${pricingSectionHTML()}
+
+          <section id="work">
+            <div class="eyebrow">Our work</div>
+            <h2 class="sec">Real projects, not promises</h2>
+            <p class="sec-sub">A few things we've built and run in production.</p>
+            <div class="grid" id="caseGrid"></div>
+          </section>
+
+          <section id="faq">
+            <div class="eyebrow">FAQ</div>
+            <h2 class="sec">Questions, answered</h2>
+            <p class="sec-sub">Still unsure? Ask the assistant in the corner or send us a request.</p>
+            <div class="faq">${FAQ.map(([q,a])=>`<details><summary>${q}</summary><p>${a}</p></details>`).join('')}</div>
+          </section>
+
+          <section class="cta" id="start">
+            <h2 class="sec">Ready to hand it off?</h2>
+            <p class="sec-sub">Tell us what you need and get a clear offer, usually within a day.</p>
+            <div class="hero-actions center">
+              <button class="btn primary lg" onclick="startRequest()">Request a service →</button>
+              <button class="btn ghost lg" onclick="go('contact')">Contact us</button>
+            </div>
+          </section>
         </div>
-        <div class="hero-visual">${heroVisual()}</div>
-      </section>
-      <div class="stats">
-        <div class="stat"><b>${services.length||9}</b><span>Services, one team</span></div>
-        <div class="stat"><b>€19</b><span>Managed plans from / month</span></div>
-        <div class="stat"><b>&lt; 1 day</b><span>Typical response time</span></div>
-        <div class="stat"><b>24/7</b><span>Uptime monitoring</span></div>
-      </div>
-      <section id="how">
-        <div class="eyebrow">How it works</div>
-        <h2 class="sec">From request to done in three steps</h2>
-        <p class="sec-sub">No email ping-pong. Everything happens in your account.</p>
-        <div class="steps">
-          <div class="step"><div class="n">1</div><h3>Tell us what you need</h3><p>Pick a service or plan and describe the problem in a few lines.</p></div>
-          <div class="step"><div class="n">2</div><h3>Get a clear offer</h3><p>We review it, reply within a day, and set up a call on Google Meet or Discord if needed.</p></div>
-          <div class="step"><div class="n">3</div><h3>We deliver, you track</h3><p>Follow progress and message the team any time in My Requests.</p></div>
-        </div>
-      </section>
-      <section id="tools">
-        <div class="eyebrow">Live tools</div>
-        <h2 class="sec">Try what we do, right now</h2>
-        <p class="sec-sub">Free tools that run live on our servers. No sign-up needed.</p>
-        <div class="steps">
-          <div class="step tool-teaser" onclick="go('demos','analyze')"><div class="tool-icon">${icon('palette')}</div><h3>Reverse-engineer a website</h3><p>See any site's colours, fonts and tech stack in seconds.</p><span class="go">Try it →</span></div>
-          <div class="step tool-teaser" onclick="go('demos','domain')"><div class="tool-icon">${icon('mail')}</div><h3>Check your domain &amp; email</h3><p>DNS, SSL, and whether your email setup is safe.</p><span class="go">Try it →</span></div>
-          <div class="step tool-teaser" onclick="go('demos','scan')"><div class="tool-icon">${icon('shield')}</div><h3>Scan a site's security</h3><p>HTTPS, Cloudflare and security headers at a glance.</p><span class="go">Try it →</span></div>
-        </div>
-      </section>
-      <section id="services">
-        <div class="eyebrow">Services</div>
-        <h2 class="sec">Everything your business needs online</h2>
-        <p class="sec-sub">One-off projects, quoted up front. Want it handled every month instead? See the subscription plans below.</p>
-        <div class="grid" id="svcGrid"></div>
-      </section>
-      <div class="tech"><small>Technologies we work with</small><span>Cloudflare</span><span>Docker</span><span>Ubuntu</span><span>Nginx</span><span>PostgreSQL</span><span>Node.js</span><span>Firebase</span><span>Telegram</span></div>
-      ${pricingSectionHTML()}
-      <section id="work">
-        <div class="eyebrow">Our work</div>
-        <h2 class="sec">Real projects, not promises</h2>
-        <p class="sec-sub">A few things we've built and run in production.</p>
-        <div class="grid" id="caseGrid"></div>
-      </section>
-      <section class="cta">
-        <h2 class="sec">Ready to hand it off?</h2>
-        <p class="sec-sub">Tell us what you need and get a clear offer, usually within a day.</p>
-        <div class="hero-actions" style="justify-content:center">
-          <button class="btn primary" onclick="startRequest()">Request a service →</button>
-          <button class="btn ghost" onclick="go('contact')">Contact us</button>
-        </div>
-      </section>`;
+        <aside class="toc" aria-label="On this page"><h5>On this page</h5>${TOC.map(([id,l])=>`<a data-toc="${id}">${l}</a>`).join('')}</aside>
+      </div>`;
     const g = document.getElementById('svcGrid');
     g.innerHTML = services.map(s=>`<div class="svc"><h3>${esc(s.name)}</h3><p>${esc(s.description)}</p><div class="svc-foot"><span class="price">${esc(s.basePrice)}</span><button class="btn ghost sm" onclick="startRequest('${esc(s.name)}')">Request</button></div></div>`).join('') || '<p class="sec-sub">Loading…</p>';
     document.getElementById('caseGrid').innerHTML = CASES.map(c=>`<div class="svc"><span class="tag">${esc(c.tag)}</span><h3>${esc(c.title)}</h3><p>${esc(c.body)}</p><div class="result">✓ ${esc(c.result)}</div>${c.link?`<a class="btn ghost sm" style="margin-top:14px;align-self:flex-start" href="${c.link}" target="_blank" rel="noopener">View live →</a>`:''}</div>`).join('');
+    setupHomeEffects();
+  }
+
+  // Scroll reveal + "On this page" highlighting. Observers are dropped on navigation.
+  let homeObservers = [];
+  function setupHomeEffects(){
+    const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const heads = document.querySelectorAll('.home-main section > .eyebrow, .home-main section > h2.sec, .home-main section > .sec-sub, .split > div > .eyebrow, .split > div > h2.sec, .split > div > .sec-sub, .subs-inner > .subs-kicker, .subs-inner > h2.sec, .subs-inner > .sec-sub, .cta');
+    heads.forEach(el=>el.classList.add('reveal'));
+    document.querySelectorAll('.stats, #svcGrid, .cloud-grid, .steps, .price-grid, #caseGrid, .split').forEach(group=>{
+      [...group.children].forEach((el,i)=>{ el.classList.add('reveal'); el.style.setProperty('--d', Math.min(i,8)*70+'ms'); });
+    });
+    const items = document.querySelectorAll('.home-main .reveal');
+    if(reduce || !('IntersectionObserver' in window)){ items.forEach(el=>el.classList.add('in')); }
+    else {
+      const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin:'0px 0px -8% 0px', threshold:0.08 });
+      items.forEach(el=>io.observe(el)); homeObservers.push(io);
+    }
+    // Table of contents: highlight the section crossing the upper-middle of the screen.
+    const links = document.querySelectorAll('.toc a');
+    links.forEach(a=>a.onclick=()=>{ const el=document.getElementById(a.dataset.toc); if(el) el.scrollIntoView({behavior: reduce?'auto':'smooth'}); });
+    if('IntersectionObserver' in window){
+      const spy = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) links.forEach(a=>a.classList.toggle('active', a.dataset.toc===e.target.id)); }), { rootMargin:'-35% 0px -60% 0px' });
+      TOC.forEach(([id])=>{ const el=document.getElementById(id); if(el) spy.observe(el); }); homeObservers.push(spy);
+    }
   }
 
   function startRequest(preselect){ pending = { preselect: preselect||'' }; if(!me){ openAuth('register','Create an account to request a service.'); return; } renderRequest(); }
@@ -732,18 +1007,9 @@
     if(!me){ openAuth('login'); return renderHome(); }
     const opts = services.map(s=>`<option ${pending&&pending.preselect===s.name?'selected':''}>${esc(s.name)}</option>`).join('');
     app.innerHTML = `
-      <section style="max-width:720px;margin:0 auto">
-        <h2 class="sec">Request a service</h2><p class="sec-sub">We review it the moment you submit. Free during beta.</p>
-        <div class="card" style="margin-bottom:16px">
-          <h3 style="margin:0 0 4px">💬 Not sure what you need? Ask us</h3>
-          <p class="sec-sub" style="font-size:14px;margin-bottom:12px">Describe your problem and we'll suggest the right service.</p>
-          <div id="chatBox" style="max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:4px 2px"></div>
-          <div id="chatTyping" class="sec-sub" style="font-size:13px;display:none;margin-top:6px">Typing…</div>
-          <div style="display:flex;gap:8px;margin-top:10px">
-            <input id="chatIn" placeholder="e.g. I need to monitor my websites and servers with alerts" style="flex:1" onkeydown="if(event.key==='Enter'){event.preventDefault();sendChat();}">
-            <button class="btn primary sm" onclick="sendChat()">Send</button>
-          </div>
-        </div>
+      <section style="max-width:720px;margin:0 auto;padding-top:48px">
+        <div class="eyebrow">New request</div>
+        <h2 class="sec">Request a service</h2><p class="sec-sub">Tell us what you need and we'll reply with a clear offer within one business day.</p>
         <div class="card">
           <div id="reqNotice"></div>
           <form id="reqForm">
@@ -755,6 +1021,16 @@
             <div id="checkoutArea"></div>
             <button class="btn primary" type="submit" style="width:100%;margin-top:6px" id="reqSubmit">Get my offer →</button>
           </form>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <h3 style="margin:0 0 4px">💬 Not sure what you need? Ask us</h3>
+          <p class="sec-sub" style="font-size:14px;margin-bottom:12px">Describe your problem and we'll suggest the right service.</p>
+          <div id="chatBox" style="max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:4px 2px"></div>
+          <div id="chatTyping" class="sec-sub" style="font-size:13px;display:none;margin-top:6px">Typing…</div>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <input id="chatIn" placeholder="e.g. I need to monitor my websites and servers with alerts" style="flex:1" onkeydown="if(event.key==='Enter'){event.preventDefault();sendChat();}">
+            <button class="btn primary sm" onclick="sendChat()">Send</button>
+          </div>
         </div>
       </section>`;
     document.getElementById('reqForm').addEventListener('submit', onRequestSubmit);
@@ -851,8 +1127,12 @@
     mineTimer = setInterval(pollMine, 12000);   // pick up the team's reply (~1 min)
   }
   function threadHTML(l){
-    const msgs = l.messages||[];
+    const msgs = (l.messages||[]).map(m=>({...m}));
     if(!msgs.length) return '<div class="sec-sub" style="font-size:13px">No messages yet.</div>';
+    // Older requests stored the questions separately: fold them into our first reply.
+    const qs = String((l.analysis||{}).questions||'').split('\n').map(q=>q.trim()).filter(Boolean);
+    const first = msgs.find(m=>m.sender==='team');
+    if(first && qs.length && !first.text.includes(qs[0])) first.text += '\n\nTo move faster, could you tell us:\n' + qs.map(q=>'\u2022 '+q).join('\n');
     return msgs.map(m=>{
       const team = m.sender==='team';
       return `<div style="display:flex;justify-content:${team?'flex-start':'flex-end'};margin:6px 0"><div style="max-width:85%;background:${team?'var(--panel2)':'var(--accent)'};color:${team?'var(--ink)':'#04111C'};border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:14px;white-space:pre-wrap">${esc(m.text)}</div></div>`;
@@ -878,7 +1158,6 @@
             </div>
             <p class="sec-sub" style="font-size:12px;margin-top:6px">Our team usually replies within a minute. You can also arrange a call on Google Meet or Discord.</p>
           </div>
-          ${a.questions?`<div class="ai-box"><h4>What we still need from you</h4><ul style="margin:0 0 0 18px;color:var(--muted)">${a.questions.split('\n').map(q=>`<li>${esc(q)}</li>`).join('')}</ul></div>`:''}
         </div>`;
       }).join('');
       // Jump each thread to the latest message.
@@ -1036,7 +1315,7 @@
     await loadServices();
     await loadMe();                       // sets backendFirebase from /api/auth/me
     if(useFirebase()){ await initFirebase(); }
-    renderHome();
+    currentView='home'; renderHome();
   })();
 </script>
 </body>

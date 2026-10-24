@@ -236,7 +236,10 @@ app.post("/api/leads", leadLimiter, requireAuth, async (req, res) => {
   // Seed the conversation thread: the customer's opening message, then our first reply.
   await LeadMessage.create({ leadId: lead.id, sender: "customer", text: problem.slice(0, 4000) });
   if (analysis.draftReply) {
-    await LeadMessage.create({ leadId: lead.id, sender: "team", text: String(analysis.draftReply).slice(0, 4000) });
+    // Our first reply also asks the follow-up questions, so everything lives in the chat.
+    const qs = String(analysis.questions || "").split("\n").map((q) => q.trim()).filter(Boolean);
+    const first = String(analysis.draftReply) + (qs.length ? "\n\nTo move faster, could you tell us:\n" + qs.map((q) => "\u2022 " + q).join("\n") : "");
+    await LeadMessage.create({ leadId: lead.id, sender: "team", text: first.slice(0, 4000) });
   }
 
   await logActivity(req.user.id, "NEW_LEAD", `${name} · ${analysis.category} · P${analysis.priority}`, lead.id);

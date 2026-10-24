@@ -97,6 +97,16 @@ const SERVICE_RULES = [
     ]
   },
   {
+    category: "Website & App Prompt Engineering",
+    keywords: ["prompt", "prompt engineering", "lovable", "v0", "bolt", "cursor", "design spec", "design system", "recreate", "rebuild the design", "like this site", "ai builder"],
+    estimate: "2-4 hours",
+    questions: [
+      "Which website or app should we base the prompt on?",
+      "Which tool will you build with - Lovable, v0, Claude, Cursor or your own developers?",
+      "What should change from the original - your brand, content or pages?"
+    ]
+  },
+  {
     category: "Website + Domain + Protection",
     keywords: ["website", "web site", "domain", "hosting", "landing page", "build my site", "online store", "wordpress", "web presence", "subscription", "make me a site", "e-commerce"],
     estimate: "3-7 days setup",

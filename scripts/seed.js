@@ -13,6 +13,7 @@ const SERVICES = [
   { name: "Cloudflare / Network", description: "DNS, SSL, WAF, DDoS protection and domain setup.", basePrice: "from €90", keywords: "cloudflare,dns,ssl,waf,firewall,domain" },
   { name: "Domain Transfer & Setup", description: "Move your domain to a new registrar, point DNS and set up SSL, with no downtime.", basePrice: "from €40", keywords: "domain,transfer,registrar,dns,nameserver,move domain,ssl,buy domain" },
   { name: "Monitoring", description: "Uptime monitoring, alerts, logging and dashboards.", basePrice: "from €150", keywords: "monitor,uptime,alert,grafana,logs" },
+  { name: "Website & App Prompt Engineering", description: "We turn any website or app into a build-ready prompt and design spec (colours, type, layout, components) for your team or AI site builders like Lovable, v0 and Claude.", basePrice: "from €60", keywords: "prompt,prompt engineering,lovable,v0,bolt,cursor,design spec,design system,recreate,rebuild" },
   { name: "Website + Domain + Protection", description: "A complete managed web presence: we build your website, set up your domain and SSL, and protect it with Cloudflare. All-in-one, monthly. See our Starter / Business / Pro plans.", basePrice: "from €19 / month", keywords: "website,domain,hosting,subscription,monthly,protection,managed,build my site,landing page" }
 ];
 
