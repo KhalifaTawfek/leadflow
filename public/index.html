@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LeadFlow AI — IT, Cyber & Automation Services</title>
-<meta name="description" content="Account security, servers, automation, Docker, Cloudflare and monitoring. Register, request a service, and track it.">
+<title>LeadFlow · IT, Cyber, Cloud & Automation</title>
+<meta name="description" content="Account security, servers, cloud, automation, chatbots, Docker, Cloudflare and monitoring. Register, request a service, and track it.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%233ecf8e'/><text x='50' y='55' font-size='46' font-weight='bold' text-anchor='middle' fill='%23062018'>LF</text></svg>">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/icon-192.png">
@@ -98,6 +98,10 @@
   .foot-grid{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:flex-start}
   .foot-grid a{color:var(--muted)}.foot-grid a:hover{color:var(--ink)}
   .foot-links{display:flex;gap:18px;flex-wrap:wrap}
+  /* subscriptions band */
+  .subs{padding:30px 0}
+  .subs-inner{background:linear-gradient(180deg,rgba(62,207,142,.08),rgba(62,207,142,.02));border:1px solid rgba(62,207,142,.28);border-radius:22px;padding:30px 26px}
+  .subs-kicker{display:inline-block;background:rgba(62,207,142,.16);color:var(--green);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 11px;border-radius:999px;margin-bottom:10px}
   @media(max-width:820px){.hero{grid-template-columns:1fr;padding:40px 0 18px}.grid{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.price-grid{grid-template-columns:1fr}}
   @media(max-width:520px){.grid{grid-template-columns:1fr}.nav .links{gap:12px}}
 </style>
@@ -105,7 +109,7 @@
 <body>
 <header>
   <nav class="nav">
-    <a class="brand" href="#" onclick="go('home');return false"><span class="mark">LF</span> LeadFlow AI</a>
+    <a class="brand" href="#" onclick="go('home');return false"><span class="mark">LF</span> LeadFlow</a>
     <div class="links" id="navLinks"></div>
   </nav>
 </header>
@@ -115,18 +119,18 @@
 <footer>
   <div class="wrap foot-grid">
     <div>
-      <div class="brand" style="font-size:17px;margin-bottom:6px"><span class="mark">LF</span> LeadFlow AI</div>
+      <div class="brand" style="font-size:17px;margin-bottom:6px"><span class="mark">LF</span> LeadFlow</div>
       <div>IT · Cyber · Automation services · Remote, worldwide</div>
       <div style="margin-top:6px"><a href="mailto:admin@cookblog.net">admin@cookblog.net</a></div>
     </div>
     <div class="foot-links">
-      <a onclick="goToSection('pricing')" style="cursor:pointer">Pricing</a>
+      <a onclick="goToSection('pricing')" style="cursor:pointer">Plans</a>
       <a href="/terms">Terms of Service</a>
       <a href="/privacy">Privacy Policy</a>
       <a href="/admin">Staff login</a>
     </div>
   </div>
-  <div class="wrap" style="margin-top:16px;font-size:13px">© <span id="footYear"></span> LeadFlow AI. All rights reserved.</div>
+  <div class="wrap" style="margin-top:16px;font-size:13px">© <span id="footYear"></span> LeadFlow. All rights reserved.</div>
 </footer>
 <script>document.getElementById('footYear').textContent=new Date().getFullYear();</script>
 
@@ -144,17 +148,19 @@
 <script>
   let me = null, services = [], serviceMap = {}, pending = null, planPending = null;
 
-  // Real portfolio — one proof example per service (things actually built).
+  // Real portfolio - one proof example per service (things actually built).
   const CASES = [
-    { tag:"Servers / RDP", title:"Multi-site Ubuntu VPS", body:"Set up and secured an Ubuntu server — non-root user, SSH keys, firewall, and Nginx reverse proxy — hosting three live production sites on one machine, each with HTTPS.", result:"3 sites live, isolated & auto-restarting", link:"https://cookblog.net" },
+    { tag:"Servers / RDP", title:"Multi-site Ubuntu VPS", body:"Set up and secured an Ubuntu server - non-root user, SSH keys, firewall, and Nginx reverse proxy - hosting three live production sites on one machine, each with HTTPS.", result:"3 sites live, isolated & auto-restarting", link:"https://cookblog.net" },
     { tag:"Docker / DevOps", title:"One-command Docker deploy", body:"Packaged a Node.js + PostgreSQL app into Docker Compose so the whole stack builds and starts with a single command, with a clean rebuild and update flow.", result:"Reproducible, one-command deploys", link:"" },
     { tag:"Cloudflare / Network", title:"DNS, SSL & DDoS protection", body:"Moved cookblog.net onto Cloudflare: configured DNS, Full-strict SSL, and DDoS/WAF protection while hiding the origin server's real IP.", result:"Encrypted, shielded, faster", link:"https://cookblog.net" },
     { tag:"Account Security", title:"Hardened web-app login", body:"Implemented bcrypt password hashing, signed httpOnly sessions, login rate-limiting, and role-based access to protect user accounts from brute-force and takeover.", result:"No plaintext passwords · brute-force blocked", link:"" },
-    { tag:"Automation", title:"AI-powered lead intake", body:"Built a system that captures customer requests, auto-classifies them with an AI agent, scores urgency, drafts replies, and notifies the team and customer by email — automatically.", result:"Every request triaged in seconds", link:"" },
-    { tag:"Monitoring", title:"Health checks & alerts", body:"Added a health endpoint reporting API, database, and agent status, plus an automated daily report — so issues are caught before customers notice.", result:"Early warning on downtime", link:"" }
+    { tag:"Automation", title:"Automated lead intake", body:"Built a system that captures customer requests, classifies them, scores urgency, drafts replies, and notifies the team and customer by email, automatically.", result:"Every request triaged in seconds", link:"" },
+    { tag:"Chatbots & Integrations", title:"Telegram alert bot", body:"Built a bot that delivers instant notifications and can connect a site to Telegram, WhatsApp or Discord, plus custom API and tool integrations.", result:"Real-time alerts & connected tools", link:"" },
+    { tag:"Cloud", title:"Cloud hosting & deploys", body:"Provisioned and secured cloud servers, set up domains, SSL and backups, and shipped apps that scale, all managed for the client.", result:"Hosted, scaled & looked after", link:"" },
+    { tag:"Monitoring", title:"Health checks & alerts", body:"Added a health endpoint reporting API, database, and agent status, plus an automated daily report - so issues are caught before customers notice.", result:"Early warning on downtime", link:"" }
   ];
 
-  // Managed monthly plans — the recurring offer. Prices in EUR.
+  // Managed monthly plans - the recurring offer. Prices in EUR.
   const PLANS = [
     { id:"starter", name:"Starter", price:"€19", period:"/mo", tagline:"Keep a site online, safe and backed up.",
       features:["Managed hosting on our server","SSL certificate (HTTPS)","Cloudflare protection (DDoS + WAF)","Weekly off-site backups","Uptime monitoring + alerts"], featured:false },
@@ -174,11 +180,14 @@
         <button class="btn ${p.featured?'primary':'ghost'}" style="width:100%" onclick="choosePlan('${p.id}')">Choose ${esc(p.name)}</button>
       </div>`).join('');
     return `
-      <section id="pricing">
-        <h2 class="sec">Managed plans</h2>
-        <p class="sec-sub">Website, hosting, protection and domain — handled every month. Cancel anytime. One-off builds start at €250 (waived on a 12-month plan).</p>
-        <div class="price-grid">${cards}</div>
-        <p class="sec-sub" style="margin-top:16px;font-size:13px">Prices exclude VAT where applicable. "Protection" means backups, Cloudflare, updates and monitoring — not a guarantee against every attack. Full terms apply.</p>
+      <section id="pricing" class="subs">
+        <div class="subs-inner">
+          <span class="subs-kicker">Subscriptions</span>
+          <h2 class="sec">Subscription plans</h2>
+          <p class="sec-sub">Website, hosting, protection and domain, handled every month. Cancel anytime. One-off builds start at €250 (waived on a 12-month plan).</p>
+          <div class="price-grid">${cards}</div>
+          <p class="sec-sub" style="margin-top:16px;font-size:13px">Prices exclude VAT where applicable. "Protection" means backups, Cloudflare, updates and monitoring, not a guarantee against every attack. Full terms apply.</p>
+        </div>
       </section>`;
   }
   function choosePlan(id){
@@ -220,12 +229,13 @@
     return d;
   }
   const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const GOOGLE_G = '<svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true" style="flex:none"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>';
   const app = document.getElementById('app');
 
   async function loadMe(){ try{ const d=await api('/api/auth/me'); me=d.user; backendFirebase=!!d.firebase; }catch(e){ me=null; } renderNav(); }
   function renderNav(){
     const el = document.getElementById('navLinks');
-    let s = `<a onclick="go('home')">Services</a><a onclick="goToSection('pricing')">Pricing</a><a onclick="go('demos')">Live Demos</a><a onclick="goToSection('work')">Our Work</a><a onclick="go('contact')">Contact</a>`;
+    let s = `<a onclick="go('home')">Services</a><a onclick="goToSection('pricing')">Plans</a><a onclick="go('demos')">Live Demos</a><a onclick="goToSection('work')">Our Work</a><a onclick="go('contact')">Contact</a>`;
     if(me && (me.role==='ADMIN' || me.role==='SALES')){
       s += `<a class="btn primary sm" href="/admin" style="text-decoration:none">🛡 Admin panel</a>
             <span class="chip"><span class="av">${esc((me.username[0]||'?').toUpperCase())}</span>${esc(me.username)}</span>
@@ -254,14 +264,14 @@
     app.innerHTML = `
       <section style="max-width:720px;margin:0 auto;padding-top:30px">
         <h2 class="sec">Contact us</h2>
-        <p class="sec-sub">Questions before you request a service? Reach out — we usually reply within one business day.</p>
+        <p class="sec-sub">Questions before you request a service? Reach out - we usually reply within one business day.</p>
         <div class="card">
           <div class="checkout" style="margin-top:0">
             <div class="row"><span>Email</span><span><a href="mailto:admin@cookblog.net" style="color:var(--green);font-weight:700">admin@cookblog.net</a></span></div>
             <div class="row"><span>Service area</span><span>Remote · worldwide</span></div>
             <div class="row"><span>Response time</span><span>Within 1 business day</span></div>
           </div>
-          <p class="sec-sub" style="margin-top:14px">The fastest way to start is to <a onclick="startRequest()" style="color:var(--green);cursor:pointer;font-weight:700">request a service →</a> — our AI triages it instantly and we get back to you.</p>
+          <p class="sec-sub" style="margin-top:14px">The fastest way to start is to <a onclick="startRequest()" style="color:var(--green);cursor:pointer;font-weight:700">request a service →</a> and we get back to you fast.</p>
         </div>
       </section>`;
   }
@@ -296,14 +306,14 @@
   function renderDemos(){
     app.innerHTML = `
       <section style="padding-top:34px">
-        <h2 class="sec">Live demos — see it actually work</h2>
+        <h2 class="sec">Live demos - see it actually work</h2>
         <p class="sec-sub">These run for real, right now, in your browser. No sign-up needed.</p>
         <div class="grid" style="grid-template-columns:1fr 1fr;gap:18px">
 
           <div class="card">
             <span class="price" style="color:var(--blue)">Account Security</span>
             <h3 style="margin:4px 0 6px">🔒 Password security checker</h3>
-            <p class="sec-sub" style="font-size:14px">Type a password — we score its strength and check it against real breach databases (privacy-safe, only a hash prefix is sent).</p>
+            <p class="sec-sub" style="font-size:14px">Type a password - we score its strength and check it against real breach databases (privacy-safe, only a hash prefix is sent).</p>
             <input type="password" id="pwIn" placeholder="Type a test password…">
             <button class="btn primary sm" id="pwBtn" style="margin-top:10px">Check it</button>
             <div id="pwOut" style="margin-top:12px"></div>
@@ -312,7 +322,7 @@
           <div class="card">
             <span class="price" style="color:var(--blue)">Cloudflare / Network</span>
             <h3 style="margin:4px 0 6px">🌐 Website security scanner</h3>
-            <p class="sec-sub" style="font-size:14px">Enter any website — we check HTTPS, response time, Cloudflare protection, and security headers.</p>
+            <p class="sec-sub" style="font-size:14px">Enter any website - we check HTTPS, response time, Cloudflare protection, and security headers.</p>
             <input id="scanIn" placeholder="example.com">
             <button class="btn primary sm" id="scanBtn" style="margin-top:10px">Scan site</button>
             <div id="scanOut" style="margin-top:12px"></div>
@@ -321,7 +331,7 @@
           <div class="card">
             <span class="price" style="color:var(--blue)">Monitoring · Servers</span>
             <h3 style="margin:4px 0 6px">📡 Live system status</h3>
-            <p class="sec-sub" style="font-size:14px">Real-time uptime of the sites we host — pinged live, refreshing automatically.</p>
+            <p class="sec-sub" style="font-size:14px">Real-time uptime of the sites we host - pinged live, refreshing automatically.</p>
             <div id="statusOut"><div class="sec-sub">Checking…</div></div>
           </div>
 
@@ -342,9 +352,9 @@
       out.innerHTML=`
         <div class="checkout" style="margin-top:0">
           <div class="row"><span>Strength</span><span style="color:${colors[strength]};font-weight:800">${labels[strength]}</span></div>
-          <div class="row"><span>Found in known breaches</span><span style="font-weight:800;color:${breach>0?'#ef6f5c':(breach===0?'#3ecf8e':'#9db3aa')}">${breach>0?(breach.toLocaleString()+' times ⚠️'):(breach===0?'No ✓':'—')}</span></div>
+          <div class="row"><span>Found in known breaches</span><span style="font-weight:800;color:${breach>0?'#ef6f5c':(breach===0?'#3ecf8e':'#9db3aa')}">${breach>0?(breach.toLocaleString()+' times ⚠️'):(breach===0?'No ✓':'-')}</span></div>
         </div>
-        <p class="sec-sub" style="font-size:13px;margin-top:8px">${breach>0?'This password is compromised — never use it. This is exactly the kind of risk we fix.':'We harden accounts with 2FA and strong-password policies.'}</p>`;
+        <p class="sec-sub" style="font-size:13px;margin-top:8px">${breach>0?'This password is compromised - never use it. This is exactly the kind of risk we fix.':'We harden accounts with 2FA and strong-password policies.'}</p>`;
     }
     pwBtn.addEventListener('click',runPw);
     document.getElementById('pwIn').addEventListener('keydown',e=>{if(e.key==='Enter')runPw();});
@@ -362,7 +372,7 @@
           <div class="row"><span>Response time</span><span style="font-weight:800">${d.responseMs} ms</span></div>
           <div class="row"><span>Cloudflare protected</span><span style="font-weight:800;color:${d.cloudflare?'#3ecf8e':'#f0b84f'}">${d.cloudflare?'Yes ✓':'No'}</span></div>
           ${sh}
-        </div>${!d.cloudflare?'<p class="sec-sub" style="font-size:13px;margin-top:8px">Not behind Cloudflare — we can add DDoS protection & a WAF.</p>':''}`;
+        </div>${!d.cloudflare?'<p class="sec-sub" style="font-size:13px;margin-top:8px">Not behind Cloudflare - we can add DDoS protection & a WAF.</p>':''}`;
       }catch(e){ out.innerHTML=`<div class="notice err">${esc(e.message)}</div>`; }
     });
 
@@ -382,24 +392,24 @@
       <section class="hero">
         <div>
           <h1>IT, Cyber &amp; Automation, <span>handled for you.</span></h1>
-          <p class="lead">Account security, servers &amp; RDP, automation, Docker, Cloudflare and monitoring. Create an account, request a service, and track it — our AI triages every request instantly.</p>
+          <p class="lead">Account security, servers &amp; RDP, cloud, automation, chatbots, Docker, Cloudflare and monitoring. Create an account, request a service, and track it, with a fast response every time.</p>
           <div class="hero-actions">
             <button class="btn primary" onclick="startRequest()">Request a service →</button>
-            <button class="btn ghost" onclick="goToSection('pricing')">View plans &amp; pricing</button>
+            <button class="btn ghost" onclick="goToSection('pricing')">View plans</button>
           </div>
         </div>
         <div class="card">
           <p style="color:var(--green);font-weight:800;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">How it works</p>
           <ol style="list-style:none;display:grid;gap:14px">
             <li><b>1 · Create an account &amp; request</b><br><span style="color:var(--muted);font-size:14px">Pick a service and describe your problem.</span></li>
-            <li><b>2 · AI triages it instantly</b><br><span style="color:var(--muted);font-size:14px">Category, urgency, estimate, and next questions.</span></li>
+            <li><b>2 · We review &amp; prioritise it</b><br><span style="color:var(--muted);font-size:14px">Sorted, estimated, and routed to the right person.</span></li>
             <li><b>3 · We deliver &amp; you track it</b><br><span style="color:var(--muted);font-size:14px">Watch the status update in My Requests.</span></li>
           </ol>
         </div>
       </section>
-      <section id="services"><h2 class="sec">Our services</h2><p class="sec-sub">One-off projects, quoted up front. Need it handled month to month? See our managed plans below.</p><div class="grid" id="svcGrid"></div></section>
+      <section id="services"><h2 class="sec">Our services</h2><p class="sec-sub">One-off projects, quoted up front. Need it handled month to month? See our subscription plans below.</p><div class="grid" id="svcGrid"></div></section>
       ${pricingSectionHTML()}
-      <section id="work"><h2 class="sec">Our work</h2><p class="sec-sub">Real projects we've delivered — proof, not promises.</p><div class="grid" id="caseGrid"></div></section>`;
+      <section id="work"><h2 class="sec">Our work</h2><p class="sec-sub">Real projects we've delivered - proof, not promises.</p><div class="grid" id="caseGrid"></div></section>`;
     const g = document.getElementById('svcGrid');
     g.innerHTML = services.map(s=>`<div class="svc"><h3>${esc(s.name)}</h3><p>${esc(s.description)}</p><span class="price">${esc(s.basePrice)}</span><button class="btn ghost sm" onclick="startRequest('${esc(s.name)}')">Request this</button></div>`).join('') || '<p class="sec-sub">Loading…</p>';
     document.getElementById('caseGrid').innerHTML = CASES.map(c=>`<div class="svc"><span class="price" style="color:var(--blue)">${esc(c.tag)}</span><h3 style="margin-top:2px">${esc(c.title)}</h3><p>${esc(c.body)}</p><div style="color:var(--green);font-weight:700;font-size:13px;margin-bottom:12px">✓ ${esc(c.result)}</div>${c.link?`<a class="btn ghost sm" href="${c.link}" target="_blank" rel="noopener">View live →</a>`:''}</div>`).join('');
@@ -412,12 +422,12 @@
     const opts = services.map(s=>`<option ${pending&&pending.preselect===s.name?'selected':''}>${esc(s.name)}</option>`).join('');
     app.innerHTML = `
       <section style="max-width:720px;margin:0 auto">
-        <h2 class="sec">Request a service</h2><p class="sec-sub">Our AI reviews it the moment you submit. Free during beta.</p>
+        <h2 class="sec">Request a service</h2><p class="sec-sub">We review it the moment you submit. Free during beta.</p>
         <div class="card" style="margin-bottom:16px">
-          <h3 style="margin:0 0 4px">💬 Not sure what you need? Ask our AI</h3>
-          <p class="sec-sub" style="font-size:14px;margin-bottom:12px">Describe your problem and our AI assistant will suggest the right service — live.</p>
+          <h3 style="margin:0 0 4px">💬 Not sure what you need? Ask us</h3>
+          <p class="sec-sub" style="font-size:14px;margin-bottom:12px">Describe your problem and we'll suggest the right service.</p>
           <div id="chatBox" style="max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:4px 2px"></div>
-          <div id="chatTyping" class="sec-sub" style="font-size:13px;display:none;margin-top:6px">AI is typing…</div>
+          <div id="chatTyping" class="sec-sub" style="font-size:13px;display:none;margin-top:6px">Typing…</div>
           <div style="display:flex;gap:8px;margin-top:10px">
             <input id="chatIn" placeholder="e.g. I need to monitor my websites and servers with alerts" style="flex:1" onkeydown="if(event.key==='Enter'){event.preventDefault();sendChat();}">
             <button class="btn primary sm" onclick="sendChat()">Send</button>
@@ -426,24 +436,18 @@
         <div class="card">
           <div id="reqNotice"></div>
           <form id="reqForm">
-            <div class="form-grid">
-              <label>Full name<input name="name" value="${esc(me.username)}" placeholder="Jane Cohen" required></label>
-              <label>Contact email<input name="email" type="email" placeholder="you@email.com" required></label>
-            </div>
+            <label>Full name<input name="name" value="${esc(me.username)}" placeholder="Your name" required></label>
             <label>Service<select name="serviceType" id="svcSel" required><option value="">Choose…</option>${opts}</select></label>
             <label>Describe your problem<textarea name="problem" placeholder="e.g. I keep getting login attempts on my accounts and want to secure them." required>${planPending?esc(`I'd like the ${planPending.name} managed plan (${planPending.price}${planPending.period}). Please set up my website, hosting, protection`+(planPending.id!=='starter'?' and domain':'')+'.'):''}</textarea></label>
-            <div class="form-grid">
-              <label>Phone<input name="phone" placeholder="+1 555 123 4567" required></label>
-              <label>Approximate budget<input name="budget" placeholder="$500 (optional)"></label>
-            </div>
-            <p style="color:var(--soft);font-size:12px;margin-top:-4px">Our AI reads your request and sets the urgency and priority automatically — no need to pick.</p>
+            <label>Phone<input name="phone" placeholder="+40 712 345 678" required></label>
+            <p style="color:var(--soft);font-size:12px;margin-top:-4px">We set the urgency and priority for you, no need to pick.</p>
             <div id="checkoutArea"></div>
             <button class="btn primary" type="submit" style="width:100%;margin-top:6px" id="reqSubmit">Continue to checkout →</button>
           </form>
         </div>
       </section>`;
     document.getElementById('reqForm').addEventListener('submit', onRequestSubmit);
-    chatMessages=[{role:'assistant',content:"Hi! Tell me what you're trying to solve and I'll point you to the right service — for example: “I need to monitor my websites and servers with alerts.”"}];
+    chatMessages=[{role:'assistant',content:"Hi! Tell me what you're trying to solve and I'll point you to the right service - for example: “I need to monitor my websites and servers with alerts.”"}];
     renderChat();
   }
 
@@ -467,7 +471,7 @@
       const r=await api('/api/agent/chat',{method:'POST',body:JSON.stringify({messages:chatMessages})});
       chatMessages.push({role:'assistant',content:r.reply||'…'});
     }catch(e){
-      chatMessages.push({role:'assistant',content:'Sorry, I had trouble responding just now — please try again, or fill in the form below and our team will follow up.'});
+      chatMessages.push({role:'assistant',content:'Sorry, I had trouble responding just now - please try again, or fill in the form below and our team will follow up.'});
     }
     if(typing)typing.style.display='none';
     renderChat();
@@ -478,6 +482,7 @@
     e.preventDefault();
     const form = e.target;
     const data = Object.fromEntries(new FormData(form).entries());
+    data.email = (me && me.email) || (fbAuth && fbAuth.currentUser && fbAuth.currentUser.email) || '';
     const notice = document.getElementById('reqNotice');
     notice.innerHTML='';
     if(!data.serviceType){ notice.innerHTML='<div class="notice err">Please choose a service.</div>'; return; }
@@ -489,7 +494,7 @@
       document.getElementById('checkoutArea').innerHTML = `
         <div class="checkout">
           <div class="row"><span>Service</span><span>${esc(data.serviceType)}</span></div>
-          <div class="row"><span>Starting price</span><span>${esc(svc.basePrice||'—')}</span></div>
+          <div class="row"><span>Our offer</span><span>${esc(svc.basePrice||'On request')}</span></div>
           <div class="row total"><span>Due today <span class="beta">BETA</span></span><span class="free">FREE</span></div>
         </div>
         <p class="sec-sub" style="margin:10px 0 0;font-size:13px">No payment required during beta. Click below to place your request.</p>`;
@@ -510,7 +515,7 @@
             <h2 class="sec" style="margin-top:8px">Request placed!</h2>
             <p class="sec-sub">${esc(res.message)}</p>
             <div class="ai-box" style="text-align:left">
-              <h4>🤖 Our AI reviewed your request</h4>
+              <h4>✅ We received your request</h4>
               <p><b>Category:</b> ${esc(a.category)} · <b>Est.:</b> ${esc(a.estimateHours)}</p>
               ${a.reply?`<p style="margin-top:10px;color:var(--soft);font-size:12px;text-transform:uppercase;letter-spacing:.05em">Our reply to you</p><p style="white-space:pre-wrap;margin-top:4px">${esc(a.reply)}</p>`:''}
               ${a.questions?`<p style="margin-top:10px;color:var(--muted)">To move faster, please have these ready:</p><ul style="margin:6px 0 0 18px;color:var(--muted)">${a.questions.split('\n').map(q=>`<li>${esc(q)}</li>`).join('')}</ul>`:''}
@@ -539,7 +544,7 @@
         const a=l.analysis||{}; const cls='b-'+(l.statusLabel||'').replace(/\s/g,'');
         return `<div class="req">
           <div class="top"><h3>${esc(a.category||l.serviceType)}</h3><span class="badge ${cls}">${esc(l.statusLabel)}</span></div>
-          <div class="meta">Requested ${new Date(l.createdAt).toLocaleDateString()} · Est. ${esc(a.estimateHours||'—')} · Urgency ${esc(a.aiUrgency||a.urgencyLabel||l.urgency)}</div>
+          <div class="meta">Requested ${new Date(l.createdAt).toLocaleDateString()} · Est. ${esc(a.estimateHours||'-')} · Urgency ${esc(a.aiUrgency||a.urgencyLabel||l.urgency)}</div>
           <p>${esc(l.problem)}</p>
           ${l.reply?`<div class="ai-box" style="border-color:rgba(62,207,142,.45)"><h4>💬 Reply from our team</h4><p style="white-space:pre-wrap">${esc(l.reply)}</p><p style="color:var(--soft);font-size:12px;margin-top:6px">${l.repliedAt?new Date(l.repliedAt).toLocaleString():''}</p></div>`:''}
           ${a.questions?`<div class="ai-box"><h4>What we still need from you</h4><ul style="margin:0 0 0 18px;color:var(--muted)">${a.questions.split('\n').map(q=>`<li>${esc(q)}</li>`).join('')}</ul></div>`:''}
@@ -569,7 +574,7 @@
       ${fb&&mode==='login'?`<div style="text-align:right;margin:-8px 0 12px"><a id="forgotLink" style="color:var(--green);cursor:pointer;font-size:13px">Forgot password?</a></div>`:''}
       <button class="btn primary" style="width:100%" id="authBtn">${mode==='login'?'Log in':'Create account'}</button>
       ${fb?`<div style="display:flex;align-items:center;gap:10px;color:var(--soft);font-size:12px;margin:12px 0"><span style="flex:1;height:1px;background:var(--line)"></span>or<span style="flex:1;height:1px;background:var(--line)"></span></div>
-            <button class="btn ghost" style="width:100%" id="googleBtn">Continue with Google</button>`:''}
+            <button class="btn ghost" style="width:100%;display:inline-flex;align-items:center;justify-content:center;gap:10px" id="googleBtn">${GOOGLE_G}${mode==='register'?'Sign up with Google':'Continue with Google'}</button>`:''}
       <p class="switch" id="authSwitch">${mode==='login'?`New here? <a onclick="openAuth('register')">Create an account</a>`:`Already have an account? <a onclick="openAuth('login')">Log in</a>`}</p>`;
     document.getElementById('authBtn').addEventListener('click', doAuth);
     document.getElementById('authPass').addEventListener('keydown', e=>{ if(e.key==='Enter') doAuth(); });
@@ -615,16 +620,16 @@
   async function doReset(){
     const email=(document.getElementById('authEmail').value||'').trim();
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return authError('Enter your email above first, then click Forgot password.');
-    try{ await FB.sendPasswordResetEmail(fbAuth, email); document.getElementById('authNotice').innerHTML='<div class="notice info">Password reset email sent — check your inbox.</div>'; }
+    try{ await FB.sendPasswordResetEmail(fbAuth, email); document.getElementById('authNotice').innerHTML='<div class="notice info">Password reset email sent - check your inbox.</div>'; }
     catch(err){ authError(fbMsg(err)); }
   }
   function fbMsg(err){
     const c=(err&&err.code)||'';
-    if(c.includes('email-already-in-use')) return 'That email already has an account — try logging in.';
+    if(c.includes('email-already-in-use')) return 'That email already has an account - try logging in.';
     if(c.includes('invalid-credential')||c.includes('wrong-password')||c.includes('user-not-found')) return 'Invalid email or password.';
     if(c.includes('weak-password')) return 'Password is too weak.';
     if(c.includes('popup-closed')||c.includes('cancelled-popup')) return 'Sign-in was cancelled.';
-    if(c.includes('too-many-requests')) return 'Too many attempts — please wait a moment.';
+    if(c.includes('too-many-requests')) return 'Too many attempts - please wait a moment.';
     return (err&&err.message)||'Authentication failed.';
   }
 

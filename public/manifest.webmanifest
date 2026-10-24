@@ -1,7 +1,7 @@
 {
-  "name": "LeadFlow AI",
+  "name": "LeadFlow",
   "short_name": "LeadFlow",
-  "description": "AI-assisted IT services — request help and track your requests.",
+  "description": "IT, cyber and cloud services. Request help and track your requests.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

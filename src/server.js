@@ -116,7 +116,7 @@ async function provisionFirebaseUser(decoded) {
     user = await User.create({ username: await uniqueUsername(base), email, firebaseUid: decoded.uid, role: wantRole });
     await logActivity(user.id, "REGISTER", `${user.username} (${wantRole}) via Firebase`);
   }
-  return { id: user.id, username: user.username, role: user.role };
+  return { id: user.id, username: user.username, role: user.role, email: user.email || null };
 }
 
 async function getSessionUser(req) {
@@ -136,7 +136,7 @@ async function getSessionUser(req) {
   try {
     const { userId } = JSON.parse(Buffer.from(payload, "base64url").toString("utf8"));
     const user = await User.findByPk(userId);
-    return user ? { id: user.id, username: user.username, role: user.role } : null;
+    return user ? { id: user.id, username: user.username, role: user.role, email: user.email || null } : null;
   } catch { return null; }
 }
 function setSession(res, userId) {
@@ -239,7 +239,7 @@ app.post("/api/leads", leadLimiter, requireAuth, async (req, res) => {
 
   res.status(201).json({
     ok: true,
-    message: "Your request has been received — our AI has already sent you a reply, and our team will follow up.",
+    message: "Your request has been received. We've already sent you a first reply, and our team will follow up.",
     lead: { id: lead.id },
     analysis: {
       category: analysis.category,

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LeadFlow AI — Admin / CRM</title>
+<title>LeadFlow - Admin / CRM</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%233ecf8e'/><text x='50' y='55' font-size='46' font-weight='bold' text-anchor='middle' fill='%23062018'>LF</text></svg>">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/icon-192.png">
@@ -78,7 +78,7 @@
 <div id="app"></div>
 <script>
   let me=null, currentLeadId=null, users=[];
-  // Firebase auth (optional / dual-mode) — same as the public site.
+  // Firebase auth (optional / dual-mode) - same as the public site.
   let FB=null, fbAuth=null, backendFirebase=false;
   function firebaseConfigured(){ const c=window.FIREBASE_CONFIG; return !!(c && c.apiKey && !/^PASTE/i.test(c.apiKey)); }
   // Only use Firebase when BOTH the browser config and the server key are present.
@@ -100,7 +100,7 @@
     const c=(err&&err.code)||'';
     if(c.includes('invalid-credential')||c.includes('wrong-password')||c.includes('user-not-found')) return 'Invalid email or password.';
     if(c.includes('popup-closed')||c.includes('cancelled-popup')) return 'Sign-in was cancelled.';
-    if(c.includes('too-many-requests')) return 'Too many attempts — please wait a moment.';
+    if(c.includes('too-many-requests')) return 'Too many attempts - please wait a moment.';
     return (err&&err.message)||'Sign-in failed.';
   }
   async function api(path,opts={}){
@@ -111,6 +111,7 @@
     return d;
   }
   function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+  const GOOGLE_G='<svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true" style="flex:none"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>';
   function prioClass(p){return p>=8?'hi':p>=5?'md':'lo'}
   const STATUSES=['NEW','CONTACTED','QUALIFIED','PROPOSAL_SENT','WON','LOST'];
   const app=document.getElementById('app');
@@ -119,19 +120,19 @@
     const fb=useFirebase();
     const val=id=>document.getElementById(id).value.trim();
     app.innerHTML=`<div class="login panel">
-      <a class="brand" href="/" style="justify-content:center"><span class="mark">LF</span> LeadFlow AI</a>
+      <a class="brand" href="/" style="justify-content:center"><span class="mark">LF</span> LeadFlow</a>
       <h1>Admin sign in</h1>
       ${err?`<div class="notice err">${esc(err)}</div>`:''}
       ${fb?`<label>Email<input id="u" type="email" autocomplete="email"></label>`:`<label>Username<input id="u" autocomplete="username"></label>`}
       <label>Password<input id="p" type="password" autocomplete="current-password"></label>
       <button class="btn primary" id="loginBtn">Sign in</button>
-      ${fb?`<button class="btn ghost" id="googleBtn">Continue with Google</button>
+      ${fb?`<button class="btn ghost" id="googleBtn" style="display:inline-flex;align-items:center;justify-content:center;gap:10px">${GOOGLE_G}Continue with Google</button>
             <a id="forgotLink" style="text-align:center;color:var(--green);cursor:pointer;font-size:13px">Forgot password?</a>`:''}
     </div>`;
     if(fb){
       document.getElementById('loginBtn').onclick=async()=>{ try{ await FB.signInWithEmailAndPassword(fbAuth,val('u'),document.getElementById('p').value); }catch(e){ renderLogin(fbMsg(e)); } };
       document.getElementById('googleBtn').onclick=async()=>{ try{ await FB.signInWithPopup(fbAuth,new FB.GoogleAuthProvider()); }catch(e){ renderLogin(fbMsg(e)); } };
-      document.getElementById('forgotLink').onclick=async()=>{ const e=val('u'); if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)) return renderLogin('Enter your email above first, then click Forgot password.'); try{ await FB.sendPasswordResetEmail(fbAuth,e); renderLogin('Password reset email sent — check your inbox.'); }catch(err){ renderLogin(fbMsg(err)); } };
+      document.getElementById('forgotLink').onclick=async()=>{ const e=val('u'); if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)) return renderLogin('Enter your email above first, then click Forgot password.'); try{ await FB.sendPasswordResetEmail(fbAuth,e); renderLogin('Password reset email sent - check your inbox.'); }catch(err){ renderLogin(fbMsg(err)); } };
     } else {
       document.getElementById('loginBtn').onclick=async()=>{
         try{
@@ -163,7 +164,7 @@
   async function renderDashboard(){
     app.innerHTML=`
       <div class="topbar">
-        <a class="brand" href="/"><span class="mark">LF</span> LeadFlow AI</a>
+        <a class="brand" href="/"><span class="mark">LF</span> LeadFlow</a>
         <nav class="topnav">
           <a href="/">🛒 Shop</a>
           <a href="/admin" class="active">🛡 CRM</a>
@@ -176,7 +177,7 @@
       </div>
       <div class="wrap">
         <div class="metrics" id="metrics"></div>
-        <div class="panel"><h3 style="font-size:15px;margin-bottom:4px">Leads — last 14 days</h3><div id="chart"></div></div>
+        <div class="panel"><h3 style="font-size:15px;margin-bottom:4px">Leads - last 14 days</h3><div id="chart"></div></div>
         <div class="cols">
           <div class="panel">
             <div class="filters">
@@ -186,7 +187,7 @@
             </div>
             <div id="leadsTable"></div>
           </div>
-          <div class="panel detail" id="detail"><div class="empty">Select a lead to see the AI analysis and details.</div></div>
+          <div class="panel detail" id="detail"><div class="empty">Select a lead to see the analysis and details.</div></div>
         </div>
       </div>`;
     document.getElementById('logout').onclick=async()=>{if(fbAuth){try{await FB.signOut(fbAuth);}catch(e){}}try{await api('/api/auth/logout',{method:'POST'});}catch(e){}me=null;renderLogin();};
@@ -241,18 +242,18 @@
     const a=lead.analysis||{};
     const d=document.getElementById('detail');
     d.innerHTML=`
-      <h2>${esc(lead.name)} <span class="prio ${prioClass(a.priority||0)}" style="vertical-align:middle">${a.priority||'—'}</span></h2>
+      <h2>${esc(lead.name)} <span class="prio ${prioClass(a.priority||0)}" style="vertical-align:middle">${a.priority||'-'}</span></h2>
       <div class="muted">${esc(lead.email)} · ${esc(lead.phone)}</div>
       <div class="kv">
         <span class="k">Service</span><span>${esc(a.category||lead.serviceType)}</span>
-        <span class="k">Urgency <span style="color:var(--soft);font-size:11px">(AI detected)</span></span><span>${esc(a.aiUrgency||a.urgencyLabel||'—')}</span>
-        <span class="k">Priority <span style="color:var(--soft);font-size:11px">(AI agent)</span></span><span><b>${a.priority||'—'}/10</b></span>
+        <span class="k">Urgency <span style="color:var(--soft);font-size:11px">(detected)</span></span><span>${esc(a.aiUrgency||a.urgencyLabel||'-')}</span>
+        <span class="k">Priority <span style="color:var(--soft);font-size:11px">(auto)</span></span><span><b>${a.priority||'-'}/10</b></span>
         <span class="k">Budget</span><span>${esc(lead.budget)}</span>
-        <span class="k">Estimate</span><span>${esc(a.estimateHours||'—')}</span>
+        <span class="k">Estimate</span><span>${esc(a.estimateHours||'-')}</span>
       </div>
       <div><span class="k" style="color:var(--soft);font-size:13px">Problem</span><p style="margin-top:4px">${esc(lead.problem)}</p></div>
       <div class="ai">
-        <h4>🤖 AI analysis ${a.engine?`<span title="Which agent path ran" style="font-size:11px;font-weight:700;color:${String(a.engine).includes('llm')?'#062018':'var(--muted)'};background:${String(a.engine).includes('llm')?'var(--green)':'transparent'};border:1px solid var(--line);border-radius:6px;padding:2px 7px;margin-left:6px">${esc(a.engine)}</span>`:''}</h4>
+        <h4>Analysis ${a.engine?`<span title="Which agent path ran" style="font-size:11px;font-weight:700;color:${String(a.engine).includes('llm')?'#062018':'var(--muted)'};background:${String(a.engine).includes('llm')?'var(--green)':'transparent'};border:1px solid var(--line);border-radius:6px;padding:2px 7px;margin-left:6px">${esc(a.engine)}</span>`:''}</h4>
         <p style="font-size:14px">${esc(a.summary||'No analysis yet.')}</p>
         ${a.priorityReason?`<p style="margin-top:10px;color:var(--soft);font-size:12px;text-transform:uppercase;letter-spacing:.05em">How the agent scored priority</p><div style="font-size:14px;color:var(--muted);background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-top:4px">${esc(a.priorityReason)}</div>`:''}
         ${a.questions?`<p style="margin-top:10px;color:var(--soft);font-size:12px;text-transform:uppercase;letter-spacing:.05em">Follow-up questions</p><ul style="margin:6px 0 0 18px;font-size:14px;color:var(--muted)">${a.questions.split('\n').map(q=>`<li>${esc(q)}</li>`).join('')}</ul>`:''}
@@ -261,11 +262,11 @@
         <select id="statusSel">${STATUSES.map(s=>`<option value="${s}" ${s===lead.status?'selected':''}>${s.replace('_',' ')}</option>`).join('')}</select>
         <select id="assignSel"><option value="">Unassigned</option>${users.map(u=>`<option value="${u.id}" ${lead.assignedToId===u.id?'selected':''}>${esc(u.username)}</option>`).join('')}</select>
         <button class="btn primary sm" id="saveLead">Save</button>
-        <button class="btn ghost sm" id="reAnalyze">Re-run AI</button>
+        <button class="btn ghost sm" id="reAnalyze">Re-run analysis</button>
       </div>
       <div style="margin-top:16px">
         <h4 style="color:var(--green);font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Reply to customer</h4>
-        ${lead.reply?`<div class="note" style="border:0;background:rgba(62,207,142,.08);border-radius:8px;padding:10px"><span style="color:var(--soft);font-size:12px">🤖 AI replied automatically · ${new Date(lead.repliedAt).toLocaleString()} · shown in the customer's “My Requests”</span><div style="white-space:pre-wrap;margin-top:4px">${esc(lead.reply)}</div></div>`:'<div class="muted" style="font-size:13px">No reply yet.</div>'}
+        ${lead.reply?`<div class="note" style="border:0;background:rgba(62,207,142,.08);border-radius:8px;padding:10px"><span style="color:var(--soft);font-size:12px">Auto-reply sent · ${new Date(lead.repliedAt).toLocaleString()} · shown in the customer's “My Requests”</span><div style="white-space:pre-wrap;margin-top:4px">${esc(lead.reply)}</div></div>`:'<div class="muted" style="font-size:13px">No reply yet.</div>'}
         <div style="margin-top:10px"><textarea id="replyText" placeholder="Revise the reply the customer sees…" style="min-height:70px">${esc(lead.reply||'')}</textarea><button class="btn primary sm" id="sendReply" style="margin-top:8px">Update reply to customer</button></div>
       </div>
       <div style="margin-top:16px">

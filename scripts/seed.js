@@ -4,13 +4,15 @@ const { initDb, sequelize, User, Service, Lead, AiAnalysis } = require("../src/d
 const { analyzeLead } = require("../src/agent/analyze");
 
 const SERVICES = [
-  { name: "Account Security", description: "Secure hacked or at-risk accounts, set up 2FA, stop phishing.", basePrice: "from $120", keywords: "login,2fa,password,phishing,account,hacked" },
-  { name: "Servers / RDP", description: "Server setup, remote desktop, VPS management and recovery.", basePrice: "from $180", keywords: "server,rdp,vps,ssh,hosting" },
-  { name: "Automation", description: "Automate repetitive workflows, bots, and integrations.", basePrice: "from $300", keywords: "automation,workflow,bot,integrate,script" },
-  { name: "Docker / DevOps", description: "Containerize apps, CI/CD pipelines, and clean deployments.", basePrice: "from $280", keywords: "docker,container,ci/cd,deploy,pipeline" },
-  { name: "Cloudflare / Network", description: "DNS, SSL, WAF, DDoS protection and domain setup.", basePrice: "from $90", keywords: "cloudflare,dns,ssl,waf,firewall,domain" },
-  { name: "Monitoring", description: "Uptime monitoring, alerts, logging and dashboards.", basePrice: "from $150", keywords: "monitor,uptime,alert,grafana,logs" },
-  { name: "Website + Domain + Protection", description: "A complete managed web presence — we build your website, set up your domain and SSL, and protect it with Cloudflare. All-in-one, monthly. See our Starter / Business / Pro plans.", basePrice: "from €19 / month", keywords: "website,domain,hosting,subscription,monthly,protection,managed,build my site,landing page" }
+  { name: "Account Security", description: "Secure hacked or at-risk accounts, set up 2FA, stop phishing.", basePrice: "from €120", keywords: "login,2fa,password,phishing,account,hacked" },
+  { name: "Servers / RDP", description: "Server setup, remote desktop, VPS management and recovery.", basePrice: "from €180", keywords: "server,rdp,vps,ssh,hosting" },
+  { name: "Cloud Infrastructure", description: "Cloud hosting and deployment on providers like Hetzner, AWS and Cloudflare, set up to scale and stay online.", basePrice: "from €200", keywords: "cloud,aws,azure,gcp,hetzner,digitalocean,scale,infrastructure,deploy" },
+  { name: "Docker / DevOps", description: "Containerize apps, CI/CD pipelines, and clean deployments.", basePrice: "from €280", keywords: "docker,container,ci/cd,deploy,pipeline" },
+  { name: "Automation", description: "Automate repetitive workflows, scripts and integrations between your tools.", basePrice: "from €300", keywords: "automation,workflow,integrate,script,zapier" },
+  { name: "Chatbots & Integrations", description: "Chatbots for your site, Telegram, WhatsApp or Discord, plus custom API and tool integrations.", basePrice: "from €150", keywords: "chatbot,bot,telegram,whatsapp,discord,integration,integrate,api,webhook" },
+  { name: "Cloudflare / Network", description: "DNS, SSL, WAF, DDoS protection and domain setup.", basePrice: "from €90", keywords: "cloudflare,dns,ssl,waf,firewall,domain" },
+  { name: "Monitoring", description: "Uptime monitoring, alerts, logging and dashboards.", basePrice: "from €150", keywords: "monitor,uptime,alert,grafana,logs" },
+  { name: "Website + Domain + Protection", description: "A complete managed web presence: we build your website, set up your domain and SSL, and protect it with Cloudflare. All-in-one, monthly. See our Starter / Business / Pro plans.", basePrice: "from €19 / month", keywords: "website,domain,hosting,subscription,monthly,protection,managed,build my site,landing page" }
 ];
 
 const DEMO_LEADS = [
@@ -37,8 +39,9 @@ async function main() {
     console.log("Created users: admin/admin1234 (ADMIN), sales/sales1234 (SALES)");
   }
 
-  // Demo leads (only if none exist)
-  if ((await Lead.count()) === 0) {
+  // Demo leads — only when explicitly requested (SEED_DEMO=1), so production
+  // stays clean after you wipe test data with scripts/reset-leads.js.
+  if (process.env.SEED_DEMO === "1" && (await Lead.count()) === 0) {
     for (const l of DEMO_LEADS) {
       const lead = await Lead.create({ ...l });
       const analysis = analyzeLead(lead);

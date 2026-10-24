@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LeadFlow AI — Alerts</title>
+<title>LeadFlow - Alerts</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%233ecf8e'/><text x='50' y='55' font-size='46' font-weight='bold' text-anchor='middle' fill='%23062018'>LF</text></svg>">
 <link rel="manifest" href="/manifest.webmanifest">
 <meta name="theme-color" content="#0d1512">
@@ -40,7 +40,7 @@
 </head>
 <body>
 <div class="wrap">
-  <div class="brand"><span class="mark">LF</span> LeadFlow AI</div>
+  <div class="brand"><span class="mark">LF</span> LeadFlow</div>
   <nav class="topnav">
     <a href="/">🛒 Shop</a>
     <a href="/admin">🛡 CRM</a>
@@ -64,7 +64,7 @@
 
 <script>
   const el = (id)=>document.getElementById(id);
-  // Firebase auth (dual-mode) — send the ID token so staff endpoints accept us.
+  // Firebase auth (dual-mode) - send the ID token so staff endpoints accept us.
   let FB=null, fbAuth=null;
   function firebaseConfigured(){ const c=window.FIREBASE_CONFIG; return !!(c && c.apiKey && !/^PASTE/i.test(c.apiKey)); }
   async function authHeader(){ if(fbAuth && fbAuth.currentUser){ try{ return { Authorization:'Bearer '+(await fbAuth.currentUser.getIdToken()) }; }catch(e){} } return {}; }
