@@ -40,6 +40,9 @@ services:
       MAIL_FROM: ${MAIL_FROM:-}
       MAIL_TO: ${MAIL_TO:-}
       AUTO_REPLY: ${AUTO_REPLY:-true}
+      FIREBASE_SERVICE_ACCOUNT_B64: ${FIREBASE_SERVICE_ACCOUNT_B64:-}
+      ADMIN_EMAILS: ${ADMIN_EMAILS:-}
+      SALES_EMAILS: ${SALES_EMAILS:-}
     ports:
       - "127.0.0.1:8090:3000"   # Nginx proxies your domain to this port
 
