@@ -11,6 +11,7 @@
 <meta name="theme-color" content="#0d1512">
 <meta name="mobile-web-app-capable" content="yes">
 <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));}</script>
+<script src="/firebase-config.js"></script>
 <style>
   :root{--bg:#0d1512;--panel:#12201b;--panel2:#17281f;--ink:#eaf5ef;--muted:#9db3aa;--soft:#6f857c;
     --green:#3ecf8e;--green2:#2fa873;--amber:#f0b84f;--red:#ef6f5c;--blue:#5ea9ef;--purple:#c4a7f0;--line:rgba(255,255,255,.10);}
@@ -81,8 +82,23 @@
   .ai-box{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:10px;font-size:14px}
   .ai-box h4{color:var(--green);font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
   .empty{color:var(--muted);text-align:center;padding:40px 10px}
-  footer{border-top:1px solid var(--line);color:var(--soft);padding:26px 0;margin-top:20px;font-size:14px;text-align:center}
-  @media(max-width:820px){.hero{grid-template-columns:1fr;padding:40px 0 18px}.grid{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}}
+  /* pricing plans */
+  .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start}
+  .plan{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px 22px;display:flex;flex-direction:column}
+  .plan.featured{border-color:rgba(62,207,142,.55);box-shadow:0 20px 50px rgba(62,207,142,.1)}
+  .plan-badge{position:absolute;top:-11px;left:22px;background:var(--green);color:#062018;font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;letter-spacing:.03em}
+  .plan h3{font-size:19px;margin-bottom:4px}
+  .plan-price{font-size:38px;font-weight:900;letter-spacing:-1px;margin:4px 0}
+  .plan-price span{font-size:15px;font-weight:700;color:var(--muted)}
+  .plan-tag{color:var(--muted);font-size:14px;margin-bottom:14px;min-height:40px}
+  .plan-feats{list-style:none;display:grid;gap:9px;margin:0 0 18px;flex:1}
+  .plan-feats li{position:relative;padding-left:24px;font-size:14px;color:var(--ink)}
+  .plan-feats li::before{content:"✓";position:absolute;left:0;color:var(--green);font-weight:900}
+  footer{border-top:1px solid var(--line);color:var(--soft);padding:34px 0;margin-top:20px;font-size:14px}
+  .foot-grid{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:flex-start}
+  .foot-grid a{color:var(--muted)}.foot-grid a:hover{color:var(--ink)}
+  .foot-links{display:flex;gap:18px;flex-wrap:wrap}
+  @media(max-width:820px){.hero{grid-template-columns:1fr;padding:40px 0 18px}.grid{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.price-grid{grid-template-columns:1fr}}
   @media(max-width:520px){.grid{grid-template-columns:1fr}.nav .links{gap:12px}}
 </style>
 </head>
@@ -96,7 +112,23 @@
 
 <main class="wrap" id="app"></main>
 
-<footer>LeadFlow AI · IT / Cyber / Automation services · <a href="/admin">Staff login</a></footer>
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <div class="brand" style="font-size:17px;margin-bottom:6px"><span class="mark">LF</span> LeadFlow AI</div>
+      <div>IT · Cyber · Automation services · Remote, worldwide</div>
+      <div style="margin-top:6px"><a href="mailto:admin@cookblog.net">admin@cookblog.net</a></div>
+    </div>
+    <div class="foot-links">
+      <a onclick="goToSection('pricing')" style="cursor:pointer">Pricing</a>
+      <a href="/terms">Terms of Service</a>
+      <a href="/privacy">Privacy Policy</a>
+      <a href="/admin">Staff login</a>
+    </div>
+  </div>
+  <div class="wrap" style="margin-top:16px;font-size:13px">© <span id="footYear"></span> LeadFlow AI. All rights reserved.</div>
+</footer>
+<script>document.getElementById('footYear').textContent=new Date().getFullYear();</script>
 
 <!-- Auth modal -->
 <div class="modal-bg" id="authModal">
@@ -105,15 +137,12 @@
     <h3 id="authTitle">Log in</h3>
     <p class="sec-sub" id="authSub" style="margin:4px 0 16px">Welcome back.</p>
     <div id="authNotice"></div>
-    <label>Username<input id="authUser" autocomplete="username"></label>
-    <label>Password<input id="authPass" type="password" autocomplete="current-password"></label>
-    <button class="btn primary" style="width:100%" id="authBtn">Log in</button>
-    <p class="switch" id="authSwitch"></p>
+    <div id="authBody"></div>
   </div>
 </div>
 
 <script>
-  let me = null, services = [], serviceMap = {}, pending = null;
+  let me = null, services = [], serviceMap = {}, pending = null, planPending = null;
 
   // Real portfolio — one proof example per service (things actually built).
   const CASES = [
@@ -124,8 +153,68 @@
     { tag:"Automation", title:"AI-powered lead intake", body:"Built a system that captures customer requests, auto-classifies them with an AI agent, scores urgency, drafts replies, and notifies the team and customer by email — automatically.", result:"Every request triaged in seconds", link:"" },
     { tag:"Monitoring", title:"Health checks & alerts", body:"Added a health endpoint reporting API, database, and agent status, plus an automated daily report — so issues are caught before customers notice.", result:"Early warning on downtime", link:"" }
   ];
+
+  // Managed monthly plans — the recurring offer. Prices in EUR.
+  const PLANS = [
+    { id:"starter", name:"Starter", price:"€19", period:"/mo", tagline:"Keep a site online, safe and backed up.",
+      features:["Managed hosting on our server","SSL certificate (HTTPS)","Cloudflare protection (DDoS + WAF)","Weekly off-site backups","Uptime monitoring + alerts"], featured:false },
+    { id:"business", name:"Business", price:"€39", period:"/mo", tagline:"Everything in Starter, plus your domain and edits.",
+      features:["Everything in Starter","Domain name included","Content edits (~1 hour / month)","Monthly health & traffic report","Priority email support"], featured:true },
+    { id:"pro", name:"Pro", price:"€79", period:"/mo", tagline:"For sites that can't afford downtime.",
+      features:["Everything in Business","Priority fixes (same business day)","Security hardening & reviews","Business email setup","More edit time (~3 hours / month)"], featured:false }
+  ];
+  function pricingSectionHTML(){
+    const cards = PLANS.map(p=>`
+      <div class="plan${p.featured?' featured':''}">
+        ${p.featured?'<span class="plan-badge">Most popular</span>':''}
+        <h3>${esc(p.name)}</h3>
+        <div class="plan-price">${esc(p.price)}<span>${esc(p.period)}</span></div>
+        <p class="plan-tag">${esc(p.tagline)}</p>
+        <ul class="plan-feats">${p.features.map(f=>`<li>${esc(f)}</li>`).join('')}</ul>
+        <button class="btn ${p.featured?'primary':'ghost'}" style="width:100%" onclick="choosePlan('${p.id}')">Choose ${esc(p.name)}</button>
+      </div>`).join('');
+    return `
+      <section id="pricing">
+        <h2 class="sec">Managed plans</h2>
+        <p class="sec-sub">Website, hosting, protection and domain — handled every month. Cancel anytime. One-off builds start at €250 (waived on a 12-month plan).</p>
+        <div class="price-grid">${cards}</div>
+        <p class="sec-sub" style="margin-top:16px;font-size:13px">Prices exclude VAT where applicable. "Protection" means backups, Cloudflare, updates and monitoring — not a guarantee against every attack. Full terms apply.</p>
+      </section>`;
+  }
+  function choosePlan(id){
+    const p = PLANS.find(x=>x.id===id) || PLANS[0];
+    planPending = p;
+    startRequest("Website + Domain + Protection");
+  }
+  // ---- Firebase auth (optional / dual-mode) ----
+  // If firebase-config.js holds a real config, we use Firebase for sign-in and
+  // send its ID token with every request. Otherwise the original cookie-based
+  // login is used and nothing here runs.
+  let FB=null, fbAuth=null, fbUser=null, backendFirebase=false;
+  function firebaseConfigured(){ const c=window.FIREBASE_CONFIG; return !!(c && c.apiKey && !/^PASTE/i.test(c.apiKey)); }
+  // Only use Firebase when BOTH the browser config and the server key are present,
+  // so deploying one without the other can never lock anyone out.
+  function useFirebase(){ return firebaseConfigured() && backendFirebase; }
+  async function authHeader(){
+    if(fbAuth && fbAuth.currentUser){
+      try{ return { Authorization: 'Bearer ' + (await fbAuth.currentUser.getIdToken()) }; }catch(e){}
+    }
+    return {};
+  }
+  async function initFirebase(){
+    if(!firebaseConfigured()) return;
+    const V='12.9.0';
+    try{
+      const appMod = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`);
+      FB = await import(`https://www.gstatic.com/firebasejs/${V}/firebase-auth.js`);
+      fbAuth = FB.getAuth(appMod.initializeApp(window.FIREBASE_CONFIG));
+      FB.onAuthStateChanged(fbAuth, async (u)=>{ fbUser=u; await loadMe(); });
+    }catch(e){ console.error('Firebase failed to load:', e); }
+  }
+
   async function api(path, opts={}){
-    const r = await fetch(path,{...opts,headers:{'content-type':'application/json',...(opts.headers||{})}});
+    const extra = await authHeader();
+    const r = await fetch(path,{...opts,headers:{'content-type':'application/json',...extra,...(opts.headers||{})}});
     const d = await r.json().catch(()=>({}));
     if(!r.ok) throw new Error(d.error||'Something went wrong.');
     return d;
@@ -133,10 +222,10 @@
   const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const app = document.getElementById('app');
 
-  async function loadMe(){ try{ me=(await api('/api/auth/me')).user; }catch(e){ me=null; } renderNav(); }
+  async function loadMe(){ try{ const d=await api('/api/auth/me'); me=d.user; backendFirebase=!!d.firebase; }catch(e){ me=null; } renderNav(); }
   function renderNav(){
     const el = document.getElementById('navLinks');
-    let s = `<a onclick="go('home')">Services</a><a onclick="go('demos')">Live Demos</a><a onclick="go('home');setTimeout(()=>document.getElementById('work')&&document.getElementById('work').scrollIntoView({behavior:'smooth'}),60)">Our Work</a><a onclick="go('contact')">Contact</a>`;
+    let s = `<a onclick="go('home')">Services</a><a onclick="goToSection('pricing')">Pricing</a><a onclick="go('demos')">Live Demos</a><a onclick="goToSection('work')">Our Work</a><a onclick="go('contact')">Contact</a>`;
     if(me && (me.role==='ADMIN' || me.role==='SALES')){
       s += `<a class="btn primary sm" href="/admin" style="text-decoration:none">🛡 Admin panel</a>
             <span class="chip"><span class="av">${esc((me.username[0]||'?').toUpperCase())}</span>${esc(me.username)}</span>
@@ -158,6 +247,8 @@
   let statusTimer = null;
   function clearTimers(){ if(statusTimer){ clearInterval(statusTimer); statusTimer=null; } }
   function go(view, arg){ window.scrollTo(0,0); clearTimers(); if(view==='home')return renderHome(); if(view==='request')return renderRequest(); if(view==='mine')return renderMine(); if(view==='demos')return renderDemos(); if(view==='contact')return renderContact(); }
+  // Jump to a section on the home page (nav links for Pricing / Our Work).
+  function goToSection(id){ go('home'); setTimeout(()=>{ const el=document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth'}); },60); }
 
   function renderContact(){
     app.innerHTML = `
@@ -294,7 +385,7 @@
           <p class="lead">Account security, servers &amp; RDP, automation, Docker, Cloudflare and monitoring. Create an account, request a service, and track it — our AI triages every request instantly.</p>
           <div class="hero-actions">
             <button class="btn primary" onclick="startRequest()">Request a service →</button>
-            ${me&&me.role==='CUSTOMER'?`<button class="btn ghost" onclick="go('mine')">My Requests</button>`:`<button class="btn ghost" onclick="openAuth('register')">Create account</button>`}
+            <button class="btn ghost" onclick="goToSection('pricing')">View plans &amp; pricing</button>
           </div>
         </div>
         <div class="card">
@@ -306,7 +397,8 @@
           </ol>
         </div>
       </section>
-      <section id="services"><h2 class="sec">Our services</h2><p class="sec-sub">Pick the closest one when you request — including our all-in-one website plan from just $5/month.</p><div class="grid" id="svcGrid"></div></section>
+      <section id="services"><h2 class="sec">Our services</h2><p class="sec-sub">One-off projects, quoted up front. Need it handled month to month? See our managed plans below.</p><div class="grid" id="svcGrid"></div></section>
+      ${pricingSectionHTML()}
       <section id="work"><h2 class="sec">Our work</h2><p class="sec-sub">Real projects we've delivered — proof, not promises.</p><div class="grid" id="caseGrid"></div></section>`;
     const g = document.getElementById('svcGrid');
     g.innerHTML = services.map(s=>`<div class="svc"><h3>${esc(s.name)}</h3><p>${esc(s.description)}</p><span class="price">${esc(s.basePrice)}</span><button class="btn ghost sm" onclick="startRequest('${esc(s.name)}')">Request this</button></div>`).join('') || '<p class="sec-sub">Loading…</p>';
@@ -339,7 +431,7 @@
               <label>Contact email<input name="email" type="email" placeholder="you@email.com" required></label>
             </div>
             <label>Service<select name="serviceType" id="svcSel" required><option value="">Choose…</option>${opts}</select></label>
-            <label>Describe your problem<textarea name="problem" placeholder="e.g. I keep getting login attempts on my accounts and want to secure them." required></textarea></label>
+            <label>Describe your problem<textarea name="problem" placeholder="e.g. I keep getting login attempts on my accounts and want to secure them." required>${planPending?esc(`I'd like the ${planPending.name} managed plan (${planPending.price}${planPending.period}). Please set up my website, hosting, protection`+(planPending.id!=='starter'?' and domain':'')+'.'):''}</textarea></label>
             <div class="form-grid">
               <label>Phone<input name="phone" placeholder="+1 555 123 4567" required></label>
               <label>Approximate budget<input name="budget" placeholder="$500 (optional)"></label>
@@ -429,7 +521,7 @@
             </div>
           </div>
         </section>`;
-      checkoutReady=false; pending=null;
+      checkoutReady=false; pending=null; planPending=null;
     }catch(err){
       btn.disabled=false; btn.textContent='Place request (free) →';
       document.getElementById('reqNotice').innerHTML = `<div class="notice err">${esc(err.message)}</div>`;
@@ -456,46 +548,98 @@
     }catch(e){ document.getElementById('mineList').innerHTML=`<div class="notice err">${esc(e.message)}</div>`; }
   }
 
-  // ---- Auth modal ----
+  // ---- Auth modal (dual-mode: Firebase when configured, else cookie login) ----
   let authMode='login';
+  function closeAuth(){ document.getElementById('authModal').classList.remove('open'); }
+  function authError(msg){ document.getElementById('authNotice').innerHTML = `<div class="notice err">${esc(msg)}</div>`; }
+
   function openAuth(mode, msg){
     authMode = mode;
+    const fb = useFirebase();
     document.getElementById('authModal').classList.add('open');
     document.getElementById('authTitle').textContent = mode==='login'?'Log in':'Create your account';
-    document.getElementById('authSub').textContent = msg || (mode==='login'?'Welcome back.':'Sign up to request and track services. It\'s free.');
-    document.getElementById('authBtn').textContent = mode==='login'?'Log in':'Create account';
+    document.getElementById('authSub').textContent = msg || (mode==='login'?'Welcome back.':"Sign up to request and track services. It's free.");
     document.getElementById('authNotice').innerHTML = msg?`<div class="notice info">${esc(msg)}</div>`:'';
-    document.getElementById('authSwitch').innerHTML = mode==='login'
-      ? `New here? <a onclick="openAuth('register')">Create an account</a>`
-      : `Already have an account? <a onclick="openAuth('login')">Log in</a>`;
-    document.getElementById('authUser').value=''; document.getElementById('authPass').value='';
-    document.getElementById('authPass').setAttribute('autocomplete', mode==='login'?'current-password':'new-password');
-    setTimeout(()=>document.getElementById('authUser').focus(),50);
+    const idField = fb
+      ? `<label>Email<input id="authEmail" type="email" autocomplete="email" placeholder="you@email.com"></label>`
+      : `<label>Username<input id="authUser" autocomplete="username"></label>`;
+    document.getElementById('authBody').innerHTML = `
+      ${idField}
+      <label>Password<input id="authPass" type="password" autocomplete="${mode==='login'?'current-password':'new-password'}"></label>
+      ${fb&&mode==='login'?`<div style="text-align:right;margin:-8px 0 12px"><a id="forgotLink" style="color:var(--green);cursor:pointer;font-size:13px">Forgot password?</a></div>`:''}
+      <button class="btn primary" style="width:100%" id="authBtn">${mode==='login'?'Log in':'Create account'}</button>
+      ${fb?`<div style="display:flex;align-items:center;gap:10px;color:var(--soft);font-size:12px;margin:12px 0"><span style="flex:1;height:1px;background:var(--line)"></span>or<span style="flex:1;height:1px;background:var(--line)"></span></div>
+            <button class="btn ghost" style="width:100%" id="googleBtn">Continue with Google</button>`:''}
+      <p class="switch" id="authSwitch">${mode==='login'?`New here? <a onclick="openAuth('register')">Create an account</a>`:`Already have an account? <a onclick="openAuth('login')">Log in</a>`}</p>`;
+    document.getElementById('authBtn').addEventListener('click', doAuth);
+    document.getElementById('authPass').addEventListener('keydown', e=>{ if(e.key==='Enter') doAuth(); });
+    if(fb){
+      document.getElementById('googleBtn').addEventListener('click', doGoogle);
+      const fl=document.getElementById('forgotLink'); if(fl) fl.addEventListener('click', doReset);
+    }
+    setTimeout(()=>{ const f=document.getElementById(fb?'authEmail':'authUser'); if(f) f.focus(); },50);
   }
-  function closeAuth(){ document.getElementById('authModal').classList.remove('open'); }
-  document.getElementById('authBtn').addEventListener('click', doAuth);
-  document.getElementById('authPass').addEventListener('keydown', e=>{ if(e.key==='Enter') doAuth(); });
+
+  async function afterAuth(){ await loadMe(); closeAuth(); if(pending){ renderRequest(); } else { go('mine'); } }
+
   async function doAuth(){
-    const username = document.getElementById('authUser').value.trim();
     const password = document.getElementById('authPass').value;
-    const notice = document.getElementById('authNotice');
-    if(username.length<3){ notice.innerHTML='<div class="notice err">Username must be at least 3 characters.</div>'; return; }
-    if(authMode==='register' && password.length<8){ notice.innerHTML='<div class="notice err">Password must be at least 8 characters.</div>'; return; }
-    if(!password){ notice.innerHTML='<div class="notice err">Please enter your password.</div>'; return; }
-    const btn=document.getElementById('authBtn'); btn.disabled=true; btn.textContent='…';
+    const btn=document.getElementById('authBtn');
+    if(useFirebase()){
+      const email = (document.getElementById('authEmail').value||'').trim();
+      if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return authError('Please enter a valid email.');
+      if(password.length < (authMode==='register'?8:1)) return authError(authMode==='register'?'Password must be at least 8 characters.':'Please enter your password.');
+      btn.disabled=true; btn.textContent='…';
+      try{
+        if(authMode==='register') await FB.createUserWithEmailAndPassword(fbAuth, email, password);
+        else await FB.signInWithEmailAndPassword(fbAuth, email, password);
+        await afterAuth();
+      }catch(err){ authError(fbMsg(err)); btn.disabled=false; btn.textContent=authMode==='login'?'Log in':'Create account'; }
+      return;
+    }
+    const username = (document.getElementById('authUser').value||'').trim();
+    if(username.length<3) return authError('Username must be at least 3 characters.');
+    if(authMode==='register' && password.length<8) return authError('Password must be at least 8 characters.');
+    if(!password) return authError('Please enter your password.');
+    btn.disabled=true; btn.textContent='…';
     try{
       await api(authMode==='login'?'/api/auth/login':'/api/auth/register',{method:'POST',body:JSON.stringify({username,password})});
-      await loadMe();
-      closeAuth();
-      if(pending){ renderRequest(); } else { go('mine'); }
-    }catch(err){
-      notice.innerHTML=`<div class="notice err">${esc(err.message)}</div>`;
-      btn.disabled=false; btn.textContent=authMode==='login'?'Log in':'Create account';
-    }
+      await afterAuth();
+    }catch(err){ authError(err.message); btn.disabled=false; btn.textContent=authMode==='login'?'Log in':'Create account'; }
   }
-  async function logout(){ await api('/api/auth/logout',{method:'POST'}); me=null; renderNav(); go('home'); }
 
-  (async function init(){ await loadServices(); await loadMe(); renderHome(); })();
+  async function doGoogle(){
+    try{ await FB.signInWithPopup(fbAuth, new FB.GoogleAuthProvider()); await afterAuth(); }
+    catch(err){ authError(fbMsg(err)); }
+  }
+  async function doReset(){
+    const email=(document.getElementById('authEmail').value||'').trim();
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return authError('Enter your email above first, then click Forgot password.');
+    try{ await FB.sendPasswordResetEmail(fbAuth, email); document.getElementById('authNotice').innerHTML='<div class="notice info">Password reset email sent — check your inbox.</div>'; }
+    catch(err){ authError(fbMsg(err)); }
+  }
+  function fbMsg(err){
+    const c=(err&&err.code)||'';
+    if(c.includes('email-already-in-use')) return 'That email already has an account — try logging in.';
+    if(c.includes('invalid-credential')||c.includes('wrong-password')||c.includes('user-not-found')) return 'Invalid email or password.';
+    if(c.includes('weak-password')) return 'Password is too weak.';
+    if(c.includes('popup-closed')||c.includes('cancelled-popup')) return 'Sign-in was cancelled.';
+    if(c.includes('too-many-requests')) return 'Too many attempts — please wait a moment.';
+    return (err&&err.message)||'Authentication failed.';
+  }
+
+  async function logout(){
+    if(fbAuth){ try{ await FB.signOut(fbAuth); }catch(e){} }
+    try{ await api('/api/auth/logout',{method:'POST'}); }catch(e){}
+    me=null; fbUser=null; renderNav(); go('home');
+  }
+
+  (async function init(){
+    await loadServices();
+    await loadMe();                       // sets backendFirebase from /api/auth/me
+    if(useFirebase()){ await initFirebase(); }
+    renderHome();
+  })();
 </script>
 </body>
 </html>

@@ -5,6 +5,8 @@ node_modules/
 .env
 *.env
 !.env.example
+*firebase-adminsdk*.json
+firebase-service-account.json
 
 # Runtime data / backups
 data/

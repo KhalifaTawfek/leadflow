@@ -2,7 +2,7 @@
 // Strategy: network-first for navigation and API so content is always fresh,
 // falling back to a cached app shell when offline. Static assets are
 // cache-first for speed. Kept intentionally small.
-const CACHE = "leadflow-v1";
+const CACHE = "leadflow-v2";
 const SHELL = ["/", "/index.html", "/manifest.webmanifest", "/icon-192.png", "/icon-512.png"];
 
 self.addEventListener("install", (e) => {
@@ -24,6 +24,12 @@ self.addEventListener("fetch", (e) => {
   // Never cache API responses — always go to the network.
   if (url.pathname.startsWith("/api/")) {
     e.respondWith(fetch(req).catch(() => new Response(JSON.stringify({ error: "offline" }), { status: 503, headers: { "content-type": "application/json" } })));
+    return;
+  }
+
+  // Firebase config must always be fresh, so editing it takes effect at once.
+  if (url.pathname === "/firebase-config.js") {
+    e.respondWith(fetch(req).catch(() => caches.match(req)));
     return;
   }
 

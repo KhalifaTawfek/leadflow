@@ -18,7 +18,10 @@ const uuid = { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey:
 const User = sequelize.define("User", {
   id: uuid,
   username: { type: DataTypes.STRING, allowNull: false, unique: true },
-  passwordHash: { type: DataTypes.STRING, allowNull: false },
+  // Nullable: Firebase accounts have no local password (Firebase holds it).
+  passwordHash: { type: DataTypes.STRING, allowNull: true },
+  email: { type: DataTypes.STRING, allowNull: true },
+  firebaseUid: { type: DataTypes.STRING, allowNull: true, unique: true },
   role: { type: DataTypes.ENUM("ADMIN", "SALES", "CUSTOMER"), defaultValue: "CUSTOMER" }
 }, { tableName: "users" });
 
@@ -102,6 +105,11 @@ async function initDb() {
   await sequelize.query('ALTER TABLE leads ADD COLUMN IF NOT EXISTS replied_at TIMESTAMP');
   await sequelize.query('ALTER TABLE activity_logs ADD COLUMN IF NOT EXISTS lead_id UUID');
   await sequelize.query('ALTER TABLE ai_analysis ADD COLUMN IF NOT EXISTS engine VARCHAR(255)');
+  // Firebase auth (optional): add columns and allow password_hash to be null.
+  await sequelize.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS email VARCHAR(255)');
+  await sequelize.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS firebase_uid VARCHAR(255)');
+  await sequelize.query('ALTER TABLE users ALTER COLUMN password_hash DROP NOT NULL');
+  await sequelize.query('CREATE UNIQUE INDEX IF NOT EXISTS users_firebase_uid_key ON users (firebase_uid) WHERE firebase_uid IS NOT NULL');
 }
 
 module.exports = { sequelize, initDb, User, Service, Lead, LeadNote, AiAnalysis, ActivityLog };

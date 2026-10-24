@@ -192,6 +192,39 @@ docker compose exec app node scripts/ensure-admin.js          # admin / admin123
 docker compose exec app node scripts/ensure-admin.js YOURNAME YOURPASSWORD
 ```
 
+## Going live — business setup
+
+The site ships with a public storefront (services, **managed monthly plans** — Starter €19 /
+Business €39 / Pro €79 — portfolio, live demos, quote/request flow) and **Terms** (`/terms`) and
+**Privacy** (`/privacy`) pages linked in the footer. The legal pages are templates — have them
+reviewed and add your registered entity before taking paying clients.
+
+**Wipe the test leads before launch** (keeps the schema, services and staff accounts; removes all
+leads, notes, AI analyses, activity logs and customer accounts):
+
+```bash
+docker compose exec app node scripts/reset-leads.js            # shows what would be removed
+docker compose exec app node scripts/reset-leads.js --yes      # actually wipes it
+```
+
+### Optional: Firebase Authentication
+
+Login is **dual-mode**. By default it uses the built-in signed-cookie + bcrypt auth. Provide Firebase
+credentials and it switches to Firebase sign-in (email/password + Google + password reset) with no
+code change — and if Firebase isn't configured, the original login keeps working, so you can't get
+locked out mid-switch.
+
+1. Create a project at <https://console.firebase.google.com>.
+2. **Authentication → Get started**, enable **Email/Password** and **Google**.
+3. **Authentication → Settings → Authorized domains**: add `shop.cookblog.net` (and your new domain).
+4. **Project settings → Your apps → Web app (`</>`)**: copy the config into `public/firebase-config.js`.
+5. **Project settings → Service accounts → Generate new private key**; base64 it and set
+   `FIREBASE_SERVICE_ACCOUNT_B64` (see `.env.example`).
+6. Set `ADMIN_EMAILS` to the email you'll sign in with (so you land as ADMIN), then redeploy.
+
+Firebase handles password resets and brute-force protection for you. Staff roles are assigned from
+the `ADMIN_EMAILS` / `SALES_EMAILS` allowlists the first time each person signs in.
+
 ## CI/CD — auto-deploy on push
 
 `.github/workflows/deploy.yml` runs on every push to `main`: it SSHes to the VPS (key stored in the

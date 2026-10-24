@@ -10,6 +10,7 @@ const { analyzeLead } = require("./agent/analyze");
 const { analyzeLeadGraph, agentChat } = require("./agent/graph");
 const { onNewLead, startDailyReportJob } = require("./automation");
 const { sendTelegram, telegramEnabled } = require("./telegram");
+const { firebaseEnabled, verifyIdToken } = require("./firebase");
 const { Op } = require("sequelize");
 
 const app = express();
@@ -22,14 +23,17 @@ app.set("trust proxy", 1); // behind Nginx/Cloudflare
 // ---------- Security headers ----------
 // CSP is tailored to what the site actually loads: inline scripts/styles, Google
 // Fonts, images over https, and the HaveIBeenPwned API used by the security demo.
+// Firebase sign-in (when enabled) loads the SDK from gstatic, talks to Google's
+// identity APIs, and opens a Google popup/iframe — so those hosts are allowed.
 const CSP = [
   "default-src 'self'",
   "base-uri 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  "script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com data:",
   "img-src 'self' data: https:",
-  "connect-src 'self' https://api.pwnedpasswords.com",
+  "connect-src 'self' https://api.pwnedpasswords.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com",
+  "frame-src 'self' https://accounts.google.com https://*.firebaseapp.com",
   "frame-ancestors 'self'",
   "object-src 'none'",
   "manifest-src 'self'",
@@ -77,7 +81,54 @@ function makeToken(userId) {
   const payload = Buffer.from(JSON.stringify({ userId, t: Date.now() })).toString("base64url");
   return `${payload}.${sign(payload)}`;
 }
+// Staff roles can be granted by email via env allowlists, so the first time an
+// owner signs in with Firebase they come straight in as ADMIN/SALES.
+const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || "").split(",").map((s) => s.trim().toLowerCase()).filter(Boolean);
+const SALES_EMAILS = (process.env.SALES_EMAILS || "").split(",").map((s) => s.trim().toLowerCase()).filter(Boolean);
+function roleForEmail(email) {
+  const e = String(email || "").toLowerCase();
+  if (e && ADMIN_EMAILS.includes(e)) return "ADMIN";
+  if (e && SALES_EMAILS.includes(e)) return "SALES";
+  return "CUSTOMER";
+}
+async function uniqueUsername(base) {
+  let name = (base || "user").slice(0, 28);
+  for (let i = 0; i < 50; i++) {
+    const candidate = i === 0 ? name : `${name}${i}`;
+    if (!(await User.findOne({ where: { username: candidate } }))) return candidate;
+  }
+  return `${name}${Date.now().toString(36)}`;
+}
+// Map a verified Firebase token to a local user (creating/linking on first sign-in).
+async function provisionFirebaseUser(decoded) {
+  const email = decoded.email || null;
+  let user = await User.findOne({ where: { firebaseUid: decoded.uid } });
+  if (!user && email) user = await User.findOne({ where: { email } });
+  const wantRole = roleForEmail(email);
+  if (user) {
+    let changed = false;
+    if (!user.firebaseUid) { user.firebaseUid = decoded.uid; changed = true; }
+    if (wantRole !== "CUSTOMER" && user.role !== wantRole) { user.role = wantRole; changed = true; }
+    if (changed) await user.save();
+  } else {
+    const base = (email ? email.split("@")[0] : decoded.name || ("user" + decoded.uid.slice(0, 6)))
+      .replace(/[^a-zA-Z0-9_]/g, "").slice(0, 28) || "user";
+    user = await User.create({ username: await uniqueUsername(base), email, firebaseUid: decoded.uid, role: wantRole });
+    await logActivity(user.id, "REGISTER", `${user.username} (${wantRole}) via Firebase`);
+  }
+  return { id: user.id, username: user.username, role: user.role };
+}
+
 async function getSessionUser(req) {
+  // 1) Firebase ID token (Authorization: Bearer ...) when Firebase is enabled.
+  if (firebaseEnabled()) {
+    const authz = req.headers.authorization || "";
+    if (authz.startsWith("Bearer ")) {
+      const decoded = await verifyIdToken(authz.slice(7));
+      if (decoded) return await provisionFirebaseUser(decoded);
+    }
+  }
+  // 2) Legacy signed-cookie session (fallback, and the default when Firebase is off).
   const token = req.cookies.session;
   if (!token || !token.includes(".")) return null;
   const [payload, sig] = token.split(".");
@@ -136,7 +187,7 @@ app.post("/api/auth/login", loginLimiter, async (req, res) => {
 });
 
 app.post("/api/auth/logout", (_req, res) => { res.clearCookie("session"); res.json({ ok: true }); });
-app.get("/api/auth/me", async (req, res) => { res.json({ user: await getSessionUser(req) }); });
+app.get("/api/auth/me", async (req, res) => { res.json({ user: await getSessionUser(req), firebase: firebaseEnabled() }); });
 
 // ================= SERVICES (public) =================
 app.get("/api/services", async (_req, res) => {
@@ -486,6 +537,10 @@ app.post("/api/telegram/test", requireStaff, async (req, res) => {
 app.get(["/admin", "/admin/*"], (_req, res) => res.sendFile(path.join(__dirname, "..", "public", "admin.html")));
 app.get("/status", (_req, res) => res.sendFile(path.join(__dirname, "..", "public", "status.html")));
 app.get("/alerts", (_req, res) => res.sendFile(path.join(__dirname, "..", "public", "alerts.html")));
+
+// ---------- Legal pages ----------
+app.get("/terms", (_req, res) => res.sendFile(path.join(__dirname, "..", "public", "terms.html")));
+app.get("/privacy", (_req, res) => res.sendFile(path.join(__dirname, "..", "public", "privacy.html")));
 
 // ---------- Fallback (public site) ----------
 app.use((req, res, next) => { if (req.method !== "GET") return next(); res.sendFile(path.join(__dirname, "..", "public", "index.html")); });

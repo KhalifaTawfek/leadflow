@@ -10,7 +10,7 @@ const SERVICES = [
   { name: "Docker / DevOps", description: "Containerize apps, CI/CD pipelines, and clean deployments.", basePrice: "from $280", keywords: "docker,container,ci/cd,deploy,pipeline" },
   { name: "Cloudflare / Network", description: "DNS, SSL, WAF, DDoS protection and domain setup.", basePrice: "from $90", keywords: "cloudflare,dns,ssl,waf,firewall,domain" },
   { name: "Monitoring", description: "Uptime monitoring, alerts, logging and dashboards.", basePrice: "from $150", keywords: "monitor,uptime,alert,grafana,logs" },
-  { name: "Website + Domain + Protection", description: "A complete managed web presence — we build your website, set up your domain and SSL, and protect it with Cloudflare. All-in-one, monthly.", basePrice: "$5 / month", keywords: "website,domain,hosting,subscription,monthly,protection,managed,build my site,landing page" }
+  { name: "Website + Domain + Protection", description: "A complete managed web presence — we build your website, set up your domain and SSL, and protect it with Cloudflare. All-in-one, monthly. See our Starter / Business / Pro plans.", basePrice: "from €19 / month", keywords: "website,domain,hosting,subscription,monthly,protection,managed,build my site,landing page" }
 ];
 
 const DEMO_LEADS = [
