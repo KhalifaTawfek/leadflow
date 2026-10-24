@@ -265,9 +265,11 @@
         <button class="btn ghost sm" id="reAnalyze">Re-run analysis</button>
       </div>
       <div style="margin-top:16px">
-        <h4 style="color:var(--green);font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Reply to customer</h4>
-        ${lead.reply?`<div class="note" style="border:0;background:rgba(62,207,142,.08);border-radius:8px;padding:10px"><span style="color:var(--soft);font-size:12px">Auto-reply sent · ${new Date(lead.repliedAt).toLocaleString()} · shown in the customer's “My Requests”</span><div style="white-space:pre-wrap;margin-top:4px">${esc(lead.reply)}</div></div>`:'<div class="muted" style="font-size:13px">No reply yet.</div>'}
-        <div style="margin-top:10px"><textarea id="replyText" placeholder="Revise the reply the customer sees…" style="min-height:70px">${esc(lead.reply||'')}</textarea><button class="btn primary sm" id="sendReply" style="margin-top:8px">Update reply to customer</button></div>
+        <h4 style="color:var(--green);font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Conversation with customer</h4>
+        <div style="max-height:260px;overflow-y:auto;border:1px solid var(--line);border-radius:8px;padding:8px;background:#0f1a16">
+          ${(lead.messages||[]).length?(lead.messages||[]).map(m=>{const team=m.sender==='team';return `<div style="display:flex;justify-content:${team?'flex-start':'flex-end'};margin:5px 0"><div style="max-width:85%;background:${team?'var(--panel2)':'var(--green)'};color:${team?'var(--ink)':'#062018'};border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:13px;white-space:pre-wrap">${esc(m.text)}</div></div>`;}).join(''):'<div class="muted" style="font-size:13px">No messages yet.</div>'}
+        </div>
+        <div style="margin-top:10px"><textarea id="replyText" placeholder="Message the customer…" style="min-height:64px"></textarea><button class="btn primary sm" id="sendReply" style="margin-top:8px">Send message</button></div>
       </div>
       <div style="margin-top:16px">
         <h4 style="color:var(--green);font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Internal notes</h4>

@@ -75,6 +75,14 @@ const ActivityLog = sequelize.define("ActivityLog", {
   leadId: { type: DataTypes.UUID, allowNull: true }   // link an alert back to its lead (for clickable alerts)
 }, { tableName: "activity_logs" });
 
+// Conversation thread on a lead: the customer and the team send messages back
+// and forth. Shown to the customer in "My Requests" and to staff in the CRM.
+const LeadMessage = sequelize.define("LeadMessage", {
+  id: uuid,
+  sender: { type: DataTypes.ENUM("customer", "team"), allowNull: false },
+  text: { type: DataTypes.TEXT, allowNull: false }
+}, { tableName: "lead_messages" });
+
 // ---- Associations ----
 User.hasMany(Lead, { as: "assignedLeads", foreignKey: "assignedToId" });
 Lead.belongsTo(User, { as: "assignedTo", foreignKey: "assignedToId" });
@@ -89,6 +97,9 @@ User.hasMany(LeadNote, { foreignKey: "authorId" });
 
 Lead.hasOne(AiAnalysis, { as: "analysis", foreignKey: "leadId", onDelete: "CASCADE" });
 AiAnalysis.belongsTo(Lead, { foreignKey: "leadId" });
+
+Lead.hasMany(LeadMessage, { as: "messages", foreignKey: "leadId", onDelete: "CASCADE" });
+LeadMessage.belongsTo(Lead, { foreignKey: "leadId" });
 
 User.hasMany(ActivityLog, { foreignKey: "userId" });
 ActivityLog.belongsTo(User, { foreignKey: "userId" });
@@ -112,4 +123,4 @@ async function initDb() {
   await sequelize.query('CREATE UNIQUE INDEX IF NOT EXISTS users_firebase_uid_key ON users (firebase_uid) WHERE firebase_uid IS NOT NULL');
 }
 
-module.exports = { sequelize, initDb, User, Service, Lead, LeadNote, AiAnalysis, ActivityLog };
+module.exports = { sequelize, initDb, User, Service, Lead, LeadNote, AiAnalysis, ActivityLog, LeadMessage };

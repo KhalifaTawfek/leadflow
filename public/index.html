@@ -254,8 +254,8 @@
     try{ services = (await api('/api/services')).services; serviceMap = {}; services.forEach(x=>serviceMap[x.name]=x); }catch(e){}
   }
 
-  let statusTimer = null;
-  function clearTimers(){ if(statusTimer){ clearInterval(statusTimer); statusTimer=null; } }
+  let statusTimer = null, mineTimer = null;
+  function clearTimers(){ if(statusTimer){ clearInterval(statusTimer); statusTimer=null; } if(mineTimer){ clearInterval(mineTimer); mineTimer=null; } }
   function go(view, arg){ window.scrollTo(0,0); clearTimers(); if(view==='home')return renderHome(); if(view==='request')return renderRequest(); if(view==='mine')return renderMine(); if(view==='demos')return renderDemos(); if(view==='contact')return renderContact(); }
   // Jump to a section on the home page (nav links for Pricing / Our Work).
   function goToSection(id){ go('home'); setTimeout(()=>{ const el=document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth'}); },60); }
@@ -535,9 +535,22 @@
   async function renderMine(){
     if(!me){ openAuth('login'); return renderHome(); }
     app.innerHTML = `<section><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px"><h2 class="sec">My requests</h2><button class="btn primary sm" onclick="startRequest()">+ New request</button></div><div id="mineList" style="margin-top:16px"><div class="empty">Loading…</div></div></section>`;
+    await buildMine();
+    if(mineTimer) clearInterval(mineTimer);
+    mineTimer = setInterval(pollMine, 12000);   // pick up the team's reply (~1 min)
+  }
+  function threadHTML(l){
+    const msgs = l.messages||[];
+    if(!msgs.length) return '<div class="sec-sub" style="font-size:13px">No messages yet.</div>';
+    return msgs.map(m=>{
+      const team = m.sender==='team';
+      return `<div style="display:flex;justify-content:${team?'flex-start':'flex-end'};margin:6px 0"><div style="max-width:85%;background:${team?'var(--panel2)':'var(--green)'};color:${team?'var(--ink)':'#062018'};border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:14px;white-space:pre-wrap">${esc(m.text)}</div></div>`;
+    }).join('');
+  }
+  async function buildMine(){
     try{
       const { leads } = await api('/api/my/leads');
-      const box = document.getElementById('mineList');
+      const box = document.getElementById('mineList'); if(!box) return;
       if(!leads.length){ box.innerHTML = `<div class="empty">You haven't requested anything yet. <a style="color:var(--green);cursor:pointer" onclick="startRequest()">Request a service →</a></div>`; return; }
       box.innerHTML = leads.map(l=>{
         const a=l.analysis||{}; const cls='b-'+(l.statusLabel||'').replace(/\s/g,'');
@@ -545,11 +558,44 @@
           <div class="top"><h3>${esc(a.category||l.serviceType)}</h3><span class="badge ${cls}">${esc(l.statusLabel)}</span></div>
           <div class="meta">Requested ${new Date(l.createdAt).toLocaleDateString()} · Est. ${esc(a.estimateHours||'-')} · Urgency ${esc(a.aiUrgency||a.urgencyLabel||l.urgency)}</div>
           <p>${esc(l.problem)}</p>
-          ${l.reply?`<div class="ai-box" style="border-color:rgba(62,207,142,.45)"><h4>💬 Reply from our team</h4><p style="white-space:pre-wrap">${esc(l.reply)}</p><p style="color:var(--soft);font-size:12px;margin-top:6px">${l.repliedAt?new Date(l.repliedAt).toLocaleString():''}</p></div>`:''}
+          <div class="ai-box" style="border-color:rgba(62,207,142,.45)">
+            <h4>💬 Conversation</h4>
+            <div id="thread-${l.id}" style="max-height:320px;overflow-y:auto;padding-right:4px">${threadHTML(l)}</div>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <input id="msgin-${l.id}" placeholder="Write a reply…" style="flex:1" onkeydown="if(event.key==='Enter'){event.preventDefault();sendMsg('${l.id}')}">
+              <button class="btn primary sm" onclick="sendMsg('${l.id}')">Send</button>
+            </div>
+            <p class="sec-sub" style="font-size:12px;margin-top:6px">Our team usually replies within a minute. You can also arrange a call on Google Meet or Discord.</p>
+          </div>
           ${a.questions?`<div class="ai-box"><h4>What we still need from you</h4><ul style="margin:0 0 0 18px;color:var(--muted)">${a.questions.split('\n').map(q=>`<li>${esc(q)}</li>`).join('')}</ul></div>`:''}
         </div>`;
       }).join('');
-    }catch(e){ document.getElementById('mineList').innerHTML=`<div class="notice err">${esc(e.message)}</div>`; }
+      // Jump each thread to the latest message.
+      leads.forEach(l=>{ const el=document.getElementById('thread-'+l.id); if(el) el.scrollTop=el.scrollHeight; });
+    }catch(e){ const box=document.getElementById('mineList'); if(box) box.innerHTML=`<div class="notice err">${esc(e.message)}</div>`; }
+  }
+  // Poll: refresh only the thread bodies so typing isn't interrupted.
+  async function pollMine(){
+    try{
+      const { leads } = await api('/api/my/leads');
+      for(const l of leads){
+        const el=document.getElementById('thread-'+l.id); if(!el) continue;
+        const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 40;
+        el.innerHTML = threadHTML(l);
+        if(atBottom) el.scrollTop = el.scrollHeight;
+      }
+    }catch(e){}
+  }
+  async function sendMsg(id){
+    const inp=document.getElementById('msgin-'+id); if(!inp) return;
+    const t=(inp.value||'').trim(); if(!t) return;
+    inp.value=''; inp.disabled=true;
+    try{
+      await api('/api/my/leads/'+id+'/messages',{method:'POST',body:JSON.stringify({text:t})});
+      await pollMine();
+      const el=document.getElementById('thread-'+id); if(el) el.scrollTop=el.scrollHeight;
+    }catch(e){ inp.value=t; alert(e.message); }
+    inp.disabled=false; inp.focus();
   }
 
   // ---- Auth modal (dual-mode: Firebase when configured, else cookie login) ----

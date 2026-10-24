@@ -11,6 +11,7 @@ const SERVICES = [
   { name: "Automation", description: "Automate repetitive workflows, scripts and integrations between your tools.", basePrice: "from €300", keywords: "automation,workflow,integrate,script,zapier" },
   { name: "Chatbots & Integrations", description: "Chatbots for your site, Telegram, WhatsApp or Discord, plus custom API and tool integrations.", basePrice: "from €150", keywords: "chatbot,bot,telegram,whatsapp,discord,integration,integrate,api,webhook" },
   { name: "Cloudflare / Network", description: "DNS, SSL, WAF, DDoS protection and domain setup.", basePrice: "from €90", keywords: "cloudflare,dns,ssl,waf,firewall,domain" },
+  { name: "Domain Transfer & Setup", description: "Move your domain to a new registrar, point DNS and set up SSL, with no downtime.", basePrice: "from €40", keywords: "domain,transfer,registrar,dns,nameserver,move domain,ssl,buy domain" },
   { name: "Monitoring", description: "Uptime monitoring, alerts, logging and dashboards.", basePrice: "from €150", keywords: "monitor,uptime,alert,grafana,logs" },
   { name: "Website + Domain + Protection", description: "A complete managed web presence: we build your website, set up your domain and SSL, and protect it with Cloudflare. All-in-one, monthly. See our Starter / Business / Pro plans.", basePrice: "from €19 / month", keywords: "website,domain,hosting,subscription,monthly,protection,managed,build my site,landing page" }
 ];

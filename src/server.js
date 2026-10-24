@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
 const rateLimit = require("express-rate-limit");
 
-const { initDb, sequelize, User, Service, Lead, LeadNote, AiAnalysis, ActivityLog } = require("./db");
+const { initDb, sequelize, User, Service, Lead, LeadNote, AiAnalysis, ActivityLog, LeadMessage } = require("./db");
 const { analyzeLead } = require("./agent/analyze");
 const { analyzeLeadGraph, agentChat } = require("./agent/graph");
 const { onNewLead, startDailyReportJob } = require("./automation");
@@ -232,6 +232,12 @@ app.post("/api/leads", leadLimiter, requireAuth, async (req, res) => {
     await lead.save();
   }
 
+  // Seed the conversation thread: the customer's opening message, then our first reply.
+  await LeadMessage.create({ leadId: lead.id, sender: "customer", text: problem.slice(0, 4000) });
+  if (analysis.draftReply) {
+    await LeadMessage.create({ leadId: lead.id, sender: "team", text: String(analysis.draftReply).slice(0, 4000) });
+  }
+
   await logActivity(req.user.id, "NEW_LEAD", `${name} · ${analysis.category} · P${analysis.priority}`, lead.id);
 
   // Fire automations (webhook + high-priority alert + email) without blocking the response.
@@ -271,11 +277,43 @@ const CUSTOMER_STATUS = {
   NEW: "Received", CONTACTED: "In progress", QUALIFIED: "In progress",
   PROPOSAL_SENT: "Quote sent", WON: "Completed", LOST: "Closed"
 };
+
+// ---- Conversation thread (customer <-> team) ----
+// The team reply lands ~1 minute after the customer's message so the exchange
+// feels real. It's generated lazily when the thread is read, so it needs no
+// background timer and survives restarts.
+const BOT_REPLY_DELAY_MS = Number(process.env.BOT_REPLY_DELAY_MS || 60000);
+const TEAM_REPLIES = [
+  (n) => `Thanks ${n}! We've reviewed your request and we're happy to take it on. Our offer still stands - would you like to go ahead?`,
+  (n) => `Great. Let's set up a quick call to finalise the details. We can do Google Meet or Discord, whichever you prefer - what day and time suit you this week?`,
+  (n) => `Perfect, noted. We'll send you a calendar invite with the call link shortly. Is there anything you'd like us to prepare beforehand?`,
+  (n) => `Thanks ${n}. A specialist will keep following up here and by email so nothing gets missed.`
+];
+function teamReplyText(teamCount, name) {
+  const first = String(name || "there").split(/\s+/)[0];
+  const idx = Math.min(Math.max(teamCount - 1, 0), TEAM_REPLIES.length - 1);
+  return TEAM_REPLIES[idx](first);
+}
+async function maybeAutoReply(lead) {
+  const msgs = await LeadMessage.findAll({ where: { leadId: lead.id }, order: [["createdAt", "ASC"]] });
+  if (!msgs.length) return;
+  const last = msgs[msgs.length - 1];
+  if (last.sender !== "customer") return;                                   // only reply to the customer
+  if (Date.now() - new Date(last.createdAt).getTime() < BOT_REPLY_DELAY_MS) return;  // wait ~1 min
+  const teamCount = msgs.filter((m) => m.sender === "team").length;
+  await LeadMessage.create({ leadId: lead.id, sender: "team", text: teamReplyText(teamCount, lead.name) });
+}
+
 app.get("/api/my/leads", requireAuth, async (req, res) => {
+  const owned = await Lead.findAll({ where: { customerId: req.user.id }, attributes: ["id", "name"] });
+  await Promise.allSettled(owned.map((l) => maybeAutoReply(l)));            // post any due team replies
   const leads = await Lead.findAll({
     where: { customerId: req.user.id },
     order: [["createdAt", "DESC"]],
-    include: [{ model: AiAnalysis, as: "analysis" }]
+    include: [
+      { model: AiAnalysis, as: "analysis" },
+      { model: LeadMessage, as: "messages", separate: true, order: [["createdAt", "ASC"]] }
+    ]
   });
   const out = leads.map((l) => {
     const j = l.toJSON();
@@ -283,6 +321,18 @@ app.get("/api/my/leads", requireAuth, async (req, res) => {
     return j;
   });
   res.json({ leads: out });
+});
+
+// Customer: post a message on one of their own requests.
+app.post("/api/my/leads/:id/messages", requireAuth, async (req, res) => {
+  const text = String(req.body.text || "").trim();
+  if (text.length < 1) return res.status(400).json({ error: "Message cannot be empty." });
+  const lead = await Lead.findByPk(req.params.id);
+  if (!lead || lead.customerId !== req.user.id) return res.status(404).json({ error: "Request not found." });
+  const message = await LeadMessage.create({ leadId: lead.id, sender: "customer", text: text.slice(0, 2000) });
+  if (lead.status === "NEW") { lead.status = "CONTACTED"; await lead.save(); }   // surface it to staff
+  await logActivity(req.user.id, "CUSTOMER_MSG", `${lead.name}: ${text.slice(0, 80)}`, lead.id);
+  res.status(201).json({ message });
 });
 
 // Admin: list leads with filters (status, serviceType, minPriority).
@@ -317,7 +367,8 @@ app.get("/api/leads/:id", requireStaff, async (req, res) => {
     include: [
       { model: AiAnalysis, as: "analysis" },
       { model: User, as: "assignedTo", attributes: ["id", "username"] },
-      { model: LeadNote, as: "notes", include: [{ model: User, as: "author", attributes: ["username"] }] }
+      { model: LeadNote, as: "notes", include: [{ model: User, as: "author", attributes: ["username"] }] },
+      { model: LeadMessage, as: "messages", separate: true, order: [["createdAt", "ASC"]] }
     ],
     order: [[{ model: LeadNote, as: "notes" }, "createdAt", "ASC"]]
   });
@@ -359,6 +410,7 @@ app.post("/api/leads/:id/reply", requireStaff, async (req, res) => {
   lead.repliedAt = new Date();
   if (lead.status === "NEW") lead.status = "CONTACTED";   // replying moves it along the pipeline
   await lead.save();
+  await LeadMessage.create({ leadId: lead.id, sender: "team", text: text.slice(0, 4000) });   // show in the customer's thread
   await logActivity(req.user.id, "REPLY_SENT", `${lead.name} · reply sent to customer`, lead.id);
   res.json({ ok: true, lead: { id: lead.id, reply: lead.reply, repliedAt: lead.repliedAt, status: lead.status } });
 });

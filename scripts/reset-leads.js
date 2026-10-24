@@ -13,7 +13,7 @@
 //
 // Run it INSIDE the app container on the VPS so it uses the production database.
 
-const { initDb, sequelize, User, Lead, LeadNote, AiAnalysis, ActivityLog } = require("../src/db");
+const { initDb, sequelize, User, Lead, LeadNote, AiAnalysis, ActivityLog, LeadMessage } = require("../src/db");
 
 const confirmed = process.argv.includes("--yes") || String(process.env.CONFIRM || "").toLowerCase() === "yes";
 
@@ -45,6 +45,7 @@ async function main() {
   // but we delete them explicitly so the script is clear and order-independent.
   await AiAnalysis.destroy({ where: {}, truncate: false });
   await LeadNote.destroy({ where: {}, truncate: false });
+  await LeadMessage.destroy({ where: {}, truncate: false });
   await Lead.destroy({ where: {}, truncate: false });
   await ActivityLog.destroy({ where: {}, truncate: false });
   const removedCustomers = await User.destroy({ where: { role: "CUSTOMER" } });
