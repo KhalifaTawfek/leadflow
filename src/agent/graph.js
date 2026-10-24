@@ -12,7 +12,7 @@ const { StateGraph, Annotation, START, END } = require("@langchain/langgraph");
 const { ChatOpenAI } = require("@langchain/openai");
 const { SystemMessage, HumanMessage, AIMessage } = require("@langchain/core/messages");
 const rules = require("./analyze");
-const { ruleReply, factSheet } = require("./faq");
+const { ruleReply, factSheet, looksLikeTaskOutput } = require("./faq");
 
 const LLM_ENABLED = !!process.env.OPENAI_API_KEY;
 
@@ -178,7 +178,8 @@ async function chatRespond(state) {
       }
       const res = await getLLM().invoke(msgs);
       const text = String(res.content || "").trim();
-      if (text) return { reply: text };
+      // Safety net: never pass on code or how-to output, only service guidance.
+      if (text && !looksLikeTaskOutput(text)) return { reply: text };
     } catch (e) { console.error("[chat] LLM failed:", e.message); }
   }
   // No LLM (or it failed): instant FAQ answers, then match the problem to a service.

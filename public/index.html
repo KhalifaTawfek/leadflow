@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LeadFlow · IT, Cyber, Cloud & Automation</title>
 <meta name="description" content="Account security, servers, cloud, automation, chatbots, Docker, Cloudflare and monitoring. Register, request a service, and track it.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2352B8E0'/><text x='50' y='55' font-size='46' font-weight='bold' text-anchor='middle' fill='%2304111C'>LF</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2352B8E0'/><g transform='translate(18 18) scale(2.67)' fill='none' stroke='%2304111C' stroke-width='2.6' stroke-linecap='round'><path d='M3.5 5.5c6 0 7.5 6.5 11.5 6.5'/><path d='M3.5 12H15'/><path d='M3.5 18.5c6 0 7.5-6.5 11.5-6.5'/><circle cx='18.5' cy='12' r='3' fill='%2304111C' stroke='none'/></g></svg>">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/icon-192.png">
 <meta name="theme-color" content="#060D18">
@@ -154,11 +154,15 @@
   @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
   .flow{position:relative;margin-top:44px;aspect-ratio:1200/380;max-height:420px}
   .flow-svg{position:absolute;inset:0;width:100%;height:100%}
-  .flow-core{position:absolute;left:50%;top:79%;transform:translate(-50%,-50%);width:108px;height:108px;border-radius:26px;background:linear-gradient(180deg,#14223A,#0A1424);border:1px solid #2A3A52;display:grid;place-items:center;box-shadow:0 0 0 10px rgba(82,184,224,.035),0 24px 70px rgba(82,184,224,.18)}
-  .flow-core .mark{width:54px;height:54px;font-size:20px;border-radius:14px}
-  .ftile{position:absolute;width:58px;height:58px;border-radius:16px;background:#0C1524;border:1px solid #22324A;display:grid;place-items:center;transform:translate(-50%,-50%);animation:float 7s ease-in-out infinite;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+  .flow-core{position:absolute;left:50%;top:79%;transform:translate(-50%,-50%);width:124px;height:124px;border-radius:32px;display:grid;place-items:center;background:radial-gradient(120% 120% at 50% 0%,#1C3150 0%,#0B1526 62%);border:1px solid rgba(124,203,235,.38);box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 0 0 6px rgba(82,184,224,.05),0 0 70px rgba(82,184,224,.3),0 30px 80px rgba(0,0,0,.55)}
+  .core-logo{width:60px;height:60px;display:block;filter:drop-shadow(0 0 14px rgba(82,184,224,.55))}
+  .core-logo svg{width:100%;height:100%;display:block}
+  .core-ring{position:absolute;inset:-14px;border-radius:42px;border:1px solid rgba(124,203,235,.28);animation:ringPulse 3.6s ease-out infinite;pointer-events:none}
+  .core-ring.r2{animation-delay:1.8s}
+  @keyframes ringPulse{0%{opacity:.75;transform:scale(.9)}100%{opacity:0;transform:scale(1.38)}}
+  .ftile{position:absolute;width:58px;height:58px;border-radius:17px;background:linear-gradient(180deg,rgba(22,36,58,.92),rgba(10,18,32,.92));border:1px solid rgba(124,203,235,.16);display:grid;place-items:center;transform:translate(-50%,-50%);animation:float 7s ease-in-out infinite;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 14px 34px rgba(0,0,0,.45),0 0 26px -10px currentColor}
   @keyframes float{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-50%,calc(-50% - 9px))}}
-  @media(prefers-reduced-motion:reduce){.rise{animation:none;opacity:1}.ftile{animation:none}.pt{display:none}}
+  @media(prefers-reduced-motion:reduce){.rise{animation:none;opacity:1}.ftile{animation:none}.pt{display:none}.core-ring{animation:none;opacity:0}}
 
   /* home layout with "On this page" */
   .home-grid{display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:56px;margin-top:24px}
@@ -215,6 +219,23 @@
   .ring b{width:74px;height:74px;border-radius:50%;background:var(--panel2);display:grid;place-items:center;font-size:24px;font-weight:800}
   .audit-score h4{font-size:19px;margin-bottom:4px}.audit-score p{color:var(--muted);font-size:14.5px}
   .audit-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+
+  .svc-quote{color:var(--soft);font-size:13.5px;font-weight:600}
+  /* tools page: sidebar + panel */
+  .tools-layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:24px;align-items:start}
+  .tools-nav{position:sticky;top:90px;display:flex;flex-direction:column;gap:4px;padding:8px;border:1px solid var(--line);border-radius:16px;background:var(--panel)}
+  .tnav{display:flex;gap:12px;align-items:flex-start;text-align:left;padding:12px;border:1px solid transparent;border-radius:11px;background:transparent;color:var(--muted);font:inherit;cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+  .tnav:hover{color:var(--ink);background:rgba(255,255,255,.02)}
+  .tnav.active{color:var(--ink);background:rgba(82,184,224,.08);border-color:rgba(82,184,224,.28)}
+  .tnav .ti{color:var(--accent);flex:none;margin-top:1px}
+  .tnav b{display:block;font-size:14.5px;font-weight:600;line-height:1.3}
+  .tnav small{display:block;font-size:12.5px;color:var(--soft);margin-top:2px}
+  .tools-panel .tool{display:none;min-height:420px}
+  .tools-panel .tool.active{display:flex}
+  /* request page: form + assistant side by side */
+  .req-layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:20px;align-items:start}
+  .chat-side{position:sticky;top:90px;display:flex;flex-direction:column;max-height:calc(100vh - 120px)}
+  .chat-side #chatBox{max-height:none !important;flex:1;min-height:240px}
 
   /* live tools */
   .tool{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:26px;display:flex;flex-direction:column;gap:16px;min-width:0;scroll-margin-top:84px}
@@ -291,6 +312,12 @@
   /* responsive */
   @media(max-width:1180px){.home-grid{grid-template-columns:1fr}.toc{display:none}}
   @media(max-width:900px){
+    .tools-layout,.req-layout{grid-template-columns:1fr}
+    .tools-nav{position:static;flex-direction:row;overflow-x:auto;padding:6px}
+    .tnav{flex:none}.tnav small{display:none}
+    .tools-panel .tool{min-height:0}
+    .chat-side{position:static;max-height:none}
+    .chat-side #chatBox{max-height:320px !important}
     .menu-btn{display:grid;place-items:center}
     .nav .links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;margin:0;flex:none;padding:6px 24px 18px;background:var(--bg);border-bottom:1px solid var(--line)}
     .nav.open .links{display:flex}
@@ -328,13 +355,14 @@
     .chat-panel{left:10px;right:10px;width:auto;bottom:84px;height:calc(100vh - 110px)}
     .chat-fab{right:14px;bottom:14px}
   }
+  .mark svg{width:64%;height:64%;display:block}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
 <header>
   <nav class="nav">
-    <a class="brand" href="#" onclick="go('home');return false"><span class="mark">LF</span> LeadFlow</a>
+    <a class="brand" href="#" onclick="go('home');return false"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M3.5 5.5c6 0 7.5 6.5 11.5 6.5"/><path d="M3.5 12H15"/><path d="M3.5 18.5c6 0 7.5-6.5 11.5-6.5"/><circle cx="18.5" cy="12" r="3" fill="currentColor" stroke="none"/></svg></span> LeadFlow</a>
     <button class="menu-btn" aria-label="Menu" onclick="document.querySelector('.nav').classList.toggle('open')">☰</button>
     <div class="links" id="navLinks" onclick="document.querySelector('.nav').classList.remove('open')"></div>
   </nav>
@@ -345,7 +373,7 @@
 <footer>
   <div class="wrap foot-grid">
     <div>
-      <div class="brand" style="font-size:17px;margin-bottom:6px"><span class="mark">LF</span> LeadFlow</div>
+      <div class="brand" style="font-size:17px;margin-bottom:6px"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M3.5 5.5c6 0 7.5 6.5 11.5 6.5"/><path d="M3.5 12H15"/><path d="M3.5 18.5c6 0 7.5-6.5 11.5-6.5"/><circle cx="18.5" cy="12" r="3" fill="currentColor" stroke="none"/></svg></span> LeadFlow</div>
       <div>IT · Cyber · Cloud · Automation · Remote, worldwide</div>
       <div style="margin-top:6px"><a href="mailto:admin@cookblog.net">admin@cookblog.net</a></div>
     </div>
@@ -374,7 +402,7 @@
 <!-- Chat widget -->
 <button class="chat-fab" id="chatFab" aria-label="Chat with us" aria-expanded="false" aria-controls="chatPanel"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
 <div class="chat-panel" id="chatPanel" role="dialog" aria-label="Chat with LeadFlow">
-  <div class="chat-head"><div class="chat-av">LF</div><div><b>LeadFlow assistant</b><small><span class="online"></span>Usually replies instantly</small></div><button class="x" aria-label="Close chat" onclick="toggleWidget(false)">×</button></div>
+  <div class="chat-head"><div class="chat-av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M3.5 5.5c6 0 7.5 6.5 11.5 6.5"/><path d="M3.5 12H15"/><path d="M3.5 18.5c6 0 7.5-6.5 11.5-6.5"/><circle cx="18.5" cy="12" r="3" fill="currentColor" stroke="none"/></svg></div><div><b>LeadFlow assistant</b><small><span class="online"></span>Usually replies instantly</small></div><button class="x" aria-label="Close chat" onclick="toggleWidget(false)">×</button></div>
   <div class="chat-body" id="wBody" aria-live="polite"></div>
   <div class="chat-chips" id="wChips"></div>
   <form class="chat-input" id="wForm"><input id="wIn" placeholder="Type a message…" autocomplete="off" maxlength="600" aria-label="Message"><button class="btn primary sm" type="submit">Send</button></form>
@@ -579,6 +607,20 @@
   }
 
   // ---------- LIVE TOOLS ----------
+  const TOOLS_NAV = [
+    ['audit','shield','Free website audit','Security, email, SSL and speed'],
+    ['analyze','palette','Website reverse-engineer','Design, tech stack, build prompt'],
+    ['domain','mail','Domain health','DNS, SSL, MX, SPF, DMARC'],
+    ['scan','globe','Security scanner','HTTPS, Cloudflare, headers'],
+    ['pw','key','Password checker','Strength and known breaches'],
+    ['status','pulse','Live status','Uptime of sites we watch']
+  ];
+  function selectTool(id){
+    if(!document.getElementById('tool-'+id)) id='audit';
+    document.querySelectorAll('.tools-panel .tool').forEach(t=>t.classList.toggle('active', t.id==='tool-'+id));
+    document.querySelectorAll('.tnav').forEach(b=>{ const on=b.dataset.tool===id; b.classList.toggle('active',on); b.setAttribute('aria-selected',String(on)); });
+  }
+
   function renderDemos(focus){
     app.innerHTML = `
       <section style="padding-top:56px">
@@ -586,20 +628,22 @@
         <h2 class="sec">See what we do, live</h2>
         <p class="sec-sub">These run for real on our servers against any website or domain you enter. No sign-up needed.</p>
 
-        <div class="tool tool-wide" id="tool-audit">
+        <div class="tools-layout">
+          <nav class="tools-nav" role="tablist" aria-label="Tools">${TOOLS_NAV.map(([id,ic,t,d])=>`<button type="button" role="tab" class="tnav" data-tool="${id}"><span class="ti">${icon(ic)}</span><span><b>${t}</b><small>${d}</small></span></button>`).join('')}</nav>
+          <div class="tools-panel">
+        <div class="tool" id="tool-audit">
           <div><div class="tool-icon">${icon('shield')}</div><span class="tool-kicker">Free · instant</span><h3>Free website audit</h3><p class="desc">One check for the things that hurt small business sites most: HTTPS, DDoS protection, security headers, speed, SSL expiry and whether your email can be spoofed.</p></div>
           <form class="tool-input" id="auForm"><input id="auIn" placeholder="e.g. yourbusiness.com" autocomplete="off" inputmode="url"><button class="btn primary" type="submit" id="auBtn">Run audit</button></form>
           <div id="auOut"></div>
         </div>
 
-        <div class="tool tool-wide" id="tool-analyze">
+        <div class="tool" id="tool-analyze">
           <div><div class="tool-icon">${icon('palette')}</div><span class="tool-kicker">Design &amp; tech stack</span><h3>Website reverse-engineer</h3><p class="desc">Pull any site's colour palette, fonts, corner radii, design tokens and tech stack in a few seconds.</p></div>
           <form class="tool-input" id="anForm"><input id="anIn" placeholder="e.g. stripe.com" autocomplete="off" inputmode="url"><button class="btn primary" type="submit" id="anBtn">Analyze</button></form>
           <div class="tool-try">Try: <a data-try="stripe.com">stripe.com</a><a data-try="linear.app">linear.app</a><a data-try="github.com">github.com</a></div>
           <div id="anOut"></div>
         </div>
 
-        <div class="tools-grid">
           <div class="tool" id="tool-domain">
             <div><div class="tool-icon">${icon('mail')}</div><span class="tool-kicker">Domain &amp; email</span><h3>Domain health check</h3><p class="desc">Checks DNS, the SSL certificate and whether the domain can send and receive email safely (MX, SPF, DMARC).</p></div>
             <form class="tool-input" id="dmForm"><input id="dmIn" placeholder="e.g. yourcompany.com" autocomplete="off" inputmode="url"><button class="btn primary" type="submit" id="dmBtn">Check</button></form>
@@ -620,10 +664,12 @@
             <div id="statusOut">${spin('Checking…')}</div>
           </div>
         </div>
+        </div>
       </section>`;
 
     // Free audit: security scan + domain/email check + page weight, combined into one score
     document.getElementById('auForm').onsubmit = e => { e.preventDefault(); runAudit(); };
+    document.querySelectorAll('.tnav').forEach(b=>b.onclick=()=>{ selectTool(b.dataset.tool); if(innerWidth<900) document.querySelector('.tools-panel').scrollIntoView({behavior:'smooth',block:'start'}); });
     // Website reverse-engineer
     document.getElementById('anForm').onsubmit = e => { e.preventDefault(); runAnalyze(); };
     document.querySelectorAll('#tool-analyze [data-try]').forEach(a => a.onclick = () => { document.getElementById('anIn').value = a.dataset.try; runAnalyze(); });
@@ -680,7 +726,8 @@
     }
     loadStatus(); statusTimer=setInterval(loadStatus, 15000);
 
-    if(focus) setTimeout(()=>{ const el=document.getElementById('tool-'+focus); if(el){ el.scrollIntoView({block:'start'}); const inp=el.querySelector('input'); if(inp) inp.focus({preventScroll:true}); } }, 30);
+    selectTool(focus||'audit');
+    if(focus) setTimeout(()=>{ const inp=document.querySelector('#tool-'+focus+' input'); if(inp) inp.focus({preventScroll:true}); }, 30);
   }
 
   async function runAudit(){
@@ -716,7 +763,7 @@
         <div class="an-box"><h4>To fix (${failed.length})</h4>${failed.length?failed.map(c=>checkRow(false,c.label,c.fix)).join(''):'<p class="sec-sub" style="margin:0;font-size:14px">Nothing urgent. Nice work.</p>'}</div>
         <div class="an-box"><h4>Passed (${good.length})</h4>${good.map(c=>checkRow(true,c.label,'')).join('')}</div>
       </div>
-      ${failed.length?`<div class="hero-actions" style="margin-top:16px"><button class="btn primary" onclick="startRequest('Website + Domain + Protection')">Fix these for me →</button><button class="btn ghost" onclick="document.getElementById('anIn').value='${esc(host)}';runAnalyze();document.getElementById('tool-analyze').scrollIntoView({behavior:'smooth'})">See the design &amp; tech breakdown</button></div>`:''}`;
+      ${failed.length?`<div class="hero-actions" style="margin-top:16px"><button class="btn primary" onclick="startRequest('Website + Domain + Protection')">Fix these for me →</button><button class="btn ghost" onclick="document.getElementById('anIn').value='${esc(host)}';runAnalyze();selectTool('analyze')">See the design &amp; tech breakdown</button></div>`:''}`;
   }
 
   let lastAnalysis = null;
@@ -817,10 +864,11 @@
       dots += `<circle r="2.2" fill="${cols[k]}" class="pt"><animateMotion dur="${6+k*1.3}s" begin="${k*1.1}s" repeatCount="indefinite"><mpath href="#fl${i}"/></animateMotion></circle>`
             + `<circle r="2.2" fill="${cols[(k+1)%4]}" class="pt"><animateMotion dur="${6.6+k*1.2}s" begin="${k*0.9+0.6}s" repeatCount="indefinite"><mpath href="#fr${7-i}"/></animateMotion></circle>`;
     });
-    for(let i=0;i<22;i++){ stars += `<circle cx="${(i*167+40)%1200}" cy="${(i*71)%300+12}" r="${i%3?0.9:1.4}" fill="#63BDE7" opacity="${i%4?0.14:0.3}"/>`; }
-    const grad = (id,x1) => `<linearGradient id="${id}" gradientUnits="userSpaceOnUse" x1="${x1}" y1="0" x2="${cx}" y2="0"><stop offset="0" stop-color="#63BDE7" stop-opacity="0"/><stop offset=".6" stop-color="#63BDE7" stop-opacity=".14"/><stop offset="1" stop-color="#63BDE7" stop-opacity=".5"/></linearGradient>`;
-    return `<svg class="flow-svg" viewBox="0 0 1200 380" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs>${grad('gfl',0)}${grad('gfr',W)}</defs>${stars}<g fill="none" stroke-width="1">${lines}</g>${dots}</svg>`;
+    for(let i=0;i<12;i++){ stars += `<circle cx="${(i*167+40)%1200}" cy="${(i*71)%300+12}" r="${i%3?0.9:1.4}" fill="#63BDE7" opacity="${i%4?0.14:0.3}"/>`; }
+    const grad = (id,x1) => `<linearGradient id="${id}" gradientUnits="userSpaceOnUse" x1="${x1}" y1="0" x2="${cx}" y2="0"><stop offset="0" stop-color="#63BDE7" stop-opacity="0"/><stop offset=".55" stop-color="#63BDE7" stop-opacity=".1"/><stop offset="1" stop-color="#7CCBEB" stop-opacity=".75"/></linearGradient>`;
+    return `<svg class="flow-svg" viewBox="0 0 1200 380" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs>${grad('gfl',0)}${grad('gfr',W)}<radialGradient id="gcore"><stop offset="0" stop-color="#52B8E0" stop-opacity=".28"/><stop offset="1" stop-color="#52B8E0" stop-opacity="0"/></radialGradient></defs><ellipse cx="600" cy="300" rx="300" ry="120" fill="url(#gcore)"/>${stars}<g fill="none" stroke-width=".9">${lines}</g>${dots}</svg>`;
   }
+  const CORE_LOGO = '<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" aria-hidden="true"><defs><linearGradient id="lgCore" gradientUnits="userSpaceOnUse" x1="2" y1="3" x2="22" y2="21"><stop offset="0" stop-color="#F4FAFF"/><stop offset="1" stop-color="#52B8E0"/></linearGradient></defs><g stroke="url(#lgCore)" stroke-width="2"><path d="M3.5 5.5c6 0 7.5 6.5 11.5 6.5"/><path d="M3.5 12H15"/><path d="M3.5 18.5c6 0 7.5-6.5 11.5-6.5"/></g><circle cx="18.5" cy="12" r="3" fill="url(#lgCore)"/></svg>';
   const FLOW_TILES = [['cloud','16%','40%','#52B8E0',0],['shield','7%','74%','#34D399',1.4],['bot','84%','34%','#A78BFA',.7],['globe','93%','70%','#F0B84F',2.1]];
 
   const CLOUD = [
@@ -847,7 +895,7 @@
     "Don't: copy logos, text or images from the source"
   ];
   const FAQ = [
-    ['How much does it cost?', 'Managed plans are €19, €39 or €79 a month. One-off projects start from €40, and you get an exact offer after you send a request. Nothing is paid up front.'],
+    ['How much does it cost?', 'Managed plans are €19, €39 or €79 a month. One-off projects are quoted individually: you get a clear, fixed offer within one business day of sending a request. Nothing is paid up front.'],
     ["What's included in a monthly plan?", 'Every plan covers hosting, SSL, Cloudflare protection, off-site backups and uptime monitoring. Business adds your domain, small content edits and a monthly report; Pro adds priority fixes, security hardening and business email.'],
     ['Can you move my existing website?', 'Yes. When you join a plan we migrate your current site for you at no extra cost, and keep it online while we do it.'],
     ['Can I cancel?', 'Any time, with no lock-in. Your plan simply runs until the end of the month you have paid for.'],
@@ -870,7 +918,7 @@
         </div>
         <div class="flow rise" style="--d:.55s">${heroFlow()}
           ${FLOW_TILES.map(([ic,x,y,c,d])=>`<div class="ftile" style="left:${x};top:${y};color:${c};animation-delay:${d}s">${icon(ic,22)}</div>`).join('')}
-          <div class="flow-core"><span class="mark">LF</span></div>
+          <div class="flow-core"><span class="core-ring"></span><span class="core-ring r2"></span><span class="core-logo">${CORE_LOGO}</span></div>
         </div>
       </section>
 
@@ -972,7 +1020,7 @@
         <aside class="toc" aria-label="On this page"><h5>On this page</h5>${TOC.map(([id,l])=>`<a data-toc="${id}">${l}</a>`).join('')}</aside>
       </div>`;
     const g = document.getElementById('svcGrid');
-    g.innerHTML = services.map(s=>`<div class="svc"><h3>${esc(s.name)}</h3><p>${esc(s.description)}</p><div class="svc-foot"><span class="price">${esc(s.basePrice)}</span><button class="btn ghost sm" onclick="startRequest('${esc(s.name)}')">Request</button></div></div>`).join('') || '<p class="sec-sub">Loading…</p>';
+    g.innerHTML = services.map(s=>`<div class="svc"><h3>${esc(s.name)}</h3><p>${esc(s.description)}</p><div class="svc-foot"><span class="svc-quote">Quote on request</span><button class="btn ghost sm" onclick="startRequest('${esc(s.name)}')">Request</button></div></div>`).join('') || '<p class="sec-sub">Loading…</p>';
     document.getElementById('caseGrid').innerHTML = CASES.map(c=>`<div class="svc"><span class="tag">${esc(c.tag)}</span><h3>${esc(c.title)}</h3><p>${esc(c.body)}</p><div class="result">✓ ${esc(c.result)}</div>${c.link?`<a class="btn ghost sm" style="margin-top:14px;align-self:flex-start" href="${c.link}" target="_blank" rel="noopener">View live →</a>`:''}</div>`).join('');
     setupHomeEffects();
   }
@@ -1007,9 +1055,10 @@
     if(!me){ openAuth('login'); return renderHome(); }
     const opts = services.map(s=>`<option ${pending&&pending.preselect===s.name?'selected':''}>${esc(s.name)}</option>`).join('');
     app.innerHTML = `
-      <section style="max-width:720px;margin:0 auto;padding-top:48px">
+      <section style="max-width:1120px;margin:0 auto;padding-top:48px">
         <div class="eyebrow">New request</div>
         <h2 class="sec">Request a service</h2><p class="sec-sub">Tell us what you need and we'll reply with a clear offer within one business day.</p>
+        <div class="req-layout">
         <div class="card">
           <div id="reqNotice"></div>
           <form id="reqForm">
@@ -1022,8 +1071,9 @@
             <button class="btn primary" type="submit" style="width:100%;margin-top:6px" id="reqSubmit">Get my offer →</button>
           </form>
         </div>
-        <div class="card" style="margin-top:16px">
-          <h3 style="margin:0 0 4px">💬 Not sure what you need? Ask us</h3>
+        <div class="card chat-side">
+          <div class="eyebrow" style="margin-bottom:8px">Assistant</div>
+          <h3 style="margin:0 0 4px">Not sure what you need?</h3>
           <p class="sec-sub" style="font-size:14px;margin-bottom:12px">Describe your problem and we'll suggest the right service.</p>
           <div id="chatBox" style="max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:4px 2px"></div>
           <div id="chatTyping" class="sec-sub" style="font-size:13px;display:none;margin-top:6px">Typing…</div>
@@ -1031,6 +1081,7 @@
             <input id="chatIn" placeholder="e.g. I need to monitor my websites and servers with alerts" style="flex:1" onkeydown="if(event.key==='Enter'){event.preventDefault();sendChat();}">
             <button class="btn primary sm" onclick="sendChat()">Send</button>
           </div>
+        </div>
         </div>
       </section>`;
     document.getElementById('reqForm').addEventListener('submit', onRequestSubmit);
@@ -1275,8 +1326,8 @@
   }
 
   // ---------- Site chat widget (every page) ----------
-  const W_GREETING = "Hi! I'm the LeadFlow assistant. Ask me about our services, prices or how it works.";
-  const W_CHIPS = ["What do you offer?", "How much does it cost?", "Can we book a call?", "Show me the live tools"];
+  const W_GREETING = "Hi! I'm the LeadFlow assistant. Tell me what you need and I'll help you request the right service.";
+  const W_CHIPS = ["What do you offer?", "I need a website", "My site is slow or down", "Can we book a call?"];
   let wMsgs = [], wBusy = false;
   try { wMsgs = JSON.parse(sessionStorage.getItem('lfChat') || '[]'); if(!Array.isArray(wMsgs)) wMsgs = []; } catch(e) { wMsgs = []; }
   function wSave(){ try{ sessionStorage.setItem('lfChat', JSON.stringify(wMsgs.slice(-30))); }catch(e){} }
