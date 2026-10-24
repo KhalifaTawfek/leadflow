@@ -28,9 +28,14 @@ function getLLM() {
   });
 }
 
+// House style for anything the model writes that customers see: no em/en dashes.
+function tidy(text) {
+  return String(text || "").replace(/\s*[—–]\s*/g, ", ").trim();
+}
+
 async function llmText(prompt) {
   const res = await getLLM().invoke(prompt);
-  return String(res.content || "").trim();
+  return tidy(res.content);
 }
 
 // ---- Graph state ----
@@ -179,7 +184,7 @@ async function chatRespond(state) {
       const res = await getLLM().invoke(msgs);
       const text = String(res.content || "").trim();
       // Safety net: never pass on code or how-to output, only service guidance.
-      if (text && !looksLikeTaskOutput(text)) return { reply: text };
+      if (text && !looksLikeTaskOutput(text)) return { reply: tidy(text) };
     } catch (e) { console.error("[chat] LLM failed:", e.message); }
   }
   // No LLM (or it failed): instant FAQ answers, then match the problem to a service.
