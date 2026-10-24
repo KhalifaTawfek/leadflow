@@ -7,6 +7,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%233ecf8e'/><text x='50' y='55' font-size='46' font-weight='bold' text-anchor='middle' fill='%23062018'>LF</text></svg>">
 <link rel="manifest" href="/manifest.webmanifest">
 <meta name="theme-color" content="#0d1512">
+<script src="/firebase-config.js"></script>
 <style>
   :root{--bg:#0d1512;--panel:#12201b;--ink:#eaf5ef;--muted:#9db3aa;--soft:#6f857c;--green:#3ecf8e;--red:#ef6f5c;--amber:#f0b84f;--line:rgba(255,255,255,.10)}
   *{box-sizing:border-box;margin:0;padding:0}
@@ -63,6 +64,20 @@
 
 <script>
   const el = (id)=>document.getElementById(id);
+  // Firebase auth (dual-mode) — send the ID token so staff endpoints accept us.
+  let FB=null, fbAuth=null;
+  function firebaseConfigured(){ const c=window.FIREBASE_CONFIG; return !!(c && c.apiKey && !/^PASTE/i.test(c.apiKey)); }
+  async function authHeader(){ if(fbAuth && fbAuth.currentUser){ try{ return { Authorization:'Bearer '+(await fbAuth.currentUser.getIdToken()) }; }catch(e){} } return {}; }
+  async function authedFetch(path, opts={}){ const extra=await authHeader(); return fetch(path,{...opts,headers:{...extra,...(opts.headers||{})}}); }
+  async function initFirebase(){
+    const V='12.9.0';
+    try{
+      const appMod=await import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`);
+      FB=await import(`https://www.gstatic.com/firebasejs/${V}/firebase-auth.js`);
+      fbAuth=FB.getAuth(appMod.initializeApp(window.FIREBASE_CONFIG));
+      FB.onAuthStateChanged(fbAuth, ()=>load());
+    }catch(e){ console.error('Firebase failed to load:',e); }
+  }
   function ago(iso){
     const s=Math.floor((Date.now()-new Date(iso))/1000);
     if(s<60)return s+'s ago'; if(s<3600)return Math.floor(s/60)+'m ago';
@@ -72,7 +87,7 @@
   window.toggleDetail=(i)=>{const e=document.getElementById('det-'+i);if(e)e.style.display=e.style.display==='none'?'block':'none';};
   async function load(){
     try{
-      const r=await fetch('/api/alerts',{cache:'no-store'});
+      const r=await authedFetch('/api/alerts',{cache:'no-store'});
       if(r.status===401||r.status===403){ el('list').innerHTML='<div class="item"><div class="body"><div class="t">Staff login required</div><div class="d">Please <a href="/admin">sign in to the CRM</a> first, then reopen this page.</div></div></div>'; return; }
       const d=await r.json();
       el('tgPill').textContent = 'Telegram: '+(d.telegram?'connected':'not set up');
@@ -103,12 +118,13 @@
   el('testBtn').onclick=async()=>{
     el('msg').textContent='Sending…';
     try{
-      const r=await fetch('/api/telegram/test',{method:'POST'});
+      const r=await authedFetch('/api/telegram/test',{method:'POST'});
       const d=await r.json();
       el('msg').textContent = d.message || (d.ok?'Sent.':'Failed.');
     }catch(e){ el('msg').textContent='Request failed.'; }
   };
-  load(); setInterval(load, 20000);
+  if(firebaseConfigured()){ initFirebase(); } else { load(); }
+  setInterval(load, 20000);
 </script>
 </body>
 </html>
