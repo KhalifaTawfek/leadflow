@@ -4,35 +4,36 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LeadFlow - Admin / CRM</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%233ecf8e'/><text x='50' y='55' font-size='46' font-weight='bold' text-anchor='middle' fill='%23062018'>LF</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2352B8E0'/><text x='50' y='55' font-size='46' font-weight='bold' text-anchor='middle' fill='%2304111C'>LF</text></svg>">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/icon-192.png">
-<meta name="theme-color" content="#0d1512">
+<meta name="theme-color" content="#060D18">
 <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));}</script>
 <script src="/firebase-config.js"></script>
 <style>
   :root{
-    --bg:#0d1512;--panel:#12201b;--panel2:#17281f;--ink:#eaf5ef;--muted:#9db3aa;--soft:#6f857c;
-    --green:#3ecf8e;--green2:#2fa873;--teal:#1f6f5c;--amber:#f0b84f;--red:#ef6f5c;--blue:#5ea9ef;--line:rgba(255,255,255,.10);
+    --bg:#060D18;--panel:#0D141F;--panel2:#1A202A;--ink:#F1F5F9;--muted:#8DA4BF;--soft:#5F7187;
+    --accent:#52B8E0;--accent2:#7CCBEB;--teal:#1D5A78;--amber:#f0b84f;--red:#ef6f5c;--blue:#5ea9ef;--line:#1F2A3A;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+  button,input,select,textarea{font-family:inherit}
+  body{font-family:"Sofia Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
   a{color:inherit;text-decoration:none}
-  .topbar{display:flex;align-items:center;gap:16px;padding:12px 20px;border-bottom:1px solid var(--line);background:#0f1a16;position:sticky;top:0;z-index:10}
+  .topbar{display:flex;align-items:center;gap:16px;padding:12px 20px;border-bottom:1px solid var(--line);background:#0A1220;position:sticky;top:0;z-index:10}
   .brand{display:inline-flex;align-items:center;gap:9px;font-weight:800}
-  .brand .mark{width:30px;height:30px;display:grid;place-items:center;background:var(--green);color:#062018;border-radius:8px;font-weight:900;font-size:12px}
+  .brand .mark{width:30px;height:30px;display:grid;place-items:center;background:var(--accent);color:#04111C;border-radius:8px;font-weight:900;font-size:12px}
   .topbar .right{margin-left:auto;display:flex;align-items:center;gap:12px;color:var(--muted);font-size:14px}
   .topnav{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-left:8px}
   .topnav a{padding:7px 12px;border:1px solid var(--line);border-radius:8px;color:var(--ink);text-decoration:none;font-size:13px;font-weight:600;white-space:nowrap}
-  .topnav a:hover{border-color:var(--green);color:var(--green)}
-  .topnav a.active{background:var(--green);color:#062018;border-color:transparent}
+  .topnav a:hover{border-color:var(--accent);color:var(--accent)}
+  .topnav a.active{background:var(--accent);color:#04111C;border-color:transparent}
   .btn{border:0;border-radius:9px;padding:10px 16px;font-weight:800;cursor:pointer;font-size:14px}
-  .btn.primary{background:var(--green);color:#062018}.btn.primary:hover{background:var(--green2)}
+  .btn.primary{background:var(--accent);color:#04111C}.btn.primary:hover{background:var(--accent2)}
   .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
   .btn.sm{padding:7px 12px;font-size:13px}
   .wrap{max-width:1200px;margin:0 auto;padding:22px 20px 70px}
   input,select,textarea{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:9px;color:var(--ink);padding:10px 12px;font:inherit}
-  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green)}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent)}
   label{display:grid;gap:6px;font-weight:700;color:var(--muted);font-size:13px}
   .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
   .login{max-width:380px;margin:8vh auto;display:grid;gap:14px}
@@ -42,7 +43,7 @@
   .metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:16px}
   .metric{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
   .metric b{display:block;font-size:26px}.metric span{color:var(--muted);font-size:12px}
-  .metric.g b{color:var(--green)}.metric.a b{color:var(--amber)}.metric.r b{color:var(--red)}.metric.b b{color:var(--blue)}
+  .metric.g b{color:#34D399}.metric.a b{color:var(--amber)}.metric.r b{color:var(--red)}.metric.b b{color:var(--blue)}
   .cols{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin-top:16px}
   .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
   .filters select{width:auto;min-width:130px}
@@ -51,13 +52,13 @@
   th{color:var(--soft);font-size:12px;text-transform:uppercase;letter-spacing:.05em}
   tr.lead-row{cursor:pointer}tr.lead-row:hover{background:var(--panel2)}
   .prio{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:7px;font-weight:800;font-size:13px;background:var(--panel2)}
-  .prio.hi{background:rgba(239,111,92,.2);color:#ffb4a6}.prio.md{background:rgba(240,184,79,.2);color:var(--amber)}.prio.lo{background:rgba(62,207,142,.18);color:var(--green)}
+  .prio.hi{background:rgba(239,111,92,.2);color:#ffb4a6}.prio.md{background:rgba(240,184,79,.2);color:var(--amber)}.prio.lo{background:rgba(82,184,224,.18);color:var(--accent)}
   .badge{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:800}
   .st-NEW{background:rgba(94,169,239,.2);color:var(--blue)}
   .st-CONTACTED{background:rgba(240,184,79,.2);color:var(--amber)}
-  .st-QUALIFIED{background:rgba(62,207,142,.18);color:var(--green)}
+  .st-QUALIFIED{background:rgba(82,184,224,.18);color:var(--accent)}
   .st-PROPOSAL_SENT{background:rgba(159,122,234,.2);color:#c4a7f0}
-  .st-WON{background:rgba(62,207,142,.28);color:#a7f0cf}
+  .st-WON{background:rgba(52,211,153,.16);color:#34D399}
   .st-LOST{background:rgba(239,111,92,.2);color:#ffb4a6}
   .chart{margin-top:6px}
   .detail h2{font-size:20px;margin-bottom:2px}
@@ -65,14 +66,15 @@
   .kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px;margin:12px 0}
   .kv .k{color:var(--soft)}
   .ai{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px}
-  .ai h4{color:var(--green);font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
-  .reply{white-space:pre-wrap;background:#0f1a16;border:1px solid var(--line);border-radius:9px;padding:12px;font-size:13px;color:#d7e7df;margin-top:8px}
+  .ai h4{color:var(--accent);font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+  .reply{white-space:pre-wrap;background:#0A1220;border:1px solid var(--line);border-radius:9px;padding:12px;font-size:13px;color:#DCE6F0;margin-top:8px}
   .note{border-top:1px solid var(--line);padding:9px 0;font-size:14px}
-  .note .who{color:var(--green);font-weight:700;font-size:13px}
+  .note .who{color:var(--accent);font-weight:700;font-size:13px}
   .empty{color:var(--muted);text-align:center;padding:40px 10px}
   .row-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
   @media(max-width:900px){.metrics{grid-template-columns:repeat(3,1fr)}.cols{grid-template-columns:1fr}}
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
 <div id="app"></div>
@@ -127,7 +129,7 @@
       <label>Password<input id="p" type="password" autocomplete="current-password"></label>
       <button class="btn primary" id="loginBtn">Sign in</button>
       ${fb?`<button class="btn ghost" id="googleBtn" style="display:inline-flex;align-items:center;justify-content:center;gap:10px">${GOOGLE_G}Continue with Google</button>
-            <a id="forgotLink" style="text-align:center;color:var(--green);cursor:pointer;font-size:13px">Forgot password?</a>`:''}
+            <a id="forgotLink" style="text-align:center;color:var(--accent);cursor:pointer;font-size:13px">Forgot password?</a>`:''}
     </div>`;
     if(fb){
       document.getElementById('loginBtn').onclick=async()=>{ try{ await FB.signInWithEmailAndPassword(fbAuth,val('u'),document.getElementById('p').value); }catch(e){ renderLogin(fbMsg(e)); } };
@@ -155,9 +157,9 @@
     const line=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
     const area=`M${pts[0][0]} ${h-pad} `+pts.map(p=>'L'+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ')+` L${pts[pts.length-1][0]} ${h-pad} Z`;
     return `<svg class="chart" viewBox="0 0 ${w} ${h}" width="100%" preserveAspectRatio="none">
-      <path d="${area}" fill="rgba(62,207,142,.14)"/>
-      <path d="${line}" fill="none" stroke="#3ecf8e" stroke-width="2.5"/>
-      ${pts.map(p=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="2.5" fill="#3ecf8e"/>`).join('')}
+      <path d="${area}" fill="rgba(82,184,224,.14)"/>
+      <path d="${line}" fill="none" stroke="#52B8E0" stroke-width="2.5"/>
+      ${pts.map(p=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="2.5" fill="#52B8E0"/>`).join('')}
     </svg>`;
   }
 
@@ -253,7 +255,7 @@
       </div>
       <div><span class="k" style="color:var(--soft);font-size:13px">Problem</span><p style="margin-top:4px">${esc(lead.problem)}</p></div>
       <div class="ai">
-        <h4>Analysis ${a.engine?`<span title="Which agent path ran" style="font-size:11px;font-weight:700;color:${String(a.engine).includes('llm')?'#062018':'var(--muted)'};background:${String(a.engine).includes('llm')?'var(--green)':'transparent'};border:1px solid var(--line);border-radius:6px;padding:2px 7px;margin-left:6px">${esc(a.engine)}</span>`:''}</h4>
+        <h4>Analysis ${a.engine?`<span title="Which agent path ran" style="font-size:11px;font-weight:700;color:${String(a.engine).includes('llm')?'#04111C':'var(--muted)'};background:${String(a.engine).includes('llm')?'var(--accent)':'transparent'};border:1px solid var(--line);border-radius:6px;padding:2px 7px;margin-left:6px">${esc(a.engine)}</span>`:''}</h4>
         <p style="font-size:14px">${esc(a.summary||'No analysis yet.')}</p>
         ${a.priorityReason?`<p style="margin-top:10px;color:var(--soft);font-size:12px;text-transform:uppercase;letter-spacing:.05em">How the agent scored priority</p><div style="font-size:14px;color:var(--muted);background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-top:4px">${esc(a.priorityReason)}</div>`:''}
         ${a.questions?`<p style="margin-top:10px;color:var(--soft);font-size:12px;text-transform:uppercase;letter-spacing:.05em">Follow-up questions</p><ul style="margin:6px 0 0 18px;font-size:14px;color:var(--muted)">${a.questions.split('\n').map(q=>`<li>${esc(q)}</li>`).join('')}</ul>`:''}
@@ -265,14 +267,14 @@
         <button class="btn ghost sm" id="reAnalyze">Re-run analysis</button>
       </div>
       <div style="margin-top:16px">
-        <h4 style="color:var(--green);font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Conversation with customer</h4>
-        <div style="max-height:260px;overflow-y:auto;border:1px solid var(--line);border-radius:8px;padding:8px;background:#0f1a16">
-          ${(lead.messages||[]).length?(lead.messages||[]).map(m=>{const team=m.sender==='team';return `<div style="display:flex;justify-content:${team?'flex-start':'flex-end'};margin:5px 0"><div style="max-width:85%;background:${team?'var(--panel2)':'var(--green)'};color:${team?'var(--ink)':'#062018'};border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:13px;white-space:pre-wrap">${esc(m.text)}</div></div>`;}).join(''):'<div class="muted" style="font-size:13px">No messages yet.</div>'}
+        <h4 style="color:var(--accent);font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Conversation with customer</h4>
+        <div style="max-height:260px;overflow-y:auto;border:1px solid var(--line);border-radius:8px;padding:8px;background:#0A1220">
+          ${(lead.messages||[]).length?(lead.messages||[]).map(m=>{const team=m.sender==='team';return `<div style="display:flex;justify-content:${team?'flex-start':'flex-end'};margin:5px 0"><div style="max-width:85%;background:${team?'var(--panel2)':'var(--accent)'};color:${team?'var(--ink)':'#04111C'};border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:13px;white-space:pre-wrap">${esc(m.text)}</div></div>`;}).join(''):'<div class="muted" style="font-size:13px">No messages yet.</div>'}
         </div>
         <div style="margin-top:10px"><textarea id="replyText" placeholder="Message the customer…" style="min-height:64px"></textarea><button class="btn primary sm" id="sendReply" style="margin-top:8px">Send message</button></div>
       </div>
       <div style="margin-top:16px">
-        <h4 style="color:var(--green);font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Internal notes</h4>
+        <h4 style="color:var(--accent);font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Internal notes</h4>
         <div id="notes">${(lead.notes||[]).map(n=>`<div class="note"><span class="who">${esc(n.author?.username||'staff')}</span> <span style="color:var(--soft);font-size:12px">${new Date(n.createdAt).toLocaleString()}</span><div>${esc(n.text)}</div></div>`).join('')||'<div class="muted" style="font-size:13px">No notes yet.</div>'}</div>
         <div style="margin-top:10px"><textarea id="noteText" placeholder="Add an internal note…" style="min-height:60px"></textarea><button class="btn ghost sm" id="addNote" style="margin-top:8px">Add note</button></div>
       </div>`;

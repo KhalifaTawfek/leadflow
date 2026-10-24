@@ -4,37 +4,39 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LeadFlow - System Status</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%233ecf8e'/><text x='50' y='55' font-size='46' font-weight='bold' text-anchor='middle' fill='%23062018'>LF</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2352B8E0'/><text x='50' y='55' font-size='46' font-weight='bold' text-anchor='middle' fill='%2304111C'>LF</text></svg>">
 <style>
-  :root{--bg:#0d1512;--panel:#12201b;--ink:#eaf5ef;--muted:#9db3aa;--soft:#6f857c;--green:#3ecf8e;--red:#ef6f5c;--amber:#f0b84f;--line:rgba(255,255,255,.10)}
+  :root{--bg:#060D18;--panel:#0D141F;--ink:#F1F5F9;--muted:#8DA4BF;--soft:#5F7187;--accent:#52B8E0;--red:#ef6f5c;--amber:#f0b84f;--line:#1F2A3A}
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;background:
-    radial-gradient(circle at 0 0,rgba(62,207,142,.14),transparent 45%),var(--bg);color:var(--ink);line-height:1.5;min-height:100vh}
+  button,input,select,textarea{font-family:inherit}
+  body{font-family:"Sofia Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;background:
+    radial-gradient(circle at 0 0,rgba(82,184,224,.14),transparent 45%),var(--bg);color:var(--ink);line-height:1.5;min-height:100vh}
   .wrap{max-width:720px;margin:0 auto;padding:48px 20px}
   .brand{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:20px}
-  .brand .mark{width:34px;height:34px;display:grid;place-items:center;background:var(--green);color:#062018;border-radius:9px;font-weight:900;font-size:13px}
+  .brand .mark{width:34px;height:34px;display:grid;place-items:center;background:var(--accent);color:#04111C;border-radius:9px;font-weight:900;font-size:13px}
   h1{font-size:30px;letter-spacing:-.5px;margin:22px 0 4px}
   .sub{color:var(--muted);margin-bottom:24px}
   .overall{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:16px}
   .dot{width:14px;height:14px;border-radius:50%}
-  .dot.ok{background:var(--green);box-shadow:0 0 12px rgba(62,207,142,.7)}
+  .dot.ok{background:var(--accent);box-shadow:0 0 12px rgba(82,184,224,.7)}
   .dot.bad{background:var(--red);box-shadow:0 0 12px rgba(239,111,92,.7)}
   .overall b{font-size:18px}
   .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;text-align:center}
   .card .name{color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
   .card .state{font-size:20px;font-weight:800}
-  .card .state.ok{color:var(--green)}.card .state.bad{color:var(--red)}
+  .card .state.ok{color:var(--accent)}.card .state.bad{color:var(--red)}
   .card .num{font-size:26px;font-weight:800;color:var(--ink)}
   .grid4{grid-template-columns:1fr 1fr 1fr 1fr}
   @media(max-width:520px){.grid4{grid-template-columns:1fr 1fr}}
   .topnav{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:14px 0 22px}
   .topnav a{padding:7px 12px;border:1px solid var(--line);border-radius:8px;color:var(--ink);text-decoration:none;font-size:13px;font-weight:600;white-space:nowrap}
-  .topnav a:hover{border-color:var(--green);color:var(--green)}
-  .topnav a.active{background:var(--green);color:#062018;border-color:transparent}
+  .topnav a:hover{border-color:var(--accent);color:var(--accent)}
+  .topnav a.active{background:var(--accent);color:#04111C;border-color:transparent}
   .meta{color:var(--soft);font-size:13px;margin-top:18px;text-align:center}
   @media(max-width:520px){.grid{grid-template-columns:1fr}}
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="wrap">
