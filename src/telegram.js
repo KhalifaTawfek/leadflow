@@ -50,17 +50,30 @@ async function sendTelegram(text) {
 
 // Formatted new-lead alert for the shop owner's phone.
 async function notifyLeadTelegram(lead, analysis) {
-  const high = analysis.priority >= 8 ? "🚨 <b>HIGH PRIORITY</b>\n" : "🟢 <b>New lead</b>\n";
+  const high = analysis.priority >= 8 ? "🚨 <b>HIGH PRIORITY request</b>\n" : "🟢 <b>New request</b>\n";
   const text = [
     high,
-    `<b>${esc(lead.name)}</b> - ${esc(analysis.category)}`,
+    `<b>${esc(lead.name)}</b> - ${esc(lead.serviceType || analysis.category)}`,
     `Priority ${analysis.priority}/10 · ${esc(analysis.urgencyLabel)}`,
-    `Budget: ${esc(lead.budget || "-")} · Estimate: ${esc(analysis.estimateHours)}`,
     `📞 ${esc(lead.phone)}  ✉️ ${esc(lead.email)}`,
     ``,
-    `“${esc(String(lead.problem).slice(0, 240))}”`
+    `“${esc(String(lead.problem).slice(0, 700))}”`,
+    ``,
+    `Reply from the admin panel: /admin`
   ].join("\n");
   return sendTelegram(text);
 }
 
-module.exports = { sendTelegram, notifyLeadTelegram, telegramEnabled };
+// A customer wrote a new message on one of their requests.
+async function notifyMessageTelegram(lead, text) {
+  return sendTelegram([
+    `💬 <b>New message from ${esc(lead.name)}</b>`,
+    `On: ${esc(lead.serviceType || "their request")} · ✉️ ${esc(lead.email)}`,
+    ``,
+    `“${esc(String(text).slice(0, 700))}”`,
+    ``,
+    `Reply from the admin panel: /admin`
+  ].join("\n"));
+}
+
+module.exports = { sendTelegram, notifyLeadTelegram, notifyMessageTelegram, telegramEnabled };

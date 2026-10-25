@@ -272,7 +272,7 @@
         <div style="max-height:260px;overflow-y:auto;border:1px solid var(--line);border-radius:8px;padding:8px;background:#0A1220">
           ${(lead.messages||[]).length?(lead.messages||[]).map(m=>{const team=m.sender==='team';return `<div style="display:flex;justify-content:${team?'flex-start':'flex-end'};margin:5px 0"><div style="max-width:85%;background:${team?'var(--panel2)':'var(--accent)'};color:${team?'var(--ink)':'#04111C'};border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:13px;white-space:pre-wrap">${esc(m.text)}</div></div>`;}).join(''):'<div class="muted" style="font-size:13px">No messages yet.</div>'}
         </div>
-        <div style="margin-top:10px"><textarea id="replyText" placeholder="Message the customer…" style="min-height:64px"></textarea><button class="btn primary sm" id="sendReply" style="margin-top:8px">Send message</button></div>
+        <div style="margin-top:10px"><textarea id="replyText" placeholder="Message the customer…" style="min-height:64px"></textarea><button class="btn primary sm" id="sendReply" style="margin-top:8px">Send to customer (site + email)</button><div id="replyNote" class="muted" style="font-size:12.5px;margin-top:6px"></div></div>
       </div>
       <div style="margin-top:16px">
         <h4 style="color:var(--accent);font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Internal notes</h4>
@@ -282,7 +282,7 @@
     document.getElementById('saveLead').onclick=async()=>{await api('/api/leads/'+id,{method:'PATCH',body:JSON.stringify({status:document.getElementById('statusSel').value,assignedToId:document.getElementById('assignSel').value})});await loadStats();await loadLeads();openLead(id);};
     document.getElementById('reAnalyze').onclick=async()=>{await api('/api/leads/'+id+'/analyze',{method:'POST'});openLead(id);};
     document.getElementById('addNote').onclick=async()=>{const t=document.getElementById('noteText').value.trim();if(!t)return;await api('/api/leads/'+id+'/notes',{method:'POST',body:JSON.stringify({text:t})});openLead(id);loadLeads();};
-    const sr=document.getElementById('sendReply'); if(sr)sr.onclick=async()=>{const t=document.getElementById('replyText').value.trim();if(!t)return;sr.textContent='Sending…';try{await api('/api/leads/'+id+'/reply',{method:'POST',body:JSON.stringify({text:t})});await loadLeads();openLead(id);}catch(e){sr.textContent='Send reply to customer';alert(e.message);}};
+    const sr=document.getElementById('sendReply'); if(sr)sr.onclick=async()=>{const t=document.getElementById('replyText').value.trim();if(!t)return;sr.textContent='Sending…';try{const r=await api('/api/leads/'+id+'/reply',{method:'POST',body:JSON.stringify({text:t})});await loadLeads();await openLead(id);const n=document.getElementById('replyNote');if(n)n.textContent=r.emailed?'✓ Sent: shown in their My Requests and emailed to them.':(r.emailConfigured?'Shown in their My Requests, but the email failed to send.':'Shown in their My Requests. Email is not set up on the server yet, so no email went out.');}catch(e){sr.textContent='Send reply to customer';alert(e.message);}};
   }
 
   async function boot(){

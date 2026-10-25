@@ -9,7 +9,8 @@ const { initDb, sequelize, User, Service, Lead, LeadNote, AiAnalysis, ActivityLo
 const { analyzeLead } = require("./agent/analyze");
 const { analyzeLeadGraph, agentChat } = require("./agent/graph");
 const { onNewLead, startDailyReportJob } = require("./automation");
-const { sendTelegram, telegramEnabled } = require("./telegram");
+const { sendTelegram, notifyMessageTelegram, telegramEnabled } = require("./telegram");
+const { emailTeamReply, emailEnabled } = require("./email");
 const { firebaseEnabled, verifyIdToken } = require("./firebase");
 const { probe, analyzeSite, domainCheck, friendlyError } = require("./tools");
 const { Op } = require("sequelize");
@@ -347,6 +348,7 @@ app.post("/api/my/leads/:id/messages", requireAuth, async (req, res) => {
   const message = await LeadMessage.create({ leadId: lead.id, sender: "customer", text: text.slice(0, 2000) });
   if (lead.status === "NEW") { lead.status = "CONTACTED"; await lead.save(); }   // surface it to staff
   await logActivity(req.user.id, "CUSTOMER_MSG", `${lead.name}: ${text.slice(0, 80)}`, lead.id);
+  notifyMessageTelegram(lead, text).catch(() => {});                          // ping the owner's phone
   res.status(201).json({ message });
 });
 
@@ -426,8 +428,9 @@ app.post("/api/leads/:id/reply", requireStaff, async (req, res) => {
   if (lead.status === "NEW") lead.status = "CONTACTED";   // replying moves it along the pipeline
   await lead.save();
   await LeadMessage.create({ leadId: lead.id, sender: "team", text: text.slice(0, 4000) });   // show in the customer's thread
-  await logActivity(req.user.id, "REPLY_SENT", `${lead.name} · reply sent to customer`, lead.id);
-  res.json({ ok: true, lead: { id: lead.id, reply: lead.reply, repliedAt: lead.repliedAt, status: lead.status } });
+  const emailed = await emailTeamReply(lead, lead.reply);                   // also lands in their inbox
+  await logActivity(req.user.id, "REPLY_SENT", `${lead.name} · reply sent to customer${emailed ? " (emailed)" : ""}`, lead.id);
+  res.json({ ok: true, emailed, emailConfigured: emailEnabled(), lead: { id: lead.id, reply: lead.reply, repliedAt: lead.repliedAt, status: lead.status } });
 });
 
 // Admin: re-run the AI analysis for a lead.

@@ -51,7 +51,6 @@ async function notifyOwnerOfLead(lead, analysis) {
     `Phone:    ${lead.phone}`,
     `Service:  ${analysis.category}`,
     `Urgency:  ${analysis.urgencyLabel}`,
-    `Budget:   ${lead.budget}`,
     `Lead time:${analysis.estimateHours}`,
     ``,
     `Their message:`,
@@ -92,4 +91,23 @@ async function autoReplyToCustomer(lead, analysis) {
   });
 }
 
-module.exports = { sendMail, notifyOwnerOfLead, autoReplyToCustomer, emailEnabled };
+// Email the customer a message the team wrote in the admin panel.
+async function emailTeamReply(lead, message) {
+  const text = [
+    `Hi ${lead.name},`,
+    ``,
+    message,
+    ``,
+    `You can reply to this email, or sign in and open "My Requests" to see the full conversation.`,
+    ``,
+    `The LeadFlow team`
+  ].join("\n");
+  return sendMail({
+    to: lead.email,
+    subject: `Re: your request${lead.serviceType ? ` - ${lead.serviceType}` : ""}`,
+    text,
+    replyTo: MAIL_TO
+  });
+}
+
+module.exports = { sendMail, notifyOwnerOfLead, autoReplyToCustomer, emailTeamReply, emailEnabled };
