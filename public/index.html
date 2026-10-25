@@ -606,7 +606,7 @@
         <p class="hero-sub rise" style="--d:.3s">${esc(n.sub)}</p>
         <div class="hero-actions center rise" style="--d:.42s">
           <button class="btn light lg" onclick="nicheRequest('${key}')">Get the ${esc(n.pack.name)} →</button>
-          <button class="btn outline-light lg" onclick="bookCall()">Book a free call</button>
+          <button class="btn outline-light lg" onclick="startRequest()">Submit a request</button>
         </div>
        </div>
         <div class="hero-trust rise" style="--d:.55s"><span>No tech knowledge needed</span><span>Live in about a week</span><span>Price agreed before we start</span></div>
@@ -687,7 +687,7 @@
             <span class="chip"><span class="av">${esc((me.username[0]||'?').toUpperCase())}</span>${esc(me.username)}</span>
             <a onclick="logout()" style="cursor:pointer">Log out</a>`;
     } else {
-      auth = `<button class="btn ghost sm" onclick="openAuth('login')">Log in</button><button class="btn primary sm" onclick="bookCall()">Book a free call</button>`;
+      auth = `<button class="btn ghost sm" onclick="openAuth('login')">Log in</button><button class="btn primary sm" onclick="startRequest()">Submit a request</button>`;
     }
     el.innerHTML = main + `<div class="nav-auth">${auth}</div>`;
   }
@@ -1106,7 +1106,7 @@
     ['Can you set up a CRM or business software for my team?', 'Yes. We set up, host and maintain open-source CRM and business software (sales pipeline, invoicing, inventory, helpdesk), import your existing data and train your team. It runs on our EU servers, so you never deal with updates or backups.'],
     ['Do you work with WordPress, Shopify or Wix?', 'Yes. We work with WordPress, custom-built sites and apps, and most hosting providers. On Shopify, Wix or Squarespace we can still handle your domain, email, integrations and chatbots.']
   ];
-  const TOC = [['how','How it works'],['services','Services'],['cloud','Hosting & tools'],['bots','Bots & assistants'],['prompts','Prompt engineering'],['tools','Free tools'],['pricing','Care plans'],['work','Our work'],['partners','Partners'],['faq','FAQ'],['start','Book a call']];
+  const TOC = [['how','How it works'],['services','Services'],['cloud','Hosting & tools'],['bots','Bots & assistants'],['prompts','Prompt engineering'],['tools','Free tools'],['pricing','Care plans'],['work','Our work'],['partners','Partners'],['faq','FAQ'],['start','Get started']];
 
   function renderHome(){
     app.innerHTML = `
@@ -1114,9 +1114,9 @@
        <div class="hero-card">
         <div class="hero-badge rise" style="--d:.05s"><span class="dotlive"></span>IT, websites &amp; automation for small businesses</div>
         <h1 class="hero-title rise" style="--d:.15s">Your tech, handled<span class="dim">before it breaks.</span></h1>
-        <p class="hero-sub rise" style="--d:.3s">We build and look after your website, email, security and online tools, so you can focus on your business. Tell us what you need, we'll call you and suggest the best option.</p>
+        <p class="hero-sub rise" style="--d:.3s">We build and look after your website, email, security and online tools, so you can focus on your business. Tell us what you need and we'll get back to you with the best option.</p>
         <div class="hero-actions center rise" style="--d:.42s">
-          <button class="btn light lg" onclick="bookCall()">Book a free call <span aria-hidden="true">→</span></button>
+          <button class="btn light lg" onclick="startRequest()">Submit a request <span aria-hidden="true">→</span></button>
           <button class="btn outline-light lg" onclick="go('demos','audit')">Free website check</button>
         </div>
         <div class="flow rise" style="--d:.55s">${heroFlow()}
@@ -1159,7 +1159,7 @@
             <h2 class="sec">Hosting and business tools, looked after for you</h2>
             <p class="sec-sub">The technical side of running a business online, handled properly. You get all the benefits without having to understand the tech.</p>
             <div class="cloud-grid">${CLOUD.map(([i,t,d])=>`<div class="cloud-cell"><div class="cc-icon">${icon(i)}</div><h3>${t}</h3><p>${d}</p></div>`).join('')}</div>
-            <div class="hero-actions" style="margin-top:24px"><button class="btn primary" onclick="bookCall()">Talk to us about your setup →</button></div>
+            <div class="hero-actions" style="margin-top:24px"><button class="btn primary" onclick="startRequest()">Talk to us about your setup →</button></div>
           </section>
 
           <section id="bots">
@@ -1243,11 +1243,11 @@
           </section>
 
           <section class="cta" id="start">
-            <h2 class="sec">Let's talk about your business</h2>
-            <p class="sec-sub">Book a free 15-minute call. No tech talk and no obligation: we listen, then suggest the simplest way to fix it.</p>
+            <h2 class="sec">Ready to get started?</h2>
+            <p class="sec-sub">Tell us what you need in your own words. No tech talk and no obligation: we reply by email within one business day with the simplest way to fix it.</p>
             <div class="hero-actions center">
-              <button class="btn primary lg" onclick="bookCall()">Book a free call →</button>
-              <button class="btn ghost lg" onclick="startRequest()">Send a request</button>
+              <button class="btn primary lg" onclick="startRequest()">Submit a request →</button>
+              <button class="btn ghost lg" onclick="go('demos','audit')">Free website check</button>
               ${contactButtonsHTML('lg', true)}
             </div>
           </section>
