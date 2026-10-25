@@ -250,7 +250,7 @@ app.post("/api/leads", leadLimiter, requireAuth, async (req, res) => {
 
   res.status(201).json({
     ok: true,
-    message: "Thanks! We'll contact you within one business day to set up your free call. You can follow everything under My Requests.",
+    message: "Thanks! We'll email you within one business day with the next steps. You can follow everything under My Requests.",
     lead: { id: lead.id },
     analysis: {
       category: analysis.category,

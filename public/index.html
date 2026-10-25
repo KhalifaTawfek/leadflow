@@ -296,6 +296,10 @@
   .hero-trust span::before{content:"✓";color:var(--ok);font-weight:800;margin-right:7px}
   .steps.four{grid-template-columns:repeat(4,1fr)}
   .plan-price small{font-size:14px;font-weight:600;color:var(--muted);margin-right:6px;letter-spacing:0}
+  /* optional free call */
+  .call-opt{display:flex!important;flex-direction:row!important;align-items:flex-start;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel2);cursor:pointer;font-size:14px;color:var(--ink)}
+  .call-opt input{width:18px;height:18px;margin:2px 0 0;flex:none;accent-color:var(--accent)}
+  .call-opt small{display:block;color:var(--soft);font-size:12.5px;margin-top:2px;font-weight:400}
   /* live tools */
   .tool{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:26px;display:flex;flex-direction:column;gap:16px;min-width:0;scroll-margin-top:84px}
   .tool-wide{margin-bottom:16px}
@@ -529,7 +533,7 @@
         <div class="subs-inner">
           <span class="subs-kicker">Care plans</span>
           <h2 class="sec">Monthly care plans</h2>
-          <p class="sec-sub">Your website, hosting, protection and domain, looked after every month. These are starting prices: we agree the exact price with you on a free call, based on what you need. Paying yearly? You get 2 months free.</p>
+          <p class="sec-sub">Your website, hosting, protection and domain, looked after every month. These are starting prices: we agree the exact price with you before anything starts, based on what you need. Paying yearly? You get 2 months free.</p>
           <div class="price-grid" id="planGrid">${planCardsHTML()}</div>
           <div class="assure"><span>Free migration of your current site</span><span>Price agreed before we start</span><span>Cancel anytime</span><span>Reply within 1 business day</span></div>
           <p class="sec-sub" style="margin-top:16px;font-size:13px">Prices exclude VAT where applicable. "Protection" means backups, Cloudflare, updates and monitoring, not a guarantee against every attack. Full terms apply.</p>
@@ -1094,8 +1098,8 @@
     "Don't: copy logos, text or images from the source"
   ];
   const FAQ = [
-    ['How does it work?', 'Tell us what you need, we set up a free 15-minute call (Google Meet, Discord, phone or WhatsApp), then send you a tailored offer. Once you say yes, we do the work and you follow it in My Requests.'],
-    ['How much does it cost?', 'It depends on what you need. After a free 15-minute call we send a clear offer, and the price is agreed before any work starts. Monthly care plans start from €19, €39 or €79, and nothing is paid up front.'],
+    ['How does it work?', 'Tell us what you need and we reply by email with questions and a tailored offer. Prefer to talk? Tick the free call option and choose phone, WhatsApp, Google Meet or Discord. Once you say yes, we do the work and you follow it in My Requests.'],
+    ['How much does it cost?', 'It depends on what you need. Once we understand what you need (by email, or on an optional free call), we send a clear offer, and the price is agreed before any work starts. Monthly care plans start from €19, €39 or €79, and nothing is paid up front.'],
     ["What's included in a monthly plan?", 'Every plan covers hosting, SSL, Cloudflare protection, off-site backups and uptime monitoring. Business adds your domain, small content edits and a monthly report; Pro adds priority fixes, security hardening and business email.'],
     ['Can you move my existing website?', 'Yes. When you join a plan we migrate your current site for you at no extra cost, and keep it online while we do it.'],
     ['Can I cancel?', 'Any time, with no lock-in. Your plan simply runs until the end of the month you have paid for.'],
@@ -1142,7 +1146,7 @@
             <p class="sec-sub">No tech knowledge needed. We explain everything in plain words and agree the price before any work starts.</p>
             <div class="steps four">
               <div class="step"><div class="n">1</div><h3>Tell us what you need</h3><p>Use the form or the chat and describe it in your own words.</p></div>
-              <div class="step"><div class="n">2</div><h3>Free 15-minute call</h3><p>On Google Meet, Discord, phone or WhatsApp, whatever suits you.</p></div>
+              <div class="step"><div class="n">2</div><h3>We get back to you</h3><p>By email within one business day. Prefer to talk? A call is free and optional.</p></div>
               <div class="step"><div class="n">3</div><h3>A tailored offer</h3><p>A clear plan and price for exactly what you need. No surprises.</p></div>
               <div class="step"><div class="n">4</div><h3>We deliver, you relax</h3><p>Follow progress in My Requests while we keep everything running.</p></div>
             </div>
@@ -1292,7 +1296,7 @@
     app.innerHTML = `
       <section style="max-width:1120px;margin:0 auto;padding-top:48px">
         <div class="eyebrow">New request</div>
-        <h2 class="sec">Request a service</h2><p class="sec-sub">Tell us what you need. We'll set up a free call at a time that suits you, then send a tailored offer.</p>
+        <h2 class="sec">Request a service</h2><p class="sec-sub">Tell us what you need and we'll reply by email with a tailored offer. A free call is optional.</p>
         <div class="req-layout">
         <div class="card">
           <div id="reqNotice"></div>
@@ -1301,9 +1305,10 @@
             <label>Service<select name="serviceType" id="svcSel" required><option value="">Choose…</option>${opts}</select></label>
             <label>Describe your problem<textarea name="problem" placeholder="e.g. I keep getting login attempts on my accounts and want to secure them." required>${planPending?esc(`I'd like the ${planPending.name} managed plan (${planPending.price}${planPending.period}). Please set up my website, hosting, protection`+(planPending.id!=='starter'?' and domain':'')+'.'):(pending&&pending.text?esc(pending.text):'')}</textarea></label>
             <label>Phone<input name="phone" placeholder="+40 712 345 678" required></label>
-            <div class="form-grid">
-              <label>Best time for a call<select name="callTime"><option>Any time</option><option>Morning (9-12)</option><option>Afternoon (12-17)</option><option>Evening (17-20)</option></select></label>
-              <label>Call on<select name="callVia"><option>Google Meet</option><option>Discord</option><option>Phone</option><option>WhatsApp</option></select></label>
+            <label class="call-opt"><input type="checkbox" name="wantCall" id="wantCall" onchange="toggleCallPrefs(this.checked)"><span><b>I'd also like a free call</b> (optional)<small>Leave it unticked and we'll simply reply by email with the details.</small></span></label>
+            <div class="form-grid" id="callPrefs" style="display:none">
+              <label>Call me on<select name="callVia"><option>Phone</option><option>WhatsApp</option><option>Google Meet</option><option>Discord</option></select></label>
+              <label>Best time<select name="callTime"><option>Any time</option><option>Morning (9-12)</option><option>Afternoon (12-17)</option><option>Evening (17-20)</option></select></label>
             </div>
             <p style="color:var(--soft);font-size:12px;margin-top:-4px">No tech knowledge needed: describe it in your own words.</p>
             <div id="checkoutArea"></div>
@@ -1355,6 +1360,11 @@
   }
 
   let checkoutReady = false;
+  // The free call is optional: show its options only when ticked, and redo the summary.
+  function toggleCallPrefs(on){
+    document.getElementById('callPrefs').style.display = on ? '' : 'none';
+    if(checkoutReady){ checkoutReady = false; document.getElementById('checkoutArea').innerHTML = ''; document.getElementById('reqSubmit').textContent = 'Continue →'; }
+  }
   async function onRequestSubmit(e){
     e.preventDefault();
     const form = e.target;
@@ -1371,10 +1381,10 @@
       document.getElementById('checkoutArea').innerHTML = `
         <div class="checkout">
           <div class="row"><span>Service</span><span>${esc(data.serviceType)}</span></div>
-          <div class="row"><span>Next step</span><span>Free 15-minute call on ${esc(data.callVia||'Google Meet')}</span></div>
-          <div class="row total"><span>Price</span><span class="free">Tailored to you, after the call</span></div>
+          <div class="row"><span>Next step</span><span>${data.wantCall ? `Free call on ${esc(data.callVia||'Phone')} (${esc(data.callTime||'Any time')})` : 'We reply by email with the details'}</span></div>
+          <div class="row total"><span>Price</span><span class="free">Tailored to you, agreed before we start</span></div>
         </div>
-        <p class="sec-sub" style="margin:10px 0 0;font-size:13px">No payment now. We'll confirm a call time within one business day.</p>`;
+        <p class="sec-sub" style="margin:10px 0 0;font-size:13px">No payment now. We'll email you within one business day${data.wantCall ? ' to confirm a call time' : ''}.</p>`;
       document.getElementById('reqSubmit').textContent = 'Send request →';
       checkoutReady = true;
       return;
@@ -1383,8 +1393,9 @@
     const btn = document.getElementById('reqSubmit');
     btn.disabled=true; btn.textContent='Placing…';
     try{
-      const payload = { ...data, problem: `${data.problem.trim()}\n\nCall preference: ${data.callTime||'Any time'} via ${data.callVia||'Google Meet'}` };
-      delete payload.callTime; delete payload.callVia;
+      const contactPref = data.wantCall ? `Wants a free call: ${data.callVia||'Phone'}, ${data.callTime||'Any time'}` : 'Contact by email only (no call requested)';
+      const payload = { ...data, problem: `${data.problem.trim()}\n\n${contactPref}` };
+      delete payload.callTime; delete payload.callVia; delete payload.wantCall;
       const res = await api('/api/leads',{method:'POST',body:JSON.stringify(payload)});
       const a = res.analysis||{};
       app.innerHTML = `

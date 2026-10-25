@@ -79,6 +79,8 @@ async function autoReplyToCustomer(lead, analysis) {
     ``,
     analysis.questions ? `To move faster, please have these ready:\n${analysis.questions}` : ``,
     ``,
+    /Wants a free call/.test(lead.problem || "") ? `You asked for a free call, so we'll email you shortly to confirm a time.` : `We'll follow up by email with any questions and the details of our offer.`,
+    ``,
     `You can track your request any time by signing in and opening "My Requests".`,
     ``,
     `The LeadFlow team`
