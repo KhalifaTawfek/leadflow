@@ -68,7 +68,7 @@ const SERVICE_RULES = [
   },
   {
     category: "Chatbots & Integrations",
-    keywords: ["chatbot", "chat bot", "bot", "telegram", "whatsapp", "discord", "messenger", "integration", "api", "webhook", "connect my"],
+    keywords: ["chatbot", "chat bot", "bot", "discord bot", "telegram bot", "whatsapp bot", "telegram", "whatsapp", "discord", "messenger", "integration", "api", "webhook", "connect my"],
     estimate: "4-10 hours",
     questions: [
       "Where should the bot live - your website, Telegram, WhatsApp or Discord?",
@@ -94,6 +94,16 @@ const SERVICE_RULES = [
       "Which domain is it, and where is it registered today?",
       "Do you have access to the current registrar account?",
       "Is email running on this domain that we need to keep working?"
+    ]
+  },
+  {
+    category: "CRM & Business Software",
+    keywords: ["crm", "erp", "business software", "invoicing", "invoices", "inventory", "stock", "helpdesk", "ticketing", "sales pipeline", "customer database", "contacts", "quotes"],
+    estimate: "1-3 days setup",
+    questions: [
+      "What should the system handle first: customers and sales, invoicing, stock, or support tickets?",
+      "How many people on your team will use it?",
+      "Do you have existing data (spreadsheets or another tool) we should import?"
     ]
   },
   {

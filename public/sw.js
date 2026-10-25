@@ -2,7 +2,7 @@
 // Strategy: network-first for navigation and API so content is always fresh,
 // falling back to a cached app shell when offline. Static assets are
 // cache-first for speed. Kept intentionally small.
-const CACHE = "leadflow-v3";
+const CACHE = "leadflow-v4";
 const SHELL = ["/", "/index.html", "/manifest.webmanifest", "/icon-192.png", "/icon-512.png"];
 
 self.addEventListener("install", (e) => {

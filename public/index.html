@@ -44,12 +44,12 @@
   .chip .av{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#04111C;display:grid;place-items:center;font-weight:800;font-size:12px}
 
   /* type + sections */
-  section{padding:64px 0}
+  section{padding:56px 0}
   section[id]{scroll-margin-top:72px}
   .eyebrow,.subs-kicker{display:inline-flex;align-items:center;gap:10px;color:var(--accent);font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px}
   .eyebrow::before,.subs-kicker::before{content:"";width:20px;height:2px;background:var(--accent);border-radius:2px}
-  h2.sec{font-size:clamp(30px,3.8vw,46px);line-height:1.08;letter-spacing:-1.2px;font-weight:800;margin-bottom:12px}
-  .sec-sub{color:var(--muted);font-size:17px;max-width:62ch;margin-bottom:30px}
+  h2.sec{font-size:clamp(28px,3.3vw,40px);line-height:1.08;letter-spacing:-1.2px;font-weight:800;margin-bottom:12px}
+  .sec-sub{color:var(--muted);font-size:16.5px;max-width:62ch;margin-bottom:26px}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:26px}
   .price{color:var(--accent);font-weight:700;font-size:14px}
 
@@ -122,17 +122,19 @@
   .empty{color:var(--muted);text-align:center;padding:48px 10px}
 
   /* subscription plans */
-  .subs-inner{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:44px 36px}
+  .subs-inner{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:30px 30px 26px}
+  .subs-inner h2.sec{font-size:clamp(26px,2.8vw,34px)}
+  .subs-inner .sec-sub{margin-bottom:24px;font-size:15.5px}
   .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:stretch}
-  .plan{position:relative;background:var(--bg);border:1px solid var(--line2);border-radius:14px;padding:28px 24px;display:flex;flex-direction:column}
+  .plan{position:relative;background:var(--bg);border:1px solid var(--line2);border-radius:14px;padding:22px 20px;display:flex;flex-direction:column}
   .plan.featured{border-color:var(--accent)}
   .plan-badge{position:absolute;top:-12px;left:24px;background:var(--accent);color:#04111C;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
   .plan h3{font-size:19px;font-weight:700;margin-bottom:6px}
-  .plan-price{font-size:44px;font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin:4px 0}
+  .plan-price{font-size:36px;font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin:4px 0}
   .plan-price span{font-size:15px;font-weight:600;color:var(--muted);letter-spacing:0}
-  .plan-tag{color:var(--muted);font-size:15px;margin-bottom:18px;min-height:44px}
-  .plan-feats{list-style:none;display:grid;gap:10px;margin:0 0 22px;flex:1;padding-top:18px;border-top:1px solid var(--line)}
-  .plan-feats li{position:relative;padding-left:26px;font-size:15px}
+  .plan-tag{color:var(--muted);font-size:14.5px;margin-bottom:14px;min-height:0}
+  .plan-feats{list-style:none;display:grid;gap:7px;margin:0 0 18px;flex:1;padding-top:14px;border-top:1px solid var(--line)}
+  .plan-feats li{position:relative;padding-left:24px;font-size:14px}
   .plan-feats li::before{content:"✓";position:absolute;left:0;color:var(--accent);font-weight:800}
 
   /* footer */
@@ -145,7 +147,7 @@
   .hero2{text-align:center;padding:96px 0 0;position:relative}
   .hero-badge{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--line2);background:rgba(13,20,31,.7);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.04em;margin-bottom:28px}
   .dotlive{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px rgba(52,211,153,.15)}
-  .hero-title{font-size:clamp(44px,7.2vw,92px);line-height:1.02;letter-spacing:-.035em;font-weight:700;color:#EAF1F8;max-width:15ch;margin:0 auto 24px}
+  .hero-title{font-size:clamp(42px,6.4vw,82px);line-height:1.02;letter-spacing:-.035em;font-weight:700;color:#EAF1F8;max-width:15ch;margin:0 auto 24px}
   .hero-title .dim{display:block;background:linear-gradient(180deg,#C5D2E2,#7B90AB);-webkit-background-clip:text;background-clip:text;color:transparent}
   .hero-sub{color:var(--muted);font-size:clamp(17px,1.6vw,20px);max-width:58ch;margin:0 auto 36px}
   .hero-actions.center{justify-content:center}
@@ -204,7 +206,7 @@
   @media(prefers-reduced-motion:reduce){.pl{opacity:1;transform:none;transition:none}.caret{animation:none}}
 
   /* guarantees + FAQ + audit */
-  .assure{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 28px;margin-top:26px;color:var(--muted);font-size:14.5px;font-weight:500}
+  .assure{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 26px;margin-top:20px;color:var(--muted);font-size:14px;font-weight:500}
   .assure span::before{content:"✓";color:var(--ok);font-weight:800;margin-right:8px}
   .faq{border-top:1px solid var(--line)}
   .faq details{border-bottom:1px solid var(--line)}
@@ -236,6 +238,15 @@
   .req-layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:20px;align-items:start}
   .chat-side{position:sticky;top:90px;display:flex;flex-direction:column;max-height:calc(100vh - 120px)}
   .chat-side #chatBox{max-height:none !important;flex:1;min-height:240px}
+
+  /* bots */
+  .bots-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .bot-card{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:24px;overflow:hidden;transition:border-color .2s,transform .2s}
+  .bot-card::after{content:"";position:absolute;inset:auto -40px -60px auto;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--c) 22%,transparent),transparent 70%);pointer-events:none}
+  .bot-card:hover{border-color:color-mix(in srgb,var(--c) 55%,transparent);transform:translateY(-2px)}
+  .bot-ic{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;color:var(--c);background:color-mix(in srgb,var(--c) 13%,transparent);border:1px solid color-mix(in srgb,var(--c) 35%,transparent);margin-bottom:14px}
+  .bot-card h3{font-size:17px;font-weight:700;margin-bottom:6px}
+  .bot-card p{color:var(--muted);font-size:14.5px}
 
   /* live tools */
   .tool{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:26px;display:flex;flex-direction:column;gap:16px;min-width:0;scroll-margin-top:84px}
@@ -347,6 +358,7 @@
     .audit-cols{grid-template-columns:1fr}
     .audit-score{flex-direction:column;text-align:center}
     .cloud-grid{grid-template-columns:1fr}
+    .bots-grid{grid-template-columns:1fr}
     .hero2{padding-top:64px}
     .flow{aspect-ratio:auto;height:230px}
     .flow-core{width:84px;height:84px;border-radius:20px}
@@ -499,7 +511,7 @@
   async function loadMe(){ try{ const d=await api('/api/auth/me'); me=d.user; backendFirebase=!!d.firebase; }catch(e){ me=null; } renderNav(); }
   function renderNav(){
     const el = document.getElementById('navLinks');
-    const main = `<div class="nav-main"><a onclick="goToSection('services')">Services</a><a onclick="goToSection('cloud')">Cloud</a><a onclick="goToSection('pricing')">Plans</a><a onclick="go('demos')">Live Tools</a><a onclick="go('contact')">Contact</a></div>`;
+    const main = `<div class="nav-main"><a onclick="goToSection('services')">Services</a><a onclick="goToSection('cloud')">Cloud</a><a onclick="goToSection('bots')">Bots</a><a onclick="goToSection('pricing')">Plans</a><a onclick="go('demos')">Live Tools</a><a onclick="go('contact')">Contact</a></div>`;
     let auth;
     if(me && (me.role==='ADMIN' || me.role==='SALES')){
       auth = `<a class="btn primary sm" href="/admin" style="text-decoration:none">Admin panel</a>
@@ -585,7 +597,13 @@
     zap: '<path d="M13 2 3 14h9l-1 8 10-12h-9z"/>',
     archive: '<rect x="2" y="3" width="20" height="5" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8M10 12h4"/>',
     database: '<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/>',
-    move: '<path d="M5 12h14M13 6l6 6-6 6"/>'
+    move: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+    users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
+    receipt: '<path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6M9 15h4"/>',
+    lifebuoy: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="m4.9 4.9 4.3 4.3M14.8 14.8l4.3 4.3M14.8 9.2l4.3-4.3M4.9 19.1l4.3-4.3"/>',
+    send: '<path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/>',
+    gamepad: '<rect x="2" y="6" width="20" height="12" rx="6"/><path d="M6 12h4M8 10v4M15 11h.01M18 13h.01"/>',
+    msg: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/><path d="M9.5 9.5c0 3 2 5 5 5"/>'
   };
   function icon(name, s=20){ return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[name]}</svg>`; }
   const safeHex = h => /^#[0-9a-f]{6}$/i.test(h||'') ? h : '#000000';
@@ -880,7 +898,16 @@
     ['pulse','Monitoring & alerts','Uptime checks every minute and alerts on Telegram or email.'],
     ['database','Managed databases','PostgreSQL or MySQL set up, tuned, secured and backed up.'],
     ['mail','Domains & business email','Domains, DNS and email that lands in inboxes, not spam.'],
-    ['move','Cloud migrations','Move off shared hosting or another provider with zero downtime.']
+    ['move','Cloud migrations','Move off shared hosting or another provider with zero downtime.'],
+    ['users','CRM for your team','A sales pipeline and customer database your whole team can use, set up and hosted for you.'],
+    ['receipt','Invoicing & inventory','Business software for quotes, invoices, stock and orders, configured around how you work.'],
+    ['lifebuoy','Helpdesk & ticketing','A shared support inbox and ticket system, so no customer request gets lost.']
+  ];
+  const BOTS = [
+    ['gamepad','#7C8CF8','Discord bots','Moderation, roles, tickets, welcome flows and alerts for your community or team.'],
+    ['send','#3AA8E6','Telegram bots','Order and booking notifications, customer support and instant alerts straight to your phone.'],
+    ['msg','#34D399','WhatsApp bots','Answer FAQs, take bookings and send order updates on the app your customers already use.'],
+    ['bot','#52B8E0','Website assistant','A 24/7 assistant on your site that answers questions from your info and captures every lead.']
   ];
   const PROMPT_LINES = [
     '# Build prompt: premium dark landing page',
@@ -902,9 +929,10 @@
     ['How fast do you reply?', 'Within one business day, and urgent problems go to the front of the queue. If a call helps, we set one up on Google Meet or Discord.'],
     ['Do I need to be technical?', 'Not at all. Describe the problem in your own words and we handle the rest, then explain what we did in plain English.'],
     ['Where is my data hosted?', 'On servers in the EU (Amsterdam), behind Cloudflare. We follow GDPR; the details are in our Privacy Policy.'],
+    ['Can you set up a CRM or business software for my team?', 'Yes. We set up, host and maintain open-source CRM and business software (sales pipeline, invoicing, inventory, helpdesk), import your existing data and train your team. It runs on our EU servers, so you never deal with updates or backups.'],
     ['Do you work with WordPress, Shopify or Wix?', 'Yes. We work with WordPress, custom-built sites and apps, and most hosting providers. On Shopify, Wix or Squarespace we can still handle your domain, email, integrations and chatbots.']
   ];
-  const TOC = [['services','Services'],['cloud','Cloud services'],['prompts','Prompt engineering'],['how','How it works'],['tools','Live tools'],['pricing','Plans'],['work','Our work'],['faq','FAQ'],['start','Get started']];
+  const TOC = [['services','Services'],['cloud','Cloud & software'],['bots','Bots & assistants'],['prompts','Prompt engineering'],['how','How it works'],['tools','Live tools'],['pricing','Plans'],['work','Our work'],['faq','FAQ'],['start','Get started']];
 
   function renderHome(){
     app.innerHTML = `
@@ -940,10 +968,18 @@
 
           <section id="cloud">
             <div class="eyebrow">Cloud services</div>
-            <h2 class="sec">Cloud, set up properly and looked after</h2>
-            <p class="sec-sub">From a single server to a multi-site setup: we build it, secure it and keep it running, so you never have to think about it.</p>
+            <h2 class="sec">Cloud and business software, set up and looked after</h2>
+            <p class="sec-sub">Servers, hosting and the tools your team runs on, like a CRM, invoicing or a helpdesk: we build it, secure it and keep it running, hosted in the EU.</p>
             <div class="cloud-grid">${CLOUD.map(([i,t,d])=>`<div class="cloud-cell"><div class="cc-icon">${icon(i)}</div><h3>${t}</h3><p>${d}</p></div>`).join('')}</div>
             <div class="hero-actions" style="margin-top:24px"><button class="btn primary" onclick="startRequest('Cloud Infrastructure')">Talk about your setup →</button></div>
+          </section>
+
+          <section id="bots">
+            <div class="eyebrow">Bots &amp; assistants</div>
+            <h2 class="sec">Bots that work while you sleep</h2>
+            <p class="sec-sub">Custom bots on the apps your customers and team already use, connected to your website, calendar or systems.</p>
+            <div class="bots-grid">${BOTS.map(([ic,c,t,d])=>`<div class="bot-card" style="--c:${c}"><div class="bot-ic">${icon(ic,22)}</div><h3>${t}</h3><p>${d}</p></div>`).join('')}</div>
+            <div class="hero-actions" style="margin-top:24px"><button class="btn primary" onclick="startRequest('Chatbots & Integrations')">Get a bot built →</button></div>
           </section>
 
           <section id="prompts">
@@ -1031,7 +1067,7 @@
     const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     const heads = document.querySelectorAll('.home-main section > .eyebrow, .home-main section > h2.sec, .home-main section > .sec-sub, .split > div > .eyebrow, .split > div > h2.sec, .split > div > .sec-sub, .subs-inner > .subs-kicker, .subs-inner > h2.sec, .subs-inner > .sec-sub, .cta');
     heads.forEach(el=>el.classList.add('reveal'));
-    document.querySelectorAll('.stats, #svcGrid, .cloud-grid, .steps, .price-grid, #caseGrid, .split').forEach(group=>{
+    document.querySelectorAll('.stats, #svcGrid, .cloud-grid, .bots-grid, .steps, .price-grid, #caseGrid, .split').forEach(group=>{
       [...group.children].forEach((el,i)=>{ el.classList.add('reveal'); el.style.setProperty('--d', Math.min(i,8)*70+'ms'); });
     });
     const items = document.querySelectorAll('.home-main .reveal');
