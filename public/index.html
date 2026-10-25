@@ -296,6 +296,17 @@
   .hero-trust span::before{content:"✓";color:var(--ok);font-weight:800;margin-right:7px}
   .steps.four{grid-template-columns:repeat(4,1fr)}
   .plan-price small{font-size:14px;font-weight:600;color:var(--muted);margin-right:6px;letter-spacing:0}
+  /* request page: compact so the whole form fits on one screen */
+  .req-page{padding-top:20px}
+  .req-page h2.sec{font-size:clamp(26px,3vw,34px);margin-bottom:4px}
+  .req-page > .sec-sub{margin-bottom:16px}
+  .req-page .card{padding:20px 22px}
+  .req-page form label{margin-bottom:10px;font-size:13.5px}
+  .req-page input,.req-page select{padding:9px 12px;font-size:14.5px}
+  .req-page textarea{min-height:84px;padding:10px 12px;font-size:14.5px}
+  .req-page .form-grid{gap:12px}
+  .req-page .call-opt{padding:10px 12px}
+  .req-page #chatBox{max-height:240px!important}
   /* optional free call */
   .call-opt{display:flex!important;flex-direction:row!important;align-items:flex-start;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel2);cursor:pointer;font-size:14px;color:var(--ink)}
   .call-opt input{width:18px;height:18px;margin:2px 0 0;flex:none;accent-color:var(--accent)}
@@ -1293,18 +1304,21 @@
   function renderRequest(){
     if(!me){ openAuth('login'); return renderHome(); }
     const opts = services.map(s=>`<option ${pending&&pending.preselect===s.name?'selected':''}>${esc(s.name)}</option>`).join('');
+    window.scrollTo({ top: 0, behavior: 'instant' });   // buttons lower on the page open this directly, not via go()
     app.innerHTML = `
-      <section style="max-width:1120px;margin:0 auto;padding-top:48px">
+      <section class="req-page" style="max-width:1120px;margin:0 auto">
         <div class="eyebrow">New request</div>
         <h2 class="sec">Request a service</h2><p class="sec-sub">Tell us what you need and we'll reply by email with a tailored offer. A free call is optional.</p>
         <div class="req-layout">
         <div class="card">
           <div id="reqNotice"></div>
           <form id="reqForm">
-            <label>Full name<input name="name" value="${esc(me.username)}" placeholder="Your name" required></label>
+            <div class="form-grid">
+              <label>Full name<input name="name" value="${esc(me.username)}" placeholder="Your name" required></label>
+              <label>Phone<input name="phone" placeholder="+40 712 345 678" required></label>
+            </div>
             <label>Service<select name="serviceType" id="svcSel" required><option value="">Choose…</option>${opts}</select></label>
             <label>Describe your problem<textarea name="problem" placeholder="e.g. I keep getting login attempts on my accounts and want to secure them." required>${planPending?esc(`I'd like the ${planPending.name} managed plan (${planPending.price}${planPending.period}). Please set up my website, hosting, protection`+(planPending.id!=='starter'?' and domain':'')+'.'):(pending&&pending.text?esc(pending.text):'')}</textarea></label>
-            <label>Phone<input name="phone" placeholder="+40 712 345 678" required></label>
             <label class="call-opt"><input type="checkbox" name="wantCall" id="wantCall" onchange="toggleCallPrefs(this.checked)"><span><b>I'd also like a free call</b> (optional)<small>Leave it unticked and we'll simply reply by email with the details.</small></span></label>
             <div class="form-grid" id="callPrefs" style="display:none">
               <label>Call me on<select name="callVia"><option>Phone</option><option>WhatsApp</option><option>Google Meet</option><option>Discord</option></select></label>
