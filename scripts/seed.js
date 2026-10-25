@@ -4,19 +4,24 @@ const { initDb, sequelize, User, Service, Lead, AiAnalysis } = require("../src/d
 const { analyzeLead } = require("../src/agent/analyze");
 
 const SERVICES = [
-  { name: "Account Security", description: "Secure hacked or at-risk accounts, set up 2FA, stop phishing.", basePrice: "from €120", keywords: "login,2fa,password,phishing,account,hacked" },
-  { name: "Servers / RDP", description: "Server setup, remote desktop, VPS management and recovery.", basePrice: "from €180", keywords: "server,rdp,vps,ssh,hosting" },
-  { name: "Cloud Infrastructure", description: "Cloud hosting and deployment on providers like Hetzner, AWS and Cloudflare, set up to scale and stay online.", basePrice: "from €200", keywords: "cloud,aws,azure,gcp,hetzner,digitalocean,scale,infrastructure,deploy" },
-  { name: "Docker / DevOps", description: "Containerize apps, CI/CD pipelines, and clean deployments.", basePrice: "from €280", keywords: "docker,container,ci/cd,deploy,pipeline" },
-  { name: "Automation", description: "Automate repetitive workflows, scripts and integrations between your tools.", basePrice: "from €300", keywords: "automation,workflow,integrate,script,zapier" },
-  { name: "Chatbots & Integrations", description: "Bots for Discord, Telegram and WhatsApp, a smart assistant for your website, and custom API and tool integrations.", basePrice: "from €150", keywords: "chatbot,bot,telegram,whatsapp,discord,integration,integrate,api,webhook" },
-  { name: "Cloudflare / Network", description: "DNS, SSL, WAF, DDoS protection and domain setup.", basePrice: "from €90", keywords: "cloudflare,dns,ssl,waf,firewall,domain" },
-  { name: "Domain Transfer & Setup", description: "Move your domain to a new registrar, point DNS and set up SSL, with no downtime.", basePrice: "from €40", keywords: "domain,transfer,registrar,dns,nameserver,move domain,ssl,buy domain" },
-  { name: "Monitoring", description: "Uptime monitoring, alerts, logging and dashboards.", basePrice: "from €150", keywords: "monitor,uptime,alert,grafana,logs" },
-  { name: "Website & App Prompt Engineering", description: "We turn any website or app into a build-ready prompt and design spec (colours, type, layout, components) for your team or AI site builders like Lovable, v0 and Claude.", basePrice: "from €60", keywords: "prompt,prompt engineering,lovable,v0,bolt,cursor,design spec,design system,recreate,rebuild" },
-  { name: "CRM & Business Software", description: "We set up, host and look after open-source CRM and business software for your team: sales pipeline, invoicing, inventory and helpdesk, hosted in the EU.", basePrice: "from €300", keywords: "crm,erp,business software,invoicing,inventory,helpdesk,sales pipeline,customer database" },
-  { name: "Website + Domain + Protection", description: "A complete managed web presence: we build your website, set up your domain and SSL, and protect it with Cloudflare. All-in-one, monthly. See our Starter / Business / Pro plans.", basePrice: "from €19 / month", keywords: "website,domain,hosting,subscription,monthly,protection,managed,build my site,landing page" }
+  { name: "Website + Domain + Protection", description: "We build your website, set up your domain, and keep it fast, secure and backed up, all in one monthly plan.", basePrice: "from €19 / month", keywords: "website,domain,hosting,subscription,monthly,protection,managed,build my site,landing page" },
+  { name: "Website Care & Maintenance", description: "Updates, backups, security checks and small edits for your existing website, so it never breaks or slows down.", basePrice: "from €19 / month", keywords: "maintenance,care plan,updates,wordpress updates,backups,small edits,website support" },
+  { name: "Hacked Website Recovery", description: "Site hacked, defaced or full of spam? We clean it up, close the hole and get you back online fast.", basePrice: "Quote after a call", keywords: "hacked,malware,virus,defaced,spam,blacklisted,cleanup,infected" },
+  { name: "Account Security", description: "Lost access or worried about hackers? We secure your email and social media accounts and turn on extra login protection.", basePrice: "Quote after a call", keywords: "login,2fa,password,phishing,account,hacked" },
+  { name: "Managed IT for Small Offices", description: "Laptops, email, Wi-Fi, accounts and backups for your team, set up properly and looked after, with someone to call when things go wrong.", basePrice: "Quote after a call", keywords: "office,it support,laptops,wifi,printer,computers,employees,onboarding,helpdesk" },
+  { name: "Ongoing Tech Support", description: "A tech partner on call for all the small jobs: changes, fixes and questions, scoped to what you need each month.", basePrice: "Quote after a call", keywords: "ongoing,support,retainer,regular help,small tasks,on demand,it guy" },
+  { name: "Chatbots & Integrations", description: "Bots for Discord, Telegram and WhatsApp, a smart assistant for your website, and connections between the tools you use.", basePrice: "Quote after a call", keywords: "chatbot,bot,telegram,whatsapp,discord,integration,integrate,api,webhook" },
+  { name: "Task Automation", description: "Stop doing the same job by hand every day. We automate repetitive work like copying orders, sending emails or updating spreadsheets.", basePrice: "Quote after a call", keywords: "automation,workflow,integrate,script,zapier,spreadsheet" },
+  { name: "CRM & Business Software", description: "We set up, host and look after software for your team: customer lists and sales pipeline, invoicing, stock and a support inbox, hosted in the EU.", basePrice: "Quote after a call", keywords: "crm,erp,business software,invoicing,inventory,helpdesk,sales pipeline,customer database" },
+  { name: "Website Speed & Protection", description: "Make your site load fast everywhere and shield it from attacks and spam bots, with a secure padlock (HTTPS) included.", basePrice: "Quote after a call", keywords: "cloudflare,dns,ssl,waf,firewall,ddos,slow website,speed" },
+  { name: "Domain & Business Email", description: "Register or move your domain and set up professional email (you@yourbusiness.com) that lands in inboxes, not spam.", basePrice: "Quote after a call", keywords: "domain,transfer,registrar,email,business email,spf,dmarc,nameserver" },
+  { name: "Cloud Hosting & Servers", description: "Reliable servers in the EU for your website, apps or remote desktop, set up securely and kept up to date.", basePrice: "Quote after a call", keywords: "server,rdp,vps,cloud,aws,hetzner,hosting,ssh,remote desktop" },
+  { name: "App Deployment", description: "We package your app so it runs the same everywhere, with easy updates and a quick undo if something goes wrong.", basePrice: "Quote after a call", keywords: "docker,container,ci/cd,deploy,pipeline,app" },
+  { name: "Uptime Monitoring", description: "We watch your website around the clock and alert you, and act, the moment something goes down.", basePrice: "Quote after a call", keywords: "monitor,uptime,alert,status,down" },
+  { name: "Website & App Prompt Engineering", description: "We turn any website or app into a build-ready prompt and design spec (colours, type, layout, components) for your team or AI site builders like Lovable, v0 and Claude.", basePrice: "Quote after a call", keywords: "prompt,prompt engineering,lovable,v0,bolt,cursor,design spec,design system" }
 ];
+// Old service names replaced by the plain-English ones above; removed on seed.
+const RETIRED = ["Servers / RDP", "Cloud Infrastructure", "Docker / DevOps", "Automation", "Cloudflare / Network", "Domain Transfer & Setup", "Monitoring", "Tech on Demand"];
 
 const DEMO_LEADS = [
   { name: "Sara Cohen", phone: "+1 555 0101", email: "sara@example.com", serviceType: "Account Security", problem: "I keep getting login attempts on my Gmail and Facebook and I want to secure my accounts.", urgency: "urgent", budget: "$300" },
@@ -29,7 +34,8 @@ const DEMO_LEADS = [
 async function main() {
   await initDb(); // authenticate + create tables if missing
 
-  // Services
+  // Services (and drop retired names)
+  await Service.destroy({ where: { name: RETIRED } });
   for (const s of SERVICES) {
     const existing = await Service.findOne({ where: { name: s.name } });
     if (existing) await existing.update(s); else await Service.create(s);

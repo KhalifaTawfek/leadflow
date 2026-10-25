@@ -249,7 +249,7 @@ app.post("/api/leads", leadLimiter, requireAuth, async (req, res) => {
 
   res.status(201).json({
     ok: true,
-    message: "Your request has been received. We've emailed you a copy and saved it under My Requests, where our team will follow up.",
+    message: "Thanks! We'll contact you within one business day to set up your free call. You can follow everything under My Requests.",
     lead: { id: lead.id },
     analysis: {
       category: analysis.category,

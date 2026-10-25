@@ -12,6 +12,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));}</script>
 <script src="/firebase-config.js"></script>
+<script src="/site-config.js"></script>
 <style>
   :root{--bg:#060D18;--panel:#0D141F;--panel2:#1A202A;--ink:#F1F5F9;--muted:#8DA4BF;--soft:#5F7187;
     --accent:#52B8E0;--accent2:#7CCBEB;--ok:#34D399;--amber:#F0B84F;--red:#EF6F5C;--blue:#63BDE7;--purple:#A5B4FC;
@@ -24,7 +25,7 @@
   .wrap{max-width:1240px;margin:0 auto;padding:0 24px}
 
   /* header */
-  header{position:sticky;top:0;z-index:20;background:rgba(6,13,24,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  header{position:sticky;top:0;z-index:20;background:rgba(6,13,24,.82);backdrop-filter:blur(14px);border-bottom:1px dashed var(--line2)}
   .nav{display:flex;align-items:center;gap:24px;padding:14px 24px;max-width:1240px;margin:0 auto;position:relative}
   .brand{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:21px;letter-spacing:-.3px}
   .brand .mark{width:34px;height:34px;display:grid;place-items:center;background:var(--accent);color:#04111C;border-radius:10px;font-weight:900;font-size:13px}
@@ -35,7 +36,7 @@
   .menu-btn{display:none;margin-left:auto;background:transparent;border:1px solid var(--line2);color:var(--ink);border-radius:10px;width:42px;height:42px;cursor:pointer;font-size:18px}
 
   /* buttons */
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:10px;padding:12px 20px;font:inherit;font-weight:700;font-size:15px;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:999px;padding:12px 20px;font:inherit;font-weight:700;font-size:15px;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
   .btn.primary{background:var(--accent);color:#04111C}.btn.primary:hover{background:var(--accent2)}
   .btn.ghost{background:transparent;border-color:var(--line2);color:var(--ink)}.btn.ghost:hover{border-color:var(--accent);color:var(--accent)}
   .btn.sm{padding:8px 14px;font-size:14px}
@@ -151,7 +152,7 @@
   .hero-title .dim{display:block;background:linear-gradient(180deg,#C5D2E2,#7B90AB);-webkit-background-clip:text;background-clip:text;color:transparent}
   .hero-sub{color:var(--muted);font-size:clamp(17px,1.6vw,20px);max-width:58ch;margin:0 auto 36px}
   .hero-actions.center{justify-content:center}
-  .btn.lg{padding:15px 26px;font-size:16px;border-radius:12px}
+  .btn.lg{padding:15px 28px;font-size:16px;border-radius:999px}
   .rise{opacity:0;animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:var(--d,0s)}
   @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
   .flow{position:relative;margin-top:44px;aspect-ratio:1200/380;max-height:420px}
@@ -248,6 +249,53 @@
   .bot-card h3{font-size:17px;font-weight:700;margin-bottom:6px}
   .bot-card p{color:var(--muted);font-size:14.5px}
 
+  /* billing toggle */
+  .billing{display:inline-flex;gap:4px;padding:4px;border:1px solid var(--line2);border-radius:12px;background:var(--bg);margin-bottom:20px}
+  .billing button{border:0;background:transparent;color:var(--muted);font:inherit;font-weight:600;font-size:14px;padding:8px 16px;border-radius:9px;cursor:pointer;transition:background .15s,color .15s}
+  .billing button.on{background:var(--panel2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line2)}
+  .billing .save{color:var(--ok);font-size:12px;font-weight:700;margin-left:6px}
+  .plan-note{color:var(--ok);font-size:13px;font-weight:600;margin:-2px 0 8px}
+  /* partners */
+  .partners{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .partner{display:flex;flex-direction:column;gap:6px;padding:26px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel)}
+  .partner h3{font-size:18px;font-weight:700}
+  .partner p{color:var(--muted);font-size:15px;flex:1;margin-bottom:12px}
+  .partner .btn{align-self:flex-start}
+  /* niche pages */
+  .niche-hero{padding-bottom:24px}
+  .pain-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .pain{padding:24px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel)}
+  .pain h3{font-size:18px;font-weight:700;margin-bottom:4px}
+  .pain-p{color:var(--muted);font-size:15px}
+  .pain-s{margin-top:12px;padding-top:12px;border-top:1px solid var(--line);font-size:15px}
+  .pain-s b{color:var(--accent);font-weight:700}
+  .pack{display:grid;grid-template-columns:1.2fr 1fr;gap:28px;align-items:center;padding:34px;border:1px solid var(--line);border-radius:20px;background:var(--panel)}
+  .pack-cta{padding:26px;border:1px solid rgba(82,184,224,.4);border-radius:16px;background:var(--bg)}
+  .pack-cta h3{font-size:20px;font-weight:700;margin-bottom:6px}.pack-cta p{color:var(--muted);margin-bottom:16px}
+  .pack-cta .btn{width:100%}
+  /* contact */
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .contact-card{display:flex;gap:14px;align-items:center;padding:18px;border:1px solid var(--line);border-radius:14px;background:var(--panel);transition:border-color .15s}
+  .contact-card:hover{border-color:rgba(82,184,224,.45)}
+  .contact-card b{display:block}.contact-card small{color:var(--muted);font-size:14px}
+  .chat-alt{padding:0 16px 10px;color:var(--soft);font-size:13px}.chat-alt a{color:var(--accent);font-weight:600}
+  .btn svg{flex:none}
+
+  /* cloudflare-style hero card */
+  .hero2{padding:24px 0 0;text-align:center}
+  .hero-card{position:relative;overflow:hidden;border-radius:28px;padding:84px 24px 0;background:radial-gradient(90% 120% at 50% 0%,#2B8FD0 0%,#1C6BAE 38%,#0E3D73 78%,#0A2C55 100%);border:1px solid rgba(124,203,235,.35);box-shadow:0 40px 120px rgba(20,110,190,.22)}
+  .hero-card::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.16) 1px,transparent 1.2px);background-size:7px 7px;-webkit-mask-image:radial-gradient(80% 70% at 50% 25%,#000,transparent 75%);mask-image:radial-gradient(80% 70% at 50% 25%,#000,transparent 75%);pointer-events:none}
+  .hero-card > *{position:relative}
+  .hero-card .hero-title{color:#fff}
+  .hero-card .hero-title .dim{background:linear-gradient(180deg,#E6F3FF,#9CC7EE);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero-card .hero-sub{color:rgba(235,245,255,.88)}
+  .hero-card .hero-badge{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.3);color:#fff}
+  .btn.light{background:#fff;color:#0A2340}.btn.light:hover{background:#E8F3FF}
+  .btn.outline-light{background:transparent;color:#fff;border-color:rgba(255,255,255,.55)}.btn.outline-light:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+  .hero-trust{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 26px;margin-top:18px;color:var(--muted);font-size:14px}
+  .hero-trust span::before{content:"✓";color:var(--ok);font-weight:800;margin-right:7px}
+  .steps.four{grid-template-columns:repeat(4,1fr)}
+  .plan-price small{font-size:14px;font-weight:600;color:var(--muted);margin-right:6px;letter-spacing:0}
   /* live tools */
   .tool{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:26px;display:flex;flex-direction:column;gap:16px;min-width:0;scroll-margin-top:84px}
   .tool-wide{margin-bottom:16px}
@@ -324,6 +372,7 @@
   @media(max-width:1180px){.home-grid{grid-template-columns:1fr}.toc{display:none}}
   @media(max-width:900px){
     .tools-layout,.req-layout{grid-template-columns:1fr}
+    .ondemand,.partners,.pain-grid,.pack,.contact-grid{grid-template-columns:1fr}
     .tools-nav{position:static;flex-direction:row;overflow-x:auto;padding:6px}
     .tnav{flex:none}.tnav small{display:none}
     .tools-panel .tool{min-height:0}
@@ -359,7 +408,9 @@
     .audit-score{flex-direction:column;text-align:center}
     .cloud-grid{grid-template-columns:1fr}
     .bots-grid{grid-template-columns:1fr}
-    .hero2{padding-top:64px}
+    .hero2{padding-top:12px}
+    .hero-card{padding:48px 16px 0;border-radius:20px}
+    .steps.four{grid-template-columns:1fr}
     .flow{aspect-ratio:auto;height:230px}
     .flow-core{width:84px;height:84px;border-radius:20px}
     .tool-input{flex-direction:column}
@@ -388,9 +439,12 @@
       <div class="brand" style="font-size:17px;margin-bottom:6px"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M3.5 5.5c6 0 7.5 6.5 11.5 6.5"/><path d="M3.5 12H15"/><path d="M3.5 18.5c6 0 7.5-6.5 11.5-6.5"/><circle cx="18.5" cy="12" r="3" fill="currentColor" stroke="none"/></svg></span> LeadFlow</div>
       <div>IT · Cyber · Cloud · Automation · Remote, worldwide</div>
       <div style="margin-top:6px"><a href="mailto:admin@cookblog.net">admin@cookblog.net</a></div>
+      <div id="footContact" style="margin-top:4px"></div>
     </div>
     <div class="foot-links">
       <a onclick="goToSection('pricing')" style="cursor:pointer">Plans</a>
+      <a href="/for/salons">For salons</a>
+      <a href="/for/restaurants">For restaurants</a>
       <a href="/terms">Terms of Service</a>
       <a href="/privacy">Privacy Policy</a>
       <a href="/admin">Staff login</a>
@@ -417,6 +471,7 @@
   <div class="chat-head"><div class="chat-av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M3.5 5.5c6 0 7.5 6.5 11.5 6.5"/><path d="M3.5 12H15"/><path d="M3.5 18.5c6 0 7.5-6.5 11.5-6.5"/><circle cx="18.5" cy="12" r="3" fill="currentColor" stroke="none"/></svg></div><div><b>LeadFlow assistant</b><small><span class="online"></span>Usually replies instantly</small></div><button class="x" aria-label="Close chat" onclick="toggleWidget(false)">×</button></div>
   <div class="chat-body" id="wBody" aria-live="polite"></div>
   <div class="chat-chips" id="wChips"></div>
+  <div class="chat-alt" id="wAlt"></div>
   <form class="chat-input" id="wForm"><input id="wIn" placeholder="Type a message…" autocomplete="off" maxlength="600" aria-label="Message"><button class="btn primary sm" type="submit">Send</button></form>
 </div>
 
@@ -425,14 +480,14 @@
 
   // Real portfolio - one proof example per service (things actually built).
   const CASES = [
-    { tag:"Servers / RDP", title:"Multi-site Ubuntu VPS", body:"Set up and secured an Ubuntu server - non-root user, SSH keys, firewall, and Nginx reverse proxy - hosting three live production sites on one machine, each with HTTPS.", result:"3 sites live, isolated & auto-restarting", link:"https://cookblog.net" },
-    { tag:"Docker / DevOps", title:"One-command Docker deploy", body:"Packaged a Node.js + PostgreSQL app into Docker Compose so the whole stack builds and starts with a single command, with a clean rebuild and update flow.", result:"Reproducible, one-command deploys", link:"" },
-    { tag:"Cloudflare / Network", title:"DNS, SSL & DDoS protection", body:"Moved cookblog.net onto Cloudflare: configured DNS, Full-strict SSL, and DDoS/WAF protection while hiding the origin server's real IP.", result:"Encrypted, shielded, faster", link:"https://cookblog.net" },
-    { tag:"Account Security", title:"Hardened web-app login", body:"Implemented bcrypt password hashing, signed httpOnly sessions, login rate-limiting, and role-based access to protect user accounts from brute-force and takeover.", result:"No plaintext passwords · brute-force blocked", link:"" },
-    { tag:"Automation", title:"Automated lead intake", body:"Built a system that captures customer requests, classifies them, scores urgency, drafts replies, and notifies the team and customer by email, automatically.", result:"Every request triaged in seconds", link:"" },
-    { tag:"Chatbots & Integrations", title:"Telegram alert bot", body:"Built a bot that delivers instant notifications and can connect a site to Telegram, WhatsApp or Discord, plus custom API and tool integrations.", result:"Real-time alerts & connected tools", link:"" },
-    { tag:"Cloud", title:"Cloud hosting & deploys", body:"Provisioned and secured cloud servers, set up domains, SSL and backups, and shipped apps that scale, all managed for the client.", result:"Hosted, scaled & looked after", link:"" },
-    { tag:"Monitoring", title:"Health checks & alerts", body:"Added a health endpoint reporting API, database, and agent status, plus an automated daily report - so issues are caught before customers notice.", result:"Early warning on downtime", link:"" }
+    { tag:"Hosting", title:"Three websites on one secure server", body:"Set up and secured a server that runs three live websites, each with its own padlock (HTTPS), restarting by itself if anything goes wrong.", result:"3 sites live and protected", link:"https://cookblog.net" },
+    { tag:"App deployment", title:"One-command app setup", body:"Packaged a web app so the whole thing installs and updates with one command, instead of a fragile manual setup.", result:"Updates in minutes, not hours", link:"" },
+    { tag:"Speed & protection", title:"Faster, attack-proof website", body:"Moved a website behind Cloudflare so it loads faster worldwide, is shielded from attacks, and keeps the real server hidden.", result:"Faster, encrypted, shielded", link:"https://cookblog.net" },
+    { tag:"Account security", title:"Safe logins", body:"Built a login system that stores passwords safely and blocks password-guessing attacks, so accounts can't be taken over.", result:"Accounts protected from takeover", link:"" },
+    { tag:"Automation", title:"Automatic customer requests", body:"Built a system that collects customer requests, sorts them by urgency, drafts replies and alerts the team and the customer automatically.", result:"Every request handled in seconds", link:"" },
+    { tag:"Bots", title:"Telegram alert bot", body:"Built a bot that sends instant alerts to your phone and can connect a website to Telegram, WhatsApp or Discord.", result:"Real-time alerts, connected tools", link:"" },
+    { tag:"Cloud", title:"Cloud hosting, managed", body:"Set up and secured cloud servers with domains, padlocks and backups, and kept them running for the client.", result:"Hosted, scaled and looked after", link:"" },
+    { tag:"Monitoring", title:"Problems caught early", body:"Added automatic health checks and a daily report, so problems are caught before customers notice.", result:"Early warning on downtime", link:"" }
   ];
 
   // Managed monthly plans - the recurring offer. Prices in EUR.
@@ -444,33 +499,143 @@
     { id:"pro", name:"Pro", price:"€79", period:"/mo", tagline:"For sites that can't afford downtime.",
       features:["Everything in Business","Priority fixes (same business day)","Security hardening & reviews","Business email setup","More edit time (~3 hours / month)"], featured:false }
   ];
-  function pricingSectionHTML(){
-    const cards = PLANS.map(p=>`
+  // Billing: yearly = 10x monthly ("2 months free").
+  let billing = 'monthly';
+  const priceNum = p => parseInt(String(p.price).replace(/[^0-9]/g,''), 10);
+  function planPrice(p){
+    if(billing==='yearly'){ const y=priceNum(p)*10; return { price:`€${y}`, period:'/yr', note:`€${(y/12).toFixed(2)}/mo · 2 months free` }; }
+    return { price:p.price, period:p.period, note:'' };
+  }
+  function planCardsHTML(){
+    return PLANS.map(p=>{ const v=planPrice(p); return `
       <div class="plan${p.featured?' featured':''}">
         ${p.featured?'<span class="plan-badge">Most popular</span>':''}
         <h3>${esc(p.name)}</h3>
-        <div class="plan-price">${esc(p.price)}<span>${esc(p.period)}</span></div>
+        <div class="plan-price"><small>from</small>${esc(v.price)}<span>${esc(v.period)}</span></div>
+        ${v.note?`<div class="plan-note">${esc(v.note)}</div>`:''}
         <p class="plan-tag">${esc(p.tagline)}</p>
         <ul class="plan-feats">${p.features.map(f=>`<li>${esc(f)}</li>`).join('')}</ul>
-        <button class="btn ${p.featured?'primary':'ghost'}" style="width:100%" onclick="choosePlan('${p.id}')">Choose ${esc(p.name)}</button>
-      </div>`).join('');
+        <button class="btn ${p.featured?'primary':'ghost'}" style="width:100%" onclick="choosePlan('${p.id}')">Discuss ${esc(p.name)} →</button>
+      </div>`; }).join('');
+  }
+  function setBilling(b){
+    billing = b;
+    const g=document.getElementById('planGrid'); if(g) g.innerHTML = planCardsHTML();
+    document.querySelectorAll('.billing button').forEach(x=>x.classList.toggle('on', x.dataset.b===b));
+  }
+  function pricingSectionHTML(){
     return `
       <section id="pricing" class="subs">
         <div class="subs-inner">
-          <span class="subs-kicker">Subscriptions</span>
-          <h2 class="sec">Subscription plans</h2>
-          <p class="sec-sub">Website, hosting, protection and domain, handled every month. Cancel anytime. One-off builds start at €250 (waived on a 12-month plan).</p>
-          <div class="price-grid">${cards}</div>
-          <div class="assure"><span>Free migration of your current site</span><span>One flat monthly fee, no surprise bills</span><span>Cancel anytime</span><span>Reply within 1 business day</span></div>
+          <span class="subs-kicker">Care plans</span>
+          <h2 class="sec">Monthly care plans</h2>
+          <p class="sec-sub">Your website, hosting, protection and domain, looked after every month. These are starting prices: we agree the exact price with you on a free call, based on what you need. Paying yearly? You get 2 months free.</p>
+          <div class="price-grid" id="planGrid">${planCardsHTML()}</div>
+          <div class="assure"><span>Free migration of your current site</span><span>Price agreed before we start</span><span>Cancel anytime</span><span>Reply within 1 business day</span></div>
           <p class="sec-sub" style="margin-top:16px;font-size:13px">Prices exclude VAT where applicable. "Protection" means backups, Cloudflare, updates and monitoring, not a guarantee against every attack. Full terms apply.</p>
         </div>
       </section>`;
   }
   function choosePlan(id){
     const p = PLANS.find(x=>x.id===id) || PLANS[0];
-    planPending = p;
-    startRequest("Website + Domain + Protection");
+    const v = planPrice(p);
+    startRequest("Website + Domain + Protection", '', { ...p, price: v.price, period: billing==='yearly' ? '/yr, billed yearly' : v.period });
   }
+
+  // ---------- Contact options (set in /site-config.js; empty = hidden) ----------
+  const SC = window.SITE_CONTACT || {};
+  const CONTACT = {
+    email: /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(SC.email||'') ? SC.email : '',
+    whatsapp: String(SC.whatsapp||'').replace(/\D/g,''),
+    phone: String(SC.phone||'').trim(),
+    booking: /^https:\/\//i.test(SC.booking||'') ? SC.booking : ''
+  };
+  function waLink(text){ return CONTACT.whatsapp ? `https://wa.me/${CONTACT.whatsapp}${text?'?text='+encodeURIComponent(text):''}` : ''; }
+  function contactButtonsHTML(size, skipBooking){
+    const cls = 'btn ghost' + (size==='lg'?' lg':'');
+    return (CONTACT.booking && !skipBooking ? `<a class="${cls}" href="${esc(CONTACT.booking)}" target="_blank" rel="noopener">${icon('calendar',18)} Book a 15-min call</a>` : '')
+         + (CONTACT.whatsapp ? `<a class="${cls}" href="${esc(waLink('Hi! I have a question about your services.'))}" target="_blank" rel="noopener">${icon('msg',18)} WhatsApp us</a>` : '');
+  }
+  // Main call to action: the booking page if one is set, otherwise a request asking for a call.
+  function bookCall(){
+    if(CONTACT.booking){ window.open(CONTACT.booking, '_blank', 'noopener'); return; }
+    startRequest('', "I'd like a free 15-minute call to talk about: ");
+  }
+
+  // ---------- Niche landing pages (/for/<niche>) ----------
+  const NICHES = {
+    salons: {
+      who: 'a salon', tag: 'For salons, barbers & beauty studios',
+      title: 'Never miss a booking again',
+      sub: 'A fast website, a WhatsApp assistant that answers clients and takes appointments 24/7, and reminders that cut no-shows. We set it up and keep it running.',
+      pains: [
+        ['msg','Messages after hours','Clients message at 11pm and book somewhere else by morning.','A WhatsApp and website assistant replies instantly with prices, availability and your booking link.'],
+        ['calendar','No-shows','Empty chairs cost you money every single week.','Automatic WhatsApp reminders the day before, with a one-tap confirm.'],
+        ['globe','An outdated website','Slow pages and old prices send clients to competitors.','A fast, mobile-first site with your services, prices, gallery and a booking button.'],
+        ['shield','A hacked Instagram','Losing your account means losing your portfolio and your clients.','We secure your accounts with 2FA, and help recover them if something happens.']
+      ],
+      pack: { name: 'Salon Starter Pack', items: ['Mobile website with services, prices and gallery','WhatsApp booking assistant, 24/7','Appointment reminders','Hosting, SSL, backups and monitoring','Monthly report and small edits included'] }
+    },
+    restaurants: {
+      who: 'a restaurant', tag: 'For restaurants, cafés & takeaways',
+      title: 'Fill more tables, answer fewer calls',
+      sub: 'A fast menu website, a WhatsApp assistant for reservations and questions, and order alerts straight to your phone. Set up and looked after for you.',
+      pains: [
+        ['msg','The phone never stops','Staff stop serving to answer the same questions again and again.','A WhatsApp and website assistant answers hours, menu and allergy questions instantly.'],
+        ['calendar','Reservations by phone','Every missed call is a missed table.','Reservations through WhatsApp or your site, sent straight to you, with a confirmation for the guest.'],
+        ['globe','A menu that is out of date','An old PDF menu loses orders on mobile.','A fast, mobile menu page we update whenever you send us a message.'],
+        ['send','Orders slipping through','Takeaway orders get lost between apps and notebooks.','Instant Telegram or WhatsApp alerts for every order and reservation.']
+      ],
+      pack: { name: 'Restaurant Starter Pack', items: ['Mobile menu website with photos','WhatsApp reservations and FAQ assistant','Order and booking alerts to your phone','Hosting, SSL, backups and monitoring','Menu updates included every month'] }
+    }
+  };
+  function nicheRequest(key){
+    const n = NICHES[key];
+    startRequest('Chatbots & Integrations', `Hi! I run ${n.who} and I'm interested in the ${n.pack.name}.`);
+  }
+  function renderNiche(key){
+    if(!NICHES[key]) key = 'salons';
+    const n = NICHES[key];
+    if(location.pathname !== '/for/'+key) history.replaceState(null, '', '/for/'+key);
+    document.title = `${n.title} · LeadFlow`;
+    app.innerHTML = `
+      <section class="hero2 niche-hero">
+       <div class="hero-card" style="padding-bottom:72px">
+        <div class="hero-badge rise" style="--d:.05s"><span class="dotlive"></span>${esc(n.tag)}</div>
+        <h1 class="hero-title rise" style="--d:.15s">${esc(n.title)}</h1>
+        <p class="hero-sub rise" style="--d:.3s">${esc(n.sub)}</p>
+        <div class="hero-actions center rise" style="--d:.42s">
+          <button class="btn light lg" onclick="nicheRequest('${key}')">Get the ${esc(n.pack.name)} →</button>
+          <button class="btn outline-light lg" onclick="bookCall()">Book a free call</button>
+        </div>
+       </div>
+        <div class="hero-trust rise" style="--d:.55s"><span>No tech knowledge needed</span><span>Live in about a week</span><span>Price agreed before we start</span></div>
+      </section>
+      <section>
+        <div class="eyebrow">Sound familiar?</div>
+        <h2 class="sec">The problems we fix</h2>
+        <div class="pain-grid">${n.pains.map(([ic,t,p,s])=>`<div class="pain"><div class="tool-icon">${icon(ic)}</div><h3>${esc(t)}</h3><p class="pain-p">${esc(p)}</p><p class="pain-s"><b>What we do:</b> ${esc(s)}</p></div>`).join('')}</div>
+      </section>
+      <section>
+        <div class="pack">
+          <div>
+            <div class="eyebrow">The package</div>
+            <h2 class="sec">${esc(n.pack.name)}</h2>
+            <ul class="ticks">${n.pack.items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>
+            <p class="sec-sub" style="margin:18px 0 0;font-size:15px">Runs on our Business plan (€39/month, or 2 months free yearly), plus a one-off setup we quote after a quick chat.</p>
+          </div>
+          <div class="pack-cta">
+            <h3>Live in about a week</h3>
+            <p>Tell us about your business and get a clear offer within one business day.</p>
+            <div class="hero-actions" style="flex-direction:column">
+              <button class="btn primary" onclick="nicheRequest('${key}')">Get started →</button>
+              ${contactButtonsHTML()}
+            </div>
+          </div>
+        </div>
+      </section>`;
+  }
+
   // ---- Firebase auth (optional / dual-mode) ----
   // If firebase-config.js holds a real config, we use Firebase for sign-in and
   // send its ID token with every request. Otherwise the original cookie-based
@@ -522,7 +687,7 @@
             <span class="chip"><span class="av">${esc((me.username[0]||'?').toUpperCase())}</span>${esc(me.username)}</span>
             <a onclick="logout()" style="cursor:pointer">Log out</a>`;
     } else {
-      auth = `<button class="btn ghost sm" onclick="openAuth('login')">Log in</button><button class="btn primary sm" onclick="openAuth('register')">Get started</button>`;
+      auth = `<button class="btn ghost sm" onclick="openAuth('login')">Log in</button><button class="btn primary sm" onclick="bookCall()">Book a free call</button>`;
     }
     el.innerHTML = main + `<div class="nav-auth">${auth}</div>`;
   }
@@ -531,24 +696,29 @@
     try{ services = (await api('/api/services')).services; serviceMap = {}; services.forEach(x=>serviceMap[x.name]=x); }catch(e){}
   }
 
+  const DEFAULT_TITLE = document.title;
   let statusTimer = null, mineTimer = null, currentView = null;
   function clearTimers(){ if(statusTimer){ clearInterval(statusTimer); statusTimer=null; } if(mineTimer){ clearInterval(mineTimer); mineTimer=null; } (window.homeObservers||[]).length; if(typeof homeObservers!=="undefined"){ homeObservers.forEach(o=>o.disconnect()); homeObservers=[]; } }
-  function go(view, arg){ window.scrollTo(0,0); clearTimers(); currentView=view; if(view==='home')return renderHome(); if(view==='request')return renderRequest(); if(view==='mine')return renderMine(); if(view==='demos')return renderDemos(arg); if(view==='contact')return renderContact(); }
+  function go(view, arg){ window.scrollTo(0,0); clearTimers(); currentView=view; if(view!=='niche' && location.pathname.startsWith('/for/')){ history.replaceState(null,'','/'); document.title=DEFAULT_TITLE; } if(view==='niche')return renderNiche(arg); if(view==='home')return renderHome(); if(view==='request')return renderRequest(); if(view==='mine')return renderMine(); if(view==='demos')return renderDemos(arg); if(view==='contact')return renderContact(); }
   // Jump to a section on the home page (nav links for Pricing / Our Work).
   function goToSection(id){ const jump=()=>{ const el=document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth'}); }; if(currentView==='home' && document.getElementById(id)) return jump(); go('home'); setTimeout(jump,60); }
 
   function renderContact(){
+    const items = [
+      CONTACT.whatsapp && ['msg','WhatsApp','Message us, we reply fast', waLink('Hi! I have a question about your services.')],
+      CONTACT.booking && ['calendar','Book a call','15 minutes on Google Meet or Discord', CONTACT.booking],
+      CONTACT.phone && ['phone','Phone', CONTACT.phone, 'tel:'+CONTACT.phone.replace(/[^+\d]/g,'')],
+      CONTACT.email && ['mail','Email', CONTACT.email, 'mailto:'+CONTACT.email]
+    ].filter(Boolean);
     app.innerHTML = `
-      <section style="max-width:720px;margin:0 auto;padding-top:30px">
-        <h2 class="sec">Contact us</h2>
-        <p class="sec-sub">Questions before you request a service? Reach out - we usually reply within one business day.</p>
-        <div class="card">
-          <div class="checkout" style="margin-top:0">
-            <div class="row"><span>Email</span><span><a href="mailto:admin@cookblog.net" style="color:var(--accent);font-weight:700">admin@cookblog.net</a></span></div>
-            <div class="row"><span>Service area</span><span>Remote · worldwide</span></div>
-            <div class="row"><span>Response time</span><span>Within 1 business day</span></div>
-          </div>
-          <p class="sec-sub" style="margin-top:14px">The fastest way to start is to <a onclick="startRequest()" style="color:var(--accent);cursor:pointer;font-weight:700">request a service →</a> and we get back to you fast.</p>
+      <section style="max-width:880px;margin:0 auto;padding-top:48px">
+        <div class="eyebrow">Contact</div>
+        <h2 class="sec">Talk to us</h2>
+        <p class="sec-sub">Questions before you request a service? Pick whatever is easiest. We reply within one business day.</p>
+        <div class="contact-grid">${items.map(([ic,t,d,href])=>`<a class="contact-card" href="${esc(href)}"${/^https?:/.test(href)?' target="_blank" rel="noopener"':''}><span class="tool-icon" style="margin:0">${icon(ic)}</span><span><b>${t}</b><small>${esc(d)}</small></span></a>`).join('')}</div>
+        <div class="card" style="margin-top:16px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
+          <div><b>The fastest way to start</b><p class="sec-sub" style="margin:4px 0 0;font-size:15px">Send a request and get a clear offer, usually within a day.</p></div>
+          <button class="btn primary" onclick="startRequest()">Request a service →</button>
         </div>
       </section>`;
   }
@@ -603,6 +773,8 @@
     lifebuoy: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="m4.9 4.9 4.3 4.3M14.8 14.8l4.3 4.3M14.8 9.2l4.3-4.3M4.9 19.1l4.3-4.3"/>',
     send: '<path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/>',
     gamepad: '<rect x="2" y="6" width="20" height="12" rx="6"/><path d="M6 12h4M8 10v4M15 11h.01M18 13h.01"/>',
+    calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+    phone: '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/>',
     msg: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/><path d="M9.5 9.5c0 3 2 5 5 5"/>'
   };
   function icon(name, s=20){ return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[name]}</svg>`; }
@@ -626,12 +798,12 @@
 
   // ---------- LIVE TOOLS ----------
   const TOOLS_NAV = [
-    ['audit','shield','Free website audit','Security, email, SSL and speed'],
-    ['analyze','palette','Website reverse-engineer','Design, tech stack, build prompt'],
-    ['domain','mail','Domain health','DNS, SSL, MX, SPF, DMARC'],
-    ['scan','globe','Security scanner','HTTPS, Cloudflare, headers'],
-    ['pw','key','Password checker','Strength and known breaches'],
-    ['status','pulse','Live status','Uptime of sites we watch']
+    ['audit','shield','Free website check','Is your website safe and fast?'],
+    ['analyze','palette','Website reverse-engineer','Colours, fonts and tech of any site'],
+    ['domain','mail','Domain & email check','Can people trust your email?'],
+    ['scan','globe','Security scanner','Is your site protected?'],
+    ['pw','key','Password checker','Has your password leaked?'],
+    ['status','pulse','Live status','Sites we keep an eye on']
   ];
   function selectTool(id){
     if(!document.getElementById('tool-'+id)) id='audit';
@@ -702,7 +874,7 @@
         const col = d.score>=80 ? 'var(--ok)' : (d.score>=50 ? 'var(--amber)' : 'var(--red)');
         out.innerHTML = `<div class="score"><b style="color:${col}">${d.score}%</b><div><div style="font-weight:700">${esc(d.domain)}</div><small style="color:var(--muted)">${d.dnsHost?'DNS hosted on '+esc(d.dnsHost):esc((d.ns||[])[0]||'')}</small></div></div>`
           + d.checks.map(c=>checkRow(c.ok,c.label,c.detail)).join('')
-          + (d.tips.length ? `<div class="notice info" style="margin:14px 0 0">${d.tips.map(esc).join('<br>')}</div><button class="btn ghost sm" style="margin-top:12px" onclick="startRequest('Domain Transfer & Setup')">Fix this for me →</button>` : '');
+          + (d.tips.length ? `<div class="notice info" style="margin:14px 0 0">${d.tips.map(esc).join('<br>')}</div><button class="btn ghost sm" style="margin-top:12px" onclick="startRequest('Domain & Business Email')">Fix this for me →</button>` : '');
       }catch(err){ out.innerHTML=`<div class="notice err">${esc(err.message)}</div>`; }
       btn.disabled=false;
     };
@@ -882,26 +1054,26 @@
       dots += `<circle r="2.2" fill="${cols[k]}" class="pt"><animateMotion dur="${6+k*1.3}s" begin="${k*1.1}s" repeatCount="indefinite"><mpath href="#fl${i}"/></animateMotion></circle>`
             + `<circle r="2.2" fill="${cols[(k+1)%4]}" class="pt"><animateMotion dur="${6.6+k*1.2}s" begin="${k*0.9+0.6}s" repeatCount="indefinite"><mpath href="#fr${7-i}"/></animateMotion></circle>`;
     });
-    for(let i=0;i<12;i++){ stars += `<circle cx="${(i*167+40)%1200}" cy="${(i*71)%300+12}" r="${i%3?0.9:1.4}" fill="#63BDE7" opacity="${i%4?0.14:0.3}"/>`; }
-    const grad = (id,x1) => `<linearGradient id="${id}" gradientUnits="userSpaceOnUse" x1="${x1}" y1="0" x2="${cx}" y2="0"><stop offset="0" stop-color="#63BDE7" stop-opacity="0"/><stop offset=".55" stop-color="#63BDE7" stop-opacity=".1"/><stop offset="1" stop-color="#7CCBEB" stop-opacity=".75"/></linearGradient>`;
+    for(let i=0;i<12;i++){ stars += `<circle cx="${(i*167+40)%1200}" cy="${(i*71)%300+12}" r="${i%3?0.9:1.4}" fill="#FFFFFF" opacity="${i%4?0.16:0.32}"/>`; }
+    const grad = (id,x1) => `<linearGradient id="${id}" gradientUnits="userSpaceOnUse" x1="${x1}" y1="0" x2="${cx}" y2="0"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".14"/><stop offset="1" stop-color="#FFFFFF" stop-opacity=".7"/></linearGradient>`;
     return `<svg class="flow-svg" viewBox="0 0 1200 380" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs>${grad('gfl',0)}${grad('gfr',W)}<radialGradient id="gcore"><stop offset="0" stop-color="#52B8E0" stop-opacity=".28"/><stop offset="1" stop-color="#52B8E0" stop-opacity="0"/></radialGradient></defs><ellipse cx="600" cy="300" rx="300" ry="120" fill="url(#gcore)"/>${stars}<g fill="none" stroke-width=".9">${lines}</g>${dots}</svg>`;
   }
   const CORE_LOGO = '<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" aria-hidden="true"><defs><linearGradient id="lgCore" gradientUnits="userSpaceOnUse" x1="2" y1="3" x2="22" y2="21"><stop offset="0" stop-color="#F4FAFF"/><stop offset="1" stop-color="#52B8E0"/></linearGradient></defs><g stroke="url(#lgCore)" stroke-width="2"><path d="M3.5 5.5c6 0 7.5 6.5 11.5 6.5"/><path d="M3.5 12H15"/><path d="M3.5 18.5c6 0 7.5-6.5 11.5-6.5"/></g><circle cx="18.5" cy="12" r="3" fill="url(#lgCore)"/></svg>';
   const FLOW_TILES = [['cloud','16%','40%','#52B8E0',0],['shield','7%','74%','#34D399',1.4],['bot','84%','34%','#A78BFA',.7],['globe','93%','70%','#F0B84F',2.1]];
 
   const CLOUD = [
-    ['server','Cloud servers','Servers on Hetzner, AWS or DigitalOcean, hardened with SSH keys, a firewall and automatic updates.'],
-    ['box','Docker hosting','Apps packaged in containers, with one-command deploys and painless rollbacks.'],
-    ['refresh','Auto-deploy (CI/CD)','Push to GitHub and your site or app updates itself in minutes.'],
-    ['zap','Cloudflare & CDN','DNS, SSL, DDoS protection and caching, so pages load fast everywhere.'],
-    ['archive','Backups & recovery','Nightly off-site backups, with restores we actually test.'],
-    ['pulse','Monitoring & alerts','Uptime checks every minute and alerts on Telegram or email.'],
-    ['database','Managed databases','PostgreSQL or MySQL set up, tuned, secured and backed up.'],
-    ['mail','Domains & business email','Domains, DNS and email that lands in inboxes, not spam.'],
-    ['move','Cloud migrations','Move off shared hosting or another provider with zero downtime.'],
-    ['users','CRM for your team','A sales pipeline and customer database your whole team can use, set up and hosted for you.'],
-    ['receipt','Invoicing & inventory','Business software for quotes, invoices, stock and orders, configured around how you work.'],
-    ['lifebuoy','Helpdesk & ticketing','A shared support inbox and ticket system, so no customer request gets lost.']
+    ['server','Fast, secure hosting','Your website and apps run on our secure servers in the EU, kept up to date for you.'],
+    ['box','Apps that just work','We package and run your apps so they are easy to update and never break when moved.'],
+    ['refresh','Instant updates','Changes to your site go live in minutes, with an easy undo if anything looks wrong.'],
+    ['zap','Speed & attack protection','Your site loads fast everywhere and is shielded from attacks and spam bots.'],
+    ['archive','Daily backups','If anything goes wrong, we bring your site and data back.'],
+    ['pulse','24/7 watch','We check your site every minute and act before you even notice a problem.'],
+    ['database','Your data, looked after','Customer and order data kept safe, fast and backed up.'],
+    ['mail','Domain & professional email','you@yourbusiness.com email that lands in inboxes, not spam.'],
+    ['move','Moving made easy','We move your site from your old host for you, with no downtime.'],
+    ['users','A CRM for your team','One place for your customers, leads and sales, set up and hosted for you.'],
+    ['receipt','Invoicing & stock','Software for quotes, invoices, stock and orders, set up around how you work.'],
+    ['lifebuoy','Support inbox','A shared inbox for customer questions, so no request gets lost.']
   ];
   const BOTS = [
     ['gamepad','#7C8CF8','Discord bots','Moderation, roles, tickets, welcome flows and alerts for your community or team.'],
@@ -922,32 +1094,37 @@
     "Don't: copy logos, text or images from the source"
   ];
   const FAQ = [
-    ['How much does it cost?', 'Managed plans are €19, €39 or €79 a month. One-off projects are quoted individually: you get a clear, fixed offer within one business day of sending a request. Nothing is paid up front.'],
+    ['How does it work?', 'Tell us what you need, we set up a free 15-minute call (Google Meet, Discord, phone or WhatsApp), then send you a tailored offer. Once you say yes, we do the work and you follow it in My Requests.'],
+    ['How much does it cost?', 'It depends on what you need. After a free 15-minute call we send a clear offer, and the price is agreed before any work starts. Monthly care plans start from €19, €39 or €79, and nothing is paid up front.'],
     ["What's included in a monthly plan?", 'Every plan covers hosting, SSL, Cloudflare protection, off-site backups and uptime monitoring. Business adds your domain, small content edits and a monthly report; Pro adds priority fixes, security hardening and business email.'],
     ['Can you move my existing website?', 'Yes. When you join a plan we migrate your current site for you at no extra cost, and keep it online while we do it.'],
     ['Can I cancel?', 'Any time, with no lock-in. Your plan simply runs until the end of the month you have paid for.'],
     ['How fast do you reply?', 'Within one business day, and urgent problems go to the front of the queue. If a call helps, we set one up on Google Meet or Discord.'],
     ['Do I need to be technical?', 'Not at all. Describe the problem in your own words and we handle the rest, then explain what we did in plain English.'],
     ['Where is my data hosted?', 'On servers in the EU (Amsterdam), behind Cloudflare. We follow GDPR; the details are in our Privacy Policy.'],
+    ['Is there a discount for paying yearly?', 'Yes. Pay yearly and you get 2 months free, and the website build is included in your plan.'],
     ['Can you set up a CRM or business software for my team?', 'Yes. We set up, host and maintain open-source CRM and business software (sales pipeline, invoicing, inventory, helpdesk), import your existing data and train your team. It runs on our EU servers, so you never deal with updates or backups.'],
     ['Do you work with WordPress, Shopify or Wix?', 'Yes. We work with WordPress, custom-built sites and apps, and most hosting providers. On Shopify, Wix or Squarespace we can still handle your domain, email, integrations and chatbots.']
   ];
-  const TOC = [['services','Services'],['cloud','Cloud & software'],['bots','Bots & assistants'],['prompts','Prompt engineering'],['how','How it works'],['tools','Live tools'],['pricing','Plans'],['work','Our work'],['faq','FAQ'],['start','Get started']];
+  const TOC = [['how','How it works'],['services','Services'],['cloud','Hosting & tools'],['bots','Bots & assistants'],['prompts','Prompt engineering'],['tools','Free tools'],['pricing','Care plans'],['work','Our work'],['partners','Partners'],['faq','FAQ'],['start','Book a call']];
 
   function renderHome(){
     app.innerHTML = `
       <section class="hero2" id="top">
-        <div class="hero-badge rise" style="--d:.05s"><span class="dotlive"></span>IT · Cloud · Security · Automation</div>
+       <div class="hero-card">
+        <div class="hero-badge rise" style="--d:.05s"><span class="dotlive"></span>IT, websites &amp; automation for small businesses</div>
         <h1 class="hero-title rise" style="--d:.15s">Your tech, handled<span class="dim">before it breaks.</span></h1>
-        <p class="hero-sub rise" style="--d:.3s">Websites, cloud hosting, security, automation and chatbots for growing businesses. One team, clear offers, and everything tracked in one place.</p>
+        <p class="hero-sub rise" style="--d:.3s">We build and look after your website, email, security and online tools, so you can focus on your business. Tell us what you need, we'll call you and suggest the best option.</p>
         <div class="hero-actions center rise" style="--d:.42s">
-          <button class="btn primary lg" onclick="startRequest()">Request a service <span aria-hidden="true">→</span></button>
-          <button class="btn ghost lg" onclick="go('demos','audit')">Get a free website audit</button>
+          <button class="btn light lg" onclick="bookCall()">Book a free call <span aria-hidden="true">→</span></button>
+          <button class="btn outline-light lg" onclick="go('demos','audit')">Free website check</button>
         </div>
         <div class="flow rise" style="--d:.55s">${heroFlow()}
           ${FLOW_TILES.map(([ic,x,y,c,d])=>`<div class="ftile" style="left:${x};top:${y};color:${c};animation-delay:${d}s">${icon(ic,22)}</div>`).join('')}
           <div class="flow-core"><span class="core-ring"></span><span class="core-ring r2"></span><span class="core-logo">${CORE_LOGO}</span></div>
         </div>
+       </div>
+        <div class="hero-trust rise" style="--d:.65s"><span>No tech knowledge needed</span><span>Hosted in the EU</span><span>Reply within 1 business day</span></div>
       </section>
 
       <div class="home-grid">
@@ -959,6 +1136,17 @@
             <div class="stat"><b>24/7</b><span>Uptime monitoring</span></div>
           </div>
 
+          <section id="how">
+            <div class="eyebrow">How it works</div>
+            <h2 class="sec">How we work together</h2>
+            <p class="sec-sub">No tech knowledge needed. We explain everything in plain words and agree the price before any work starts.</p>
+            <div class="steps four">
+              <div class="step"><div class="n">1</div><h3>Tell us what you need</h3><p>Use the form or the chat and describe it in your own words.</p></div>
+              <div class="step"><div class="n">2</div><h3>Free 15-minute call</h3><p>On Google Meet, Discord, phone or WhatsApp, whatever suits you.</p></div>
+              <div class="step"><div class="n">3</div><h3>A tailored offer</h3><p>A clear plan and price for exactly what you need. No surprises.</p></div>
+              <div class="step"><div class="n">4</div><h3>We deliver, you relax</h3><p>Follow progress in My Requests while we keep everything running.</p></div>
+            </div>
+          </section>
           <section id="services">
             <div class="eyebrow">Services</div>
             <h2 class="sec">Everything your business needs online</h2>
@@ -967,11 +1155,11 @@
           </section>
 
           <section id="cloud">
-            <div class="eyebrow">Cloud services</div>
-            <h2 class="sec">Cloud and business software, set up and looked after</h2>
-            <p class="sec-sub">Servers, hosting and the tools your team runs on, like a CRM, invoicing or a helpdesk: we build it, secure it and keep it running, hosted in the EU.</p>
+            <div class="eyebrow">Hosting &amp; tools</div>
+            <h2 class="sec">Hosting and business tools, looked after for you</h2>
+            <p class="sec-sub">The technical side of running a business online, handled properly. You get all the benefits without having to understand the tech.</p>
             <div class="cloud-grid">${CLOUD.map(([i,t,d])=>`<div class="cloud-cell"><div class="cc-icon">${icon(i)}</div><h3>${t}</h3><p>${d}</p></div>`).join('')}</div>
-            <div class="hero-actions" style="margin-top:24px"><button class="btn primary" onclick="startRequest('Cloud Infrastructure')">Talk about your setup →</button></div>
+            <div class="hero-actions" style="margin-top:24px"><button class="btn primary" onclick="bookCall()">Talk to us about your setup →</button></div>
           </section>
 
           <section id="bots">
@@ -1006,17 +1194,6 @@
             </div>
           </section>
 
-          <section id="how">
-            <div class="eyebrow">How it works</div>
-            <h2 class="sec">From request to done in three steps</h2>
-            <p class="sec-sub">No email ping-pong. Everything happens in your account.</p>
-            <div class="steps">
-              <div class="step"><div class="n">1</div><h3>Tell us what you need</h3><p>Pick a service or plan and describe the problem in a few lines.</p></div>
-              <div class="step"><div class="n">2</div><h3>Get a clear offer</h3><p>We reply within a day, and set up a call on Google Meet or Discord if needed.</p></div>
-              <div class="step"><div class="n">3</div><h3>We deliver, you track</h3><p>Follow progress and message the team any time in My Requests.</p></div>
-            </div>
-          </section>
-
           <section id="tools">
             <div class="eyebrow">Live tools</div>
             <h2 class="sec">Try what we do, right now</h2>
@@ -1030,11 +1207,32 @@
 
           ${pricingSectionHTML()}
 
+
           <section id="work">
             <div class="eyebrow">Our work</div>
             <h2 class="sec">Real projects, not promises</h2>
             <p class="sec-sub">A few things we've built and run in production.</p>
             <div class="grid" id="caseGrid"></div>
+          </section>
+
+          <section id="partners">
+            <div class="eyebrow">Partners</div>
+            <h2 class="sec">Grow with us</h2>
+            <p class="sec-sub">Two ways to work together, whether you know a business that needs help or run an agency yourself.</p>
+            <div class="partners">
+              <div class="partner">
+                <div class="tool-icon">${icon('users')}</div>
+                <h3>Refer a business</h3>
+                <p>Know a business that needs a hand with its website, IT or bots? Send them our way. When they join a plan, you both get a month free.</p>
+                <button class="btn ghost" onclick="startRequest('', 'Referral: I would like to refer a business. Their name, contact and what they need:')">Refer someone →</button>
+              </div>
+              <div class="partner">
+                <div class="tool-icon">${icon('box')}</div>
+                <h3>Agency partners</h3>
+                <p>Web designers and agencies: we handle hosting, care plans, bots and automations under your brand, at partner pricing, so you can sell more without hiring.</p>
+                <button class="btn ghost" onclick="startRequest('Website + Domain + Protection', 'Agency partner program: I run an agency and would like white-label hosting, care plans or bots. Our website and how many clients we have:')">Become a partner →</button>
+              </div>
+            </div>
           </section>
 
           <section id="faq">
@@ -1045,18 +1243,19 @@
           </section>
 
           <section class="cta" id="start">
-            <h2 class="sec">Ready to hand it off?</h2>
-            <p class="sec-sub">Tell us what you need and get a clear offer, usually within a day.</p>
+            <h2 class="sec">Let's talk about your business</h2>
+            <p class="sec-sub">Book a free 15-minute call. No tech talk and no obligation: we listen, then suggest the simplest way to fix it.</p>
             <div class="hero-actions center">
-              <button class="btn primary lg" onclick="startRequest()">Request a service →</button>
-              <button class="btn ghost lg" onclick="go('contact')">Contact us</button>
+              <button class="btn primary lg" onclick="bookCall()">Book a free call →</button>
+              <button class="btn ghost lg" onclick="startRequest()">Send a request</button>
+              ${contactButtonsHTML('lg', true)}
             </div>
           </section>
         </div>
         <aside class="toc" aria-label="On this page"><h5>On this page</h5>${TOC.map(([id,l])=>`<a data-toc="${id}">${l}</a>`).join('')}</aside>
       </div>`;
     const g = document.getElementById('svcGrid');
-    g.innerHTML = services.map(s=>`<div class="svc"><h3>${esc(s.name)}</h3><p>${esc(s.description)}</p><div class="svc-foot"><span class="svc-quote">Quote on request</span><button class="btn ghost sm" onclick="startRequest('${esc(s.name)}')">Request</button></div></div>`).join('') || '<p class="sec-sub">Loading…</p>';
+    g.innerHTML = services.map(s=>`<div class="svc"><h3>${esc(s.name)}</h3><p>${esc(s.description)}</p><div class="svc-foot"><span class="svc-quote">${/month/i.test(s.basePrice)?esc(s.basePrice):'Tailored quote'}</span><button class="btn ghost sm" onclick="startRequest('${esc(s.name)}')">Request</button></div></div>`).join('') || '<p class="sec-sub">Loading…</p>';
     document.getElementById('caseGrid').innerHTML = CASES.map(c=>`<div class="svc"><span class="tag">${esc(c.tag)}</span><h3>${esc(c.title)}</h3><p>${esc(c.body)}</p><div class="result">✓ ${esc(c.result)}</div>${c.link?`<a class="btn ghost sm" style="margin-top:14px;align-self:flex-start" href="${c.link}" target="_blank" rel="noopener">View live →</a>`:''}</div>`).join('');
     setupHomeEffects();
   }
@@ -1067,7 +1266,7 @@
     const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     const heads = document.querySelectorAll('.home-main section > .eyebrow, .home-main section > h2.sec, .home-main section > .sec-sub, .split > div > .eyebrow, .split > div > h2.sec, .split > div > .sec-sub, .subs-inner > .subs-kicker, .subs-inner > h2.sec, .subs-inner > .sec-sub, .cta');
     heads.forEach(el=>el.classList.add('reveal'));
-    document.querySelectorAll('.stats, #svcGrid, .cloud-grid, .bots-grid, .steps, .price-grid, #caseGrid, .split').forEach(group=>{
+    document.querySelectorAll('.stats, #svcGrid, .cloud-grid, .bots-grid, .steps, .price-grid, #caseGrid, .split, .partners').forEach(group=>{
       [...group.children].forEach((el,i)=>{ el.classList.add('reveal'); el.style.setProperty('--d', Math.min(i,8)*70+'ms'); });
     });
     const items = document.querySelectorAll('.home-main .reveal');
@@ -1085,7 +1284,7 @@
     }
   }
 
-  function startRequest(preselect){ pending = { preselect: preselect||'' }; if(!me){ openAuth('register','Create an account to request a service.'); return; } renderRequest(); }
+  function startRequest(preselect, text, plan){ pending = { preselect: preselect||'', text: text||'' }; planPending = plan||null; if(!me){ openAuth('register','Create an account to request a service.'); return; } renderRequest(); }
 
   function renderRequest(){
     if(!me){ openAuth('login'); return renderHome(); }
@@ -1093,18 +1292,22 @@
     app.innerHTML = `
       <section style="max-width:1120px;margin:0 auto;padding-top:48px">
         <div class="eyebrow">New request</div>
-        <h2 class="sec">Request a service</h2><p class="sec-sub">Tell us what you need and we'll reply with a clear offer within one business day.</p>
+        <h2 class="sec">Request a service</h2><p class="sec-sub">Tell us what you need. We'll set up a free call at a time that suits you, then send a tailored offer.</p>
         <div class="req-layout">
         <div class="card">
           <div id="reqNotice"></div>
           <form id="reqForm">
             <label>Full name<input name="name" value="${esc(me.username)}" placeholder="Your name" required></label>
             <label>Service<select name="serviceType" id="svcSel" required><option value="">Choose…</option>${opts}</select></label>
-            <label>Describe your problem<textarea name="problem" placeholder="e.g. I keep getting login attempts on my accounts and want to secure them." required>${planPending?esc(`I'd like the ${planPending.name} managed plan (${planPending.price}${planPending.period}). Please set up my website, hosting, protection`+(planPending.id!=='starter'?' and domain':'')+'.'):''}</textarea></label>
+            <label>Describe your problem<textarea name="problem" placeholder="e.g. I keep getting login attempts on my accounts and want to secure them." required>${planPending?esc(`I'd like the ${planPending.name} managed plan (${planPending.price}${planPending.period}). Please set up my website, hosting, protection`+(planPending.id!=='starter'?' and domain':'')+'.'):(pending&&pending.text?esc(pending.text):'')}</textarea></label>
             <label>Phone<input name="phone" placeholder="+40 712 345 678" required></label>
-            <p style="color:var(--soft);font-size:12px;margin-top:-4px">We set the urgency and priority for you, no need to pick.</p>
+            <div class="form-grid">
+              <label>Best time for a call<select name="callTime"><option>Any time</option><option>Morning (9-12)</option><option>Afternoon (12-17)</option><option>Evening (17-20)</option></select></label>
+              <label>Call on<select name="callVia"><option>Google Meet</option><option>Discord</option><option>Phone</option><option>WhatsApp</option></select></label>
+            </div>
+            <p style="color:var(--soft);font-size:12px;margin-top:-4px">No tech knowledge needed: describe it in your own words.</p>
             <div id="checkoutArea"></div>
-            <button class="btn primary" type="submit" style="width:100%;margin-top:6px" id="reqSubmit">Get my offer →</button>
+            <button class="btn primary" type="submit" style="width:100%;margin-top:6px" id="reqSubmit">Continue →</button>
           </form>
         </div>
         <div class="card chat-side">
@@ -1168,10 +1371,11 @@
       document.getElementById('checkoutArea').innerHTML = `
         <div class="checkout">
           <div class="row"><span>Service</span><span>${esc(data.serviceType)}</span></div>
-          <div class="row total"><span>Our offer</span><span class="free">${esc(svc.basePrice||'On request')}</span></div>
+          <div class="row"><span>Next step</span><span>Free 15-minute call on ${esc(data.callVia||'Google Meet')}</span></div>
+          <div class="row total"><span>Price</span><span class="free">Tailored to you, after the call</span></div>
         </div>
-        <p class="sec-sub" style="margin:10px 0 0;font-size:13px">This is a starting price. Place your request and we'll email you a final quote to confirm, no payment now.</p>`;
-      document.getElementById('reqSubmit').textContent = 'Place request →';
+        <p class="sec-sub" style="margin:10px 0 0;font-size:13px">No payment now. We'll confirm a call time within one business day.</p>`;
+      document.getElementById('reqSubmit').textContent = 'Send request →';
       checkoutReady = true;
       return;
     }
@@ -1179,7 +1383,9 @@
     const btn = document.getElementById('reqSubmit');
     btn.disabled=true; btn.textContent='Placing…';
     try{
-      const res = await api('/api/leads',{method:'POST',body:JSON.stringify(data)});
+      const payload = { ...data, problem: `${data.problem.trim()}\n\nCall preference: ${data.callTime||'Any time'} via ${data.callVia||'Google Meet'}` };
+      delete payload.callTime; delete payload.callVia;
+      const res = await api('/api/leads',{method:'POST',body:JSON.stringify(payload)});
       const a = res.analysis||{};
       app.innerHTML = `
         <section style="max-width:640px;margin:0 auto">
@@ -1395,6 +1601,9 @@
     wMsgs.push({role:'assistant', content:reply}); wBusy=false; wSave(); wRender();
   }
   document.getElementById('chatFab').onclick = () => toggleWidget();
+  // Optional contact channels from /site-config.js (hidden when not set).
+  if(CONTACT.whatsapp) document.getElementById('wAlt').innerHTML = `Prefer WhatsApp? <a href="${esc(waLink('Hi! I have a question about your services.'))}" target="_blank" rel="noopener">Message us</a>`;
+  document.getElementById('footContact').innerHTML = [CONTACT.phone?`<a href="tel:${esc(CONTACT.phone.replace(/[^+\d]/g,''))}">${esc(CONTACT.phone)}</a>`:'', CONTACT.whatsapp?`<a href="${esc(waLink(''))}" target="_blank" rel="noopener">WhatsApp</a>`:'', CONTACT.booking?`<a href="${esc(CONTACT.booking)}" target="_blank" rel="noopener">Book a call</a>`:''].filter(Boolean).join(' · ');
   document.getElementById('wForm').onsubmit = e => { e.preventDefault(); const i=document.getElementById('wIn'); const t=i.value; i.value=''; wSend(t); };
   document.addEventListener('keydown', e => { if(e.key==='Escape') toggleWidget(false); });
 
@@ -1402,7 +1611,9 @@
     await loadServices();
     await loadMe();                       // sets backendFirebase from /api/auth/me
     if(useFirebase()){ await initFirebase(); }
-    currentView='home'; renderHome();
+    const nm = location.pathname.match(/^\/for\/([a-z-]+)\/?$/);
+    if(nm && NICHES[nm[1]]){ currentView='niche'; renderNiche(nm[1]); }
+    else { currentView='home'; renderHome(); }
   })();
 </script>
 </body>

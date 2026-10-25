@@ -17,7 +17,7 @@ const SERVICE_RULES = [
     ]
   },
   {
-    category: "Servers / RDP",
+    category: "Cloud Hosting & Servers",
     keywords: ["server", "rdp", "remote desktop", "vps", "windows server", "linux server", "ssh", "hosting", "downtime", "reboot"],
     estimate: "3-6 hours",
     questions: [
@@ -27,7 +27,7 @@ const SERVICE_RULES = [
     ]
   },
   {
-    category: "Automation",
+    category: "Task Automation",
     keywords: ["automate", "automation", "workflow", "script", "zapier", "n8n", "repetitive", "scrape", "spreadsheet", "every day"],
     estimate: "6-12 hours",
     questions: [
@@ -37,7 +37,7 @@ const SERVICE_RULES = [
     ]
   },
   {
-    category: "Docker / DevOps",
+    category: "App Deployment",
     keywords: ["docker", "container", "kubernetes", "ci/cd", "pipeline", "deploy", "compose", "image"],
     estimate: "6-10 hours",
     questions: [
@@ -47,8 +47,8 @@ const SERVICE_RULES = [
     ]
   },
   {
-    category: "Cloudflare / Network",
-    keywords: ["cloudflare", "dns", "ssl", "waf", "firewall", "domain", "cdn", "ddos", "proxy", "certificate"],
+    category: "Website Speed & Protection",
+    keywords: ["cloudflare", "dns", "ssl", "waf", "firewall", "domain", "cdn", "ddos", "proxy", "certificate", "slow", "attack", "speed", "load faster"],
     estimate: "1-3 hours",
     questions: [
       "What is the domain name involved?",
@@ -57,7 +57,7 @@ const SERVICE_RULES = [
     ]
   },
   {
-    category: "Monitoring",
+    category: "Uptime Monitoring",
     keywords: ["monitor", "monitoring", "uptime", "alert", "grafana", "prometheus", "logs", "health", "netdata", "status"],
     estimate: "3-5 hours",
     questions: [
@@ -77,7 +77,7 @@ const SERVICE_RULES = [
     ]
   },
   {
-    category: "Cloud Infrastructure",
+    category: "Cloud Hosting & Servers",
     keywords: ["cloud", "aws", "azure", "gcp", "hetzner", "digitalocean", "scale", "scaling", "infrastructure", "migrate", "migration", "s3"],
     estimate: "4-8 hours",
     questions: [
@@ -87,8 +87,8 @@ const SERVICE_RULES = [
     ]
   },
   {
-    category: "Domain Transfer & Setup",
-    keywords: ["transfer", "registrar", "nameserver", "move my domain", "move domain", "buy a domain", "register a domain", "godaddy", "namecheap", "domain expired"],
+    category: "Domain & Business Email",
+    keywords: ["transfer", "registrar", "nameserver", "move my domain", "move domain", "buy a domain", "register a domain", "godaddy", "namecheap", "domain expired", "domain", "business email", "professional email", "email for my"],
     estimate: "1-2 hours",
     questions: [
       "Which domain is it, and where is it registered today?",
@@ -107,6 +107,16 @@ const SERVICE_RULES = [
     ]
   },
   {
+    category: "Ongoing Tech Support",
+    keywords: ["unlimited", "retainer", "on demand", "ongoing support", "monthly support", "it guy", "many small tasks", "regular help"],
+    estimate: "Ongoing",
+    questions: [
+      "What kind of tasks would you send us most often?",
+      "Roughly how many tasks a month do you expect?",
+      "Is there anything urgent we should start with?"
+    ]
+  },
+  {
     category: "Website & App Prompt Engineering",
     keywords: ["prompt", "prompt engineering", "lovable", "v0", "bolt", "cursor", "design spec", "design system", "recreate", "rebuild the design", "like this site", "ai builder"],
     estimate: "2-4 hours",
@@ -114,6 +124,36 @@ const SERVICE_RULES = [
       "Which website or app should we base the prompt on?",
       "Which tool will you build with - Lovable, v0, Claude, Cursor or your own developers?",
       "What should change from the original - your brand, content or pages?"
+    ]
+  },
+  {
+    category: "Hacked Website Recovery",
+    keywords: ["hacked", "malware", "virus", "defaced", "spam links", "blacklisted", "infected", "redirects to", "strange pages", "spam", "website hacked", "site hacked", "hacked website", "hacked site"],
+    estimate: "3-8 hours",
+    questions: [
+      "What did you notice first: strange pages, spam, a warning in Google or a hosting suspension?",
+      "Who hosts the website, and do you still have admin access?",
+      "Do you have a recent backup?"
+    ]
+  },
+  {
+    category: "Website Care & Maintenance",
+    keywords: ["maintenance", "updates", "update my site", "care plan", "small edits", "keep my site", "wordpress updates", "plugins", "wordpress", "update", "every month"],
+    estimate: "Monthly",
+    questions: [
+      "What is your website built with (for example WordPress, Wix or custom)?",
+      "Roughly how many changes or edits do you need each month?",
+      "Where is it hosted today?"
+    ]
+  },
+  {
+    category: "Managed IT for Small Offices",
+    keywords: ["office", "laptops", "computers", "wifi", "printer", "employees", "new staff", "onboarding", "team email", "it support"],
+    estimate: "1-2 days setup",
+    questions: [
+      "How many people and devices are in the office?",
+      "Which email and file tools does your team use today?",
+      "What is the most annoying IT problem right now?"
     ]
   },
   {
@@ -138,10 +178,14 @@ const GENERIC = {
   ]
 };
 
+// Keywords must start at a word boundary, so "rdp" doesn't fire inside "wordpress".
 function scoreText(text, keywords) {
   const t = text.toLowerCase();
   let hits = 0;
-  for (const k of keywords) if (t.includes(k)) hits++;
+  for (const k of keywords) {
+    const re = new RegExp("(^|[^a-z0-9])" + k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+    if (re.test(t)) hits++;
+  }
   return hits;
 }
 
@@ -207,7 +251,7 @@ function explainPriority(lead, category, actingUrgency) {
   if (bw > 0) factors.push(`budget ${lead.budget} +${bw}`);
   score += bw;
 
-  if (category === "Account Security" || category === "Cloudflare / Network") {
+  if (category === "Account Security" || category === "Website Speed & Protection" || category === "Hacked Website Recovery") {
     score += 1;
     factors.push("security-sensitive +1");
   }
