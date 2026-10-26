@@ -87,13 +87,17 @@ async function summarizeNode(state) {
   return { summary: state.base.summary };
 }
 
+// Customer-facing text is written in the language they used on the site.
+const { LANG_NAMES, normLang } = require("../i18n-mail");
+const replyLanguage = (lead) => LANG_NAMES[normLang(lead && lead.lang)];
+
 // Node 4 - follow-up questions (LLM, else rule).
 async function questionsNode(state) {
   if (LLM_ENABLED) {
     try {
       const q = await llmText(
         `List exactly 3 concise follow-up questions to qualify this ${state.category} request. ` +
-        `Return each question on its own line, no numbering.\n\nRequest: "${state.lead.problem}"`
+        `Return each question on its own line, no numbering. Write them in ${replyLanguage(state.lead)}.\n\nRequest: "${state.lead.problem}"`
       );
       const lines = q.split("\n").map((l) => l.replace(/^[\-\d.)\s]+/, "").trim()).filter(Boolean);
       if (lines.length) return { questions: lines.slice(0, 4).join("\n"), llmUsed: true };
@@ -110,7 +114,8 @@ async function draftReplyNode(state) {
       const r = await llmText(
         `Write a short, warm, professional reply to a customer who requested help with ${state.category}. ` +
         `Address them as "${firstName}". Acknowledge their problem, say we can help, mention it typically takes ${state.estimateHours}, ` +
-        `and ask for the key details needed. Sign off as "The Team". Keep it under 120 words.\n\n` +
+        `and ask for the key details needed. Sign off as "The Team". Keep it under 120 words. ` +
+        `Write it in ${replyLanguage(state.lead)}.\n\n` +
         `Their message: "${state.lead.problem}"`
       );
       if (r) return { draftReply: r, llmUsed: true };

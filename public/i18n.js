@@ -100,7 +100,7 @@
   });
 
   // ---- language picker (top right of the header) ----
-  const flagUrl = (cc) => `https://flagcdn.com/${cc.toLowerCase()}.svg`;
+  const flagUrl = (cc) => `/flags/${cc.toLowerCase()}.svg`;   // served (and cached) by our own server
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   function countryName(cc) {
     try { return new Intl.DisplayNames([lang], { type: 'region' }).of(cc); } catch (e) { return cc; }
@@ -161,10 +161,35 @@
     }));
   }
 
+  // Long legal pages (<main data-i18n-page="terms">) are translated as whole documents
+  // (i18n-legal-<lang>.js), so sentences around links and bold text read naturally.
+  function loadScript(src) {
+    return new Promise((ok, fail) => {
+      const s = document.createElement('script');
+      s.src = src; s.onload = ok; s.onerror = fail;
+      document.head.appendChild(s);
+    });
+  }
+  async function applyLegal(l) {
+    const el = document.querySelector('[data-i18n-page]');
+    if (!el) return;
+    if (!el.__en) el.__en = { html: el.innerHTML, title: document.title };
+    let page = null;
+    if (l !== 'en') {
+      if (!((window.I18N_LEGAL || {})[l])) {
+        try { await loadScript(`/i18n-legal-${l}.js?v=${window.I18N_VERSION || 1}`); } catch (e) { /* stay in English */ }
+      }
+      page = ((window.I18N_LEGAL || {})[l] || {})[el.dataset.i18nPage] || null;
+    }
+    el.innerHTML = page ? page.html : el.__en.html;
+    document.title = page ? page.title : el.__en.title;
+  }
+
   async function setLang(l, remember) {
     if (!LANGS[l]) l = 'en';
     if (remember) { try { localStorage.setItem(KEY, l); } catch (e) { /* private mode */ } }
     try { await loadDict(l); } catch (e) { l = 'en'; }
+    await applyLegal(l);
     lang = l;
     document.documentElement.lang = l;
     document.documentElement.dir = LANGS[l].rtl ? 'rtl' : 'ltr';

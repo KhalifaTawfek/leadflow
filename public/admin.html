@@ -246,7 +246,7 @@
     const d=document.getElementById('detail');
     d.innerHTML=`
       <h2>${esc(lead.name)} <span class="prio ${prioClass(a.priority||0)}" style="vertical-align:middle">${a.priority||'-'}</span></h2>
-      <div class="muted">${esc(lead.email)} · ${esc(lead.phone)}</div>
+      <div class="muted">${esc(lead.email)} · ${esc(lead.phone)} · 🌐 ${esc(({en:'English',de:'German',fr:'French',es:'Spanish',it:'Italian',ro:'Romanian',he:'Hebrew'})[lead.lang]||'English')} <span title="Automatic emails and replies go out in this language">(customer's language)</span></div>
       <div class="kv">
         <span class="k">Service</span><span>${esc(a.category||lead.serviceType)}</span>
         <span class="k">Urgency <span style="color:var(--soft);font-size:11px">(detected)</span></span><span>${esc(a.aiUrgency||a.urgencyLabel||'-')}</span>

@@ -46,7 +46,8 @@ const Lead = sequelize.define("Lead", {
   assignedToId: { type: DataTypes.UUID, allowNull: true },
   customerId: { type: DataTypes.UUID, allowNull: true },   // the customer account that placed this request
   reply: { type: DataTypes.TEXT, allowNull: true },        // the reply staff sent the customer (visible to them)
-  repliedAt: { type: DataTypes.DATE, allowNull: true }
+  repliedAt: { type: DataTypes.DATE, allowNull: true },
+  lang: { type: DataTypes.STRING(5), defaultValue: "en" }  // site language the customer used; emails go out in it
 }, { tableName: "leads" });
 
 const LeadNote = sequelize.define("LeadNote", {
@@ -114,6 +115,7 @@ async function initDb() {
   await sequelize.query('ALTER TABLE ai_analysis ADD COLUMN IF NOT EXISTS ai_urgency VARCHAR(255)');
   await sequelize.query('ALTER TABLE leads ADD COLUMN IF NOT EXISTS reply TEXT');
   await sequelize.query('ALTER TABLE leads ADD COLUMN IF NOT EXISTS replied_at TIMESTAMP');
+  await sequelize.query("ALTER TABLE leads ADD COLUMN IF NOT EXISTS lang VARCHAR(5) DEFAULT 'en'");
   await sequelize.query('ALTER TABLE activity_logs ADD COLUMN IF NOT EXISTS lead_id UUID');
   await sequelize.query('ALTER TABLE ai_analysis ADD COLUMN IF NOT EXISTS engine VARCHAR(255)');
   // Firebase auth (optional): add columns and allow password_hash to be null.

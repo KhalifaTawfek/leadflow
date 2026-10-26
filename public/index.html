@@ -1450,7 +1450,7 @@
     btn.disabled=true; btn.textContent='Placing…';
     try{
       const contactPref = data.wantCall ? `Wants a free call: ${data.callVia||'Phone'}, ${data.callTime||'Any time'}` : 'Contact by email only (no call requested)';
-      const payload = { ...data, problem: `${data.problem.trim()}\n\n${contactPref}` };
+      const payload = { ...data, lang: (window.I18N && I18N.lang) || 'en', problem: `${data.problem.trim()}\n\n${contactPref}` };
       delete payload.callTime; delete payload.callVia; delete payload.wantCall;
       const res = await api('/api/leads',{method:'POST',body:JSON.stringify(payload)});
       const a = res.analysis||{};

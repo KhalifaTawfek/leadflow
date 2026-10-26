@@ -8,6 +8,8 @@
 //   { chat_id, text, parse_mode }
 // so this is a dedicated sender rather than the generic postWebhook.
 
+const { LANG_NAMES, normLang } = require("./i18n-mail");
+
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "";
 const CHAT_ID = process.env.TELEGRAM_CHAT_ID || "";
 
@@ -55,6 +57,7 @@ async function notifyLeadTelegram(lead, analysis) {
     high,
     `<b>${esc(lead.name)}</b> - ${esc(lead.serviceType || analysis.category)}`,
     `Priority ${analysis.priority}/10 · ${esc(analysis.urgencyLabel)}`,
+    `🌐 Speaks ${LANG_NAMES[normLang(lead.lang)]}`,
     `📞 ${esc(lead.phone)}  ✉️ ${esc(lead.email)}`,
     ``,
     `“${esc(String(lead.problem).slice(0, 700))}”`,
@@ -68,7 +71,7 @@ async function notifyLeadTelegram(lead, analysis) {
 async function notifyMessageTelegram(lead, text) {
   return sendTelegram([
     `💬 <b>New message from ${esc(lead.name)}</b>`,
-    `On: ${esc(lead.serviceType || "their request")} · ✉️ ${esc(lead.email)}`,
+    `On: ${esc(lead.serviceType || "their request")} · ✉️ ${esc(lead.email)} · 🌐 ${LANG_NAMES[normLang(lead.lang)]}`,
     ``,
     `“${esc(String(text).slice(0, 700))}”`,
     ``,

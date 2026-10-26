@@ -11,6 +11,7 @@ const { analyzeLeadGraph, agentChat } = require("./agent/graph");
 const { onNewLead, startDailyReportJob } = require("./automation");
 const { sendTelegram, notifyMessageTelegram, telegramEnabled } = require("./telegram");
 const { emailTeamReply, emailEnabled } = require("./email");
+const { normLang, mailText } = require("./i18n-mail");
 const { firebaseEnabled, verifyIdToken } = require("./firebase");
 const { probe, analyzeSite, domainCheck, friendlyError } = require("./tools");
 const { Op } = require("sequelize");
@@ -211,6 +212,7 @@ app.post("/api/leads", leadLimiter, requireAuth, async (req, res) => {
   const problem = String(b.problem || "").trim();
   const urgency = String(b.urgency || "normal").trim().toLowerCase();
   const budget = String(b.budget || "").trim();
+  const lang = normLang(b.lang);
 
   const errors = [];
   if (name.length < 2) errors.push("Please enter your name.");
@@ -221,7 +223,7 @@ app.post("/api/leads", leadLimiter, requireAuth, async (req, res) => {
   if (!URGENCY.includes(urgency)) errors.push("Please choose an urgency level.");
   if (errors.length) return res.status(400).json({ error: errors[0], errors });
 
-  const lead = await Lead.create({ name, phone, email, serviceType, problem, urgency, budget: budget || "Not stated", customerId: req.user.id });
+  const lead = await Lead.create({ name, phone, email, serviceType, problem, urgency, budget: budget || "Not stated", lang, customerId: req.user.id });
 
   // Run the AI agent flow and store the result.
   const analysis = await analyzeLeadGraph(lead);
@@ -239,7 +241,7 @@ app.post("/api/leads", leadLimiter, requireAuth, async (req, res) => {
   if (analysis.draftReply) {
     // Our first reply also asks the follow-up questions, so everything lives in the chat.
     const qs = String(analysis.questions || "").split("\n").map((q) => q.trim()).filter(Boolean);
-    const first = String(analysis.draftReply) + (qs.length ? "\n\nTo move faster, could you tell us:\n" + qs.map((q) => "\u2022 " + q).join("\n") : "");
+    const first = String(analysis.draftReply) + (qs.length ? "\n\n" + mailText(lang).threadAsk + "\n" + qs.map((q) => "\u2022 " + q).join("\n") : "");
     await LeadMessage.create({ leadId: lead.id, sender: "team", text: first.slice(0, 4000) });
   }
 
@@ -299,16 +301,12 @@ const CUSTOMER_STATUS = {
 // feels real. It's generated lazily when the thread is read, so it needs no
 // background timer and survives restarts.
 const BOT_REPLY_DELAY_MS = Number(process.env.BOT_REPLY_DELAY_MS || 60000);
-const TEAM_REPLIES = [
-  (n) => `Thanks ${n}! We've reviewed your request and we're happy to take it on. Our offer still stands - would you like to go ahead?`,
-  (n) => `Great. Let's set up a quick call to finalise the details. We can do Google Meet or Discord, whichever you prefer - what day and time suit you this week?`,
-  (n) => `Perfect, noted. We'll send you a calendar invite with the call link shortly. Is there anything you'd like us to prepare beforehand?`,
-  (n) => `Thanks ${n}. A specialist will keep following up here and by email so nothing gets missed.`
-];
-function teamReplyText(teamCount, name) {
+// Written in the language the customer used on the site.
+function teamReplyText(teamCount, name, lang) {
   const first = String(name || "there").split(/\s+/)[0];
-  const idx = Math.min(Math.max(teamCount - 1, 0), TEAM_REPLIES.length - 1);
-  return TEAM_REPLIES[idx](first);
+  const replies = mailText(lang).team;
+  const idx = Math.min(Math.max(teamCount - 1, 0), replies.length - 1);
+  return replies[idx](first);
 }
 async function maybeAutoReply(lead) {
   const msgs = await LeadMessage.findAll({ where: { leadId: lead.id }, order: [["createdAt", "ASC"]] });
@@ -317,11 +315,11 @@ async function maybeAutoReply(lead) {
   if (last.sender !== "customer") return;                                   // only reply to the customer
   if (Date.now() - new Date(last.createdAt).getTime() < BOT_REPLY_DELAY_MS) return;  // wait ~1 min
   const teamCount = msgs.filter((m) => m.sender === "team").length;
-  await LeadMessage.create({ leadId: lead.id, sender: "team", text: teamReplyText(teamCount, lead.name) });
+  await LeadMessage.create({ leadId: lead.id, sender: "team", text: teamReplyText(teamCount, lead.name, lead.lang) });
 }
 
 app.get("/api/my/leads", requireAuth, async (req, res) => {
-  const owned = await Lead.findAll({ where: { customerId: req.user.id }, attributes: ["id", "name"] });
+  const owned = await Lead.findAll({ where: { customerId: req.user.id }, attributes: ["id", "name", "lang"] });
   await Promise.allSettled(owned.map((l) => maybeAutoReply(l)));            // post any due team replies
   const leads = await Lead.findAll({
     where: { customerId: req.user.id },
@@ -511,6 +509,27 @@ app.get("/api/geo", (req, res) => {
   const cc = String(req.headers["cf-ipcountry"] || "").toUpperCase();
   res.set("Cache-Control", "private, max-age=3600");
   res.json({ country: /^[A-Z]{2}$/.test(cc) && cc !== "XX" && cc !== "T1" ? cc : null });
+});
+
+// Country flags for the language picker. Fetched once from flagcdn and kept in memory, so
+// visitors' browsers only ever talk to us (their IP is never sent to a third party).
+const flagCache = new Map();
+app.get("/flags/:cc.svg", async (req, res) => {
+  const cc = String(req.params.cc || "").toLowerCase();
+  if (!/^[a-z]{2}$/.test(cc)) return res.status(404).end();
+  try {
+    if (!flagCache.has(cc)) {
+      const r = await fetch(`https://flagcdn.com/${cc}.svg`, { signal: AbortSignal.timeout(5000) });
+      if (!r.ok) return res.status(404).end();
+      const svg = await r.text();
+      if (!svg.startsWith("<svg") || svg.length > 200000) return res.status(404).end();
+      if (flagCache.size < 300) flagCache.set(cc, svg);
+      else return res.type("image/svg+xml").set("Cache-Control", "public, max-age=86400").send(svg);
+    }
+    res.type("image/svg+xml").set("Cache-Control", "public, max-age=2592000, immutable").send(flagCache.get(cc));
+  } catch (e) {
+    res.status(502).end();
+  }
 });
 
 // ================= HEALTH =================

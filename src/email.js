@@ -3,6 +3,7 @@
 // call is a no-op that just logs - so the app still works without email set up.
 
 const nodemailer = require("nodemailer");
+const { LANG_NAMES, normLang, mailText, serviceName } = require("./i18n-mail");
 
 const SMTP_HOST = process.env.SMTP_HOST || "";
 const SMTP_PORT = Number(process.env.SMTP_PORT || 587);
@@ -50,6 +51,7 @@ async function notifyOwnerOfLead(lead, analysis) {
     `Email:    ${lead.email}`,
     `Phone:    ${lead.phone}`,
     `Service:  ${analysis.category}`,
+    `Language: ${LANG_NAMES[normLang(lead.lang)]} (customer emails go out in this language)`,
     `Urgency:  ${analysis.urgencyLabel}`,
     `Lead time:${analysis.estimateHours}`,
     ``,
@@ -67,46 +69,53 @@ async function notifyOwnerOfLead(lead, analysis) {
   return sendMail({ to: MAIL_TO, subject, text, replyTo: lead.email });
 }
 
-// Send the customer an automatic acknowledgement with the drafted reply.
+// Send the customer an automatic acknowledgement with the drafted reply, in their language.
 async function autoReplyToCustomer(lead, analysis) {
   if (!AUTO_REPLY) return false;
+  const lang = normLang(lead.lang);
+  const t = mailText(lang);
+  const svc = serviceName(lead.serviceType || analysis.category, lang);
+  // The draft and questions are only in the customer's language when the AI wrote them;
+  // the rule-based fallback is English, so for other languages we leave it out.
+  const draftFits = lang === "en" || /llm/.test(String(analysis.engine || ""));
   const text = [
-    `Hi ${lead.name},`,
+    t.hi(lead.name),
     ``,
-    `Thanks for your request about "${analysis.category}". Here is our first reply:`,
+    draftFits && analysis.draftReply ? t.ackIntro(svc) : t.ackPlain(svc),
     ``,
-    analysis.draftReply,
+    ...(draftFits && analysis.draftReply ? [analysis.draftReply, ``] : []),
+    ...(draftFits && analysis.questions ? [`${t.haveReady}\n${analysis.questions}`, ``] : []),
+    /Wants a free call/.test(lead.problem || "") ? t.callYes : t.callNo,
     ``,
-    analysis.questions ? `To move faster, please have these ready:\n${analysis.questions}` : ``,
+    t.track,
     ``,
-    /Wants a free call/.test(lead.problem || "") ? `You asked for a free call, so we'll email you shortly to confirm a time.` : `We'll follow up by email with any questions and the details of our offer.`,
-    ``,
-    `You can track your request any time by signing in and opening "My Requests".`,
-    ``,
-    `The LeadFlow team`
-  ].filter((l) => l !== undefined).join("\n");
+    t.signoff
+  ].join("\n");
   return sendMail({
     to: lead.email,
-    subject: "Thanks for your request - LeadFlow",
+    subject: t.ackSubject,
     text,
     replyTo: MAIL_TO
   });
 }
 
 // Email the customer a message the team wrote in the admin panel.
+// The greeting and footer follow the customer's language; your message is sent as you wrote it.
 async function emailTeamReply(lead, message) {
+  const lang = normLang(lead.lang);
+  const t = mailText(lang);
   const text = [
-    `Hi ${lead.name},`,
+    t.hi(lead.name),
     ``,
     message,
     ``,
-    `You can reply to this email, or sign in and open "My Requests" to see the full conversation.`,
+    t.replyFooter,
     ``,
-    `The LeadFlow team`
+    t.signoff
   ].join("\n");
   return sendMail({
     to: lead.email,
-    subject: `Re: your request${lead.serviceType ? ` - ${lead.serviceType}` : ""}`,
+    subject: t.replySubject(lead.serviceType ? serviceName(lead.serviceType, lang) : ""),
     text,
     replyTo: MAIL_TO
   });
