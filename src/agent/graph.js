@@ -167,6 +167,7 @@ async function analyzeLeadGraph(lead) {
 const ChatState = Annotation.Root({
   history: Annotation(),   // [{role:'user'|'assistant', content}]
   services: Annotation(),  // live service catalogue (name + basePrice)
+  lang: Annotation(),      // site language the visitor picked ('en' | 'ro')
   reply: Annotation()
 });
 
@@ -177,7 +178,10 @@ async function chatRespond(state) {
 
   if (LLM_ENABLED) {
     try {
-      const msgs = [new SystemMessage(factSheet(services))];
+      const langNote = state.lang === "ro"
+        ? "The visitor is using the Romanian version of the site: reply in Romanian unless they write in another language."
+        : "Reply in the language the visitor writes in.";
+      const msgs = [new SystemMessage(`${factSheet(services)}\n\n${langNote}`)];
       for (const m of history.slice(-10)) {
         msgs.push(m.role === "assistant" ? new AIMessage(String(m.content)) : new HumanMessage(String(m.content)));
       }
@@ -197,9 +201,9 @@ const chatApp = new StateGraph(ChatState)
   .addEdge("respond", END)
   .compile();
 
-async function agentChat(history, services = []) {
+async function agentChat(history, services = [], lang = "en") {
   try {
-    const out = await chatApp.invoke({ history, services });
+    const out = await chatApp.invoke({ history, services, lang });
     return { reply: out.reply, engine: LLM_ENABLED ? "langgraph+llm" : "langgraph+rules" };
   } catch (e) {
     console.error("[chat] flow failed:", e.message);

@@ -284,7 +284,7 @@ app.post("/api/agent/chat", chatLimiter, async (req, res) => {
   if (!clean.length || clean[clean.length - 1].role !== "user") {
     return res.status(400).json({ error: "Send a message to the assistant." });
   }
-  const out = await agentChat(clean, await chatServices());
+  const out = await agentChat(clean, await chatServices(), req.body.lang === "ro" ? "ro" : "en");
   res.json({ reply: out.reply, engine: out.engine });
 });
 
@@ -505,6 +505,14 @@ app.get("/api/tools/status", async (_req, res) => {
   res.json({ sites, checkedAt: new Date().toISOString() });
 });
 
+// Visitor's country (two-letter code) from Cloudflare's CF-IPCountry header, for the flag
+// and default language in the header. XX/T1 are Cloudflare's unknown/Tor codes.
+app.get("/api/geo", (req, res) => {
+  const cc = String(req.headers["cf-ipcountry"] || "").toUpperCase();
+  res.set("Cache-Control", "private, max-age=3600");
+  res.json({ country: /^[A-Z]{2}$/.test(cc) && cc !== "XX" && cc !== "T1" ? cc : null });
+});
+
 // ================= HEALTH =================
 app.get("/api/health", async (_req, res) => {
   let db = "ok";
@@ -572,6 +580,21 @@ app.get("/alerts", (_req, res) => res.sendFile(path.join(__dirname, "..", "publi
 // ---------- Legal pages ----------
 app.get("/terms", (_req, res) => res.sendFile(path.join(__dirname, "..", "public", "terms.html")));
 app.get("/privacy", (_req, res) => res.sendFile(path.join(__dirname, "..", "public", "privacy.html")));
+
+// Search engines: built from the host the site is reached on, so a new domain needs no changes.
+const PUBLIC_PAGES = ["/", "/for/salons", "/for/restaurants", "/status", "/terms", "/privacy"];
+const siteOrigin = (req) => `https://${String(req.headers.host || "").replace(/[^a-z0-9.:-]/gi, "")}`;
+app.get("/robots.txt", (req, res) => {
+  res.type("text/plain").send(
+    `User-agent: *\nDisallow: /admin\nDisallow: /alerts\nDisallow: /api/\nAllow: /\n\nSitemap: ${siteOrigin(req)}/sitemap.xml\n`
+  );
+});
+app.get("/sitemap.xml", (req, res) => {
+  const urls = PUBLIC_PAGES.map((p) => `  <url><loc>${siteOrigin(req)}${p}</loc></url>`).join("\n");
+  res.type("application/xml").send(
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`
+  );
+});
 
 // ---------- Fallback (public site) ----------
 app.use((req, res, next) => { if (req.method !== "GET") return next(); res.sendFile(path.join(__dirname, "..", "public", "index.html")); });

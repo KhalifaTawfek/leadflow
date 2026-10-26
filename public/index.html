@@ -3,8 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LeadFlow · IT, Cyber, Cloud & Automation</title>
-<meta name="description" content="Account security, servers, cloud, automation, chatbots, Docker, Cloudflare and monitoring. Register, request a service, and track it.">
+<title>LeadFlow · IT, websites & automation for small businesses</title>
+<meta name="description" content="Websites, business email, security, hosting and automation for small businesses, set up and looked after by real engineers in the EU. Tell us what you need and get a tailored offer.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="LeadFlow">
+<meta property="og:title" content="LeadFlow · IT, websites & automation for small businesses">
+<meta property="og:description" content="Websites, business email, security, hosting and automation for small businesses, set up and looked after by real engineers in the EU. Tell us what you need and get a tailored offer.">
+<meta property="og:image" content="https://shop.cookblog.net/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_GB">
+<meta property="og:locale:alternate" content="ro_RO">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://shop.cookblog.net/og.jpg">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2352B8E0'/><g transform='translate(18 18) scale(2.67)' fill='none' stroke='%2304111C' stroke-width='2.6' stroke-linecap='round'><path d='M3.5 5.5c6 0 7.5 6.5 11.5 6.5'/><path d='M3.5 12H15'/><path d='M3.5 18.5c6 0 7.5-6.5 11.5-6.5'/><circle cx='18.5' cy='12' r='3' fill='%2304111C' stroke='none'/></g></svg>">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/icon-192.png">
@@ -13,6 +24,7 @@
 <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));}</script>
 <script src="/firebase-config.js"></script>
 <script src="/site-config.js"></script>
+<script src="/i18n.js"></script>
 <style>
   :root{--bg:#060D18;--panel:#0D141F;--panel2:#1A202A;--ink:#F1F5F9;--muted:#8DA4BF;--soft:#5F7187;
     --accent:#52B8E0;--accent2:#7CCBEB;--ok:#34D399;--amber:#F0B84F;--red:#EF6F5C;--blue:#63BDE7;--purple:#A5B4FC;
@@ -30,7 +42,8 @@
   .brand{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:21px;letter-spacing:-.3px}
   .brand .mark{width:34px;height:34px;display:grid;place-items:center;background:var(--accent);color:#04111C;border-radius:10px;font-weight:900;font-size:13px}
   .nav .links{display:flex;align-items:center;flex:1;margin-left:24px}
-  .nav-main{display:flex;gap:30px;margin:0 auto;color:var(--muted);font-weight:500;font-size:15px}
+  .nav-main{display:flex;gap:30px;margin:0 auto;color:var(--muted);font-weight:500;font-size:15px;white-space:nowrap}
+  .nav-auth .btn{white-space:nowrap}
   .nav-auth{display:flex;align-items:center;gap:10px;color:var(--muted);font-weight:500;font-size:15px}
   .nav .links a{cursor:pointer;transition:color .15s}.nav .links a:hover{color:var(--ink)}
   .menu-btn{display:none;margin-left:auto;background:transparent;border:1px solid var(--line2);color:var(--ink);border-radius:10px;width:42px;height:42px;cursor:pointer;font-size:18px}
@@ -257,6 +270,7 @@
   .plan-note{color:var(--ok);font-size:13px;font-weight:600;margin:-2px 0 8px}
   /* partners */
   .partners{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .about-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
   .partner{display:flex;flex-direction:column;gap:6px;padding:26px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel)}
   .partner h3{font-size:18px;font-weight:700}
   .partner p{color:var(--muted);font-size:15px;flex:1;margin-bottom:12px}
@@ -385,20 +399,23 @@
 
   /* responsive */
   @media(max-width:1180px){.home-grid{grid-template-columns:1fr}.toc{display:none}}
-  @media(max-width:900px){
-    .tools-layout,.req-layout{grid-template-columns:1fr}
-    .ondemand,.partners,.pain-grid,.pack,.contact-grid{grid-template-columns:1fr}
-    .tools-nav{position:static;flex-direction:row;overflow-x:auto;padding:6px}
-    .tnav{flex:none}.tnav small{display:none}
-    .tools-panel .tool{min-height:0}
-    .chat-side{position:static;max-height:none}
-    .chat-side #chatBox{max-height:320px !important}
+  /* collapse the top menu while it no longer fits on one line (longer languages + language picker) */
+  @media(max-width:1180px){
     .menu-btn{display:grid;place-items:center}
     .nav .links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;margin:0;flex:none;padding:6px 24px 18px;background:var(--bg);border-bottom:1px solid var(--line)}
     .nav.open .links{display:flex}
     .nav-main,.nav-auth{flex-direction:column;align-items:stretch;gap:0;margin:0}
     .nav-main>a,.nav-auth>a:not(.btn),.nav-auth>span{padding:13px 2px;border-bottom:1px solid var(--line)}
     .nav-auth .btn{margin-top:10px}
+  }
+  @media(max-width:900px){
+    .tools-layout,.req-layout{grid-template-columns:1fr}
+    .ondemand,.partners,.about-grid,.pain-grid,.pack,.contact-grid{grid-template-columns:1fr}
+    .tools-nav{position:static;flex-direction:row;overflow-x:auto;padding:6px}
+    .tnav{flex:none}.tnav small{display:none}
+    .tools-panel .tool{min-height:0}
+    .chat-side{position:static;max-height:none}
+    .chat-side #chatBox{max-height:320px !important}
     .home-grid{grid-template-columns:1fr}.toc{display:none}
     .split{grid-template-columns:1fr;gap:32px}
     .cloud-grid{grid-template-columns:1fr 1fr}
@@ -495,6 +512,7 @@
 
   // Real portfolio - one proof example per service (things actually built).
   const CASES = [
+    { tag:"Web app", title:"Attendance system with photo check-in", body:"Built a complete attendance app for a university lab: people check in with a photo and a short form, admins plan recurring events for groups, review every check-in and export reports, with live dashboards showing usage and health.", result:"Live, with sign-up, reports and dashboards", link:"https://attendance.cookblog.net" },
     { tag:"Hosting", title:"Three websites on one secure server", body:"Set up and secured a server that runs three live websites, each with its own padlock (HTTPS), restarting by itself if anything goes wrong.", result:"3 sites live and protected", link:"https://cookblog.net" },
     { tag:"App deployment", title:"One-command app setup", body:"Packaged a web app so the whole thing installs and updates with one command, instead of a fragile manual setup.", result:"Updates in minutes, not hours", link:"" },
     { tag:"Speed & protection", title:"Faster, attack-proof website", body:"Moved a website behind Cloudflare so it loads faster worldwide, is shielded from attacks, and keeps the real server hidden.", result:"Faster, encrypted, shielded", link:"https://cookblog.net" },
@@ -1121,7 +1139,7 @@
     ['Can you set up a CRM or business software for my team?', 'Yes. We set up, host and maintain open-source CRM and business software (sales pipeline, invoicing, inventory, helpdesk), import your existing data and train your team. It runs on our EU servers, so you never deal with updates or backups.'],
     ['Do you work with WordPress, Shopify or Wix?', 'Yes. We work with WordPress, custom-built sites and apps, and most hosting providers. On Shopify, Wix or Squarespace we can still handle your domain, email, integrations and chatbots.']
   ];
-  const TOC = [['how','How it works'],['services','Services'],['cloud','Hosting & tools'],['bots','Bots & assistants'],['prompts','Prompt engineering'],['tools','Free tools'],['pricing','Care plans'],['work','Our work'],['partners','Partners'],['faq','FAQ'],['start','Get started']];
+  const TOC = [['how','How it works'],['services','Services'],['cloud','Hosting & tools'],['bots','Bots & assistants'],['prompts','Prompt engineering'],['tools','Free tools'],['pricing','Care plans'],['work','Our work'],['about','About us'],['partners','Partners'],['faq','FAQ'],['start','Get started']];
 
   function renderHome(){
     app.innerHTML = `
@@ -1230,6 +1248,30 @@
             <div class="grid" id="caseGrid"></div>
           </section>
 
+          <section id="about">
+            <div class="eyebrow">About us</div>
+            <h2 class="sec">Real engineers, plain words</h2>
+            <p class="sec-sub">LeadFlow is a small, hands-on team of information engineers. We set up and look after the tech small businesses rely on: websites, email, security, hosting and automation. You talk to the people who actually do the work, not a call centre.</p>
+            <div class="about-grid">
+              <div class="partner">
+                <div class="tool-icon">${icon('users')}</div>
+                <h3>Engineers, not salespeople</h3>
+                <p>The person you talk to is the person who fixes it. No hand-offs, no tickets lost between departments.</p>
+              </div>
+              <div class="partner">
+                <div class="tool-icon">${icon('server')}</div>
+                <h3>Based in the EU</h3>
+                <p>Your website and data stay on servers in the EU, and we work under GDPR from day one.</p>
+              </div>
+              <div class="partner">
+                <div class="tool-icon">${icon('shield')}</div>
+                <h3>Small on purpose</h3>
+                <p>We take on a limited number of clients, so every business gets real attention and quick replies.</p>
+              </div>
+            </div>
+            <div class="hero-actions" style="margin-top:22px"><button class="btn ghost" onclick="goToSection('work')">See our work →</button></div>
+          </section>
+
           <section id="partners">
             <div class="eyebrow">Partners</div>
             <h2 class="sec">Grow with us</h2>
@@ -1281,7 +1323,7 @@
     const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     const heads = document.querySelectorAll('.home-main section > .eyebrow, .home-main section > h2.sec, .home-main section > .sec-sub, .split > div > .eyebrow, .split > div > h2.sec, .split > div > .sec-sub, .subs-inner > .subs-kicker, .subs-inner > h2.sec, .subs-inner > .sec-sub, .cta');
     heads.forEach(el=>el.classList.add('reveal'));
-    document.querySelectorAll('.stats, #svcGrid, .cloud-grid, .bots-grid, .steps, .price-grid, #caseGrid, .split, .partners').forEach(group=>{
+    document.querySelectorAll('.stats, #svcGrid, .cloud-grid, .bots-grid, .steps, .price-grid, #caseGrid, .split, .partners, .about-grid').forEach(group=>{
       [...group.children].forEach((el,i)=>{ el.classList.add('reveal'); el.style.setProperty('--d', Math.min(i,8)*70+'ms'); });
     });
     const items = document.querySelectorAll('.home-main .reveal');
@@ -1364,7 +1406,7 @@
     chatMessages.push({role:'user',content:text}); renderChat();
     const typing=document.getElementById('chatTyping'); if(typing)typing.style.display='block';
     try{
-      const r=await api('/api/agent/chat',{method:'POST',body:JSON.stringify({messages:chatMessages})});
+      const r=await api('/api/agent/chat',{method:'POST',body:JSON.stringify({messages:chatMessages, lang:(window.I18N&&I18N.lang)||'en'})});
       chatMessages.push({role:'assistant',content:r.reply||'…'});
     }catch(e){
       chatMessages.push({role:'assistant',content:'Sorry, I had trouble responding just now - please try again, or fill in the form below and our team will follow up.'});
@@ -1619,7 +1661,7 @@
     const started=Date.now();
     let reply;
     try{
-      const r = await api('/api/agent/chat', {method:'POST', body:JSON.stringify({messages:[{role:'assistant',content:W_GREETING}, ...wMsgs].slice(-12)})});
+      const r = await api('/api/agent/chat', {method:'POST', body:JSON.stringify({messages:[{role:'assistant',content:W_GREETING}, ...wMsgs].slice(-12), lang:(window.I18N&&I18N.lang)||'en'})});
       reply = r.reply || "Sorry, I didn't catch that. Could you rephrase?";
     }catch(e){ reply = e.message && /too many/i.test(e.message) ? e.message : "Sorry, I couldn't answer just now. You can still send a request and the team will reply within a day."; }
     const wait = 600 - (Date.now()-started); if(wait>0) await new Promise(r=>setTimeout(r,wait));   // feels less robotic
