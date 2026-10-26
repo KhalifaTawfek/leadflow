@@ -16,9 +16,9 @@
 <meta property="og:locale:alternate" content="ro_RO">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://cloudhelm.eu/og.jpg">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2352B8E0'/><g transform='translate(18 18) scale(2.67)' fill='none' stroke='%2304111C' stroke-width='2.6' stroke-linecap='round'><path d='M12 1.4v21.2M1.4 12h21.2M4.5 4.5l15 15M19.5 4.5l-15 15'/><circle cx='12' cy='12' r='7'/><circle cx='12' cy='12' r='2.9' fill='%2304111C' stroke='none'/></g></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23060D18'/><g transform='translate(11 11) scale(.78)'><circle cx='50' cy='50' r='42' fill='none' stroke='%2352B8E0' stroke-width='10'/><path d='M50 15V35M50 65V85M15 50H35M65 50H85M24.5 24.5L38 38M62 62L75.5 75.5M75.5 24.5L62 38M38 62L24.5 75.5' stroke='%2352B8E0' stroke-width='7' stroke-linecap='round'/><circle cx='50' cy='50' r='14' fill='none' stroke='%2352B8E0' stroke-width='7'/><circle cx='50' cy='50' r='5' fill='%2352B8E0'/></g></svg>">
 <link rel="manifest" href="/manifest.webmanifest">
-<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="theme-color" content="#060D18">
 <meta name="mobile-web-app-capable" content="yes">
 <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));}</script>
@@ -457,7 +457,8 @@
     .chat-panel{left:10px;right:10px;width:auto;bottom:84px;height:calc(100vh - 110px)}
     .chat-fab{right:14px;bottom:14px}
   }
-  .mark svg{width:64%;height:64%;display:block}
+  .brand .mark,.mark{background:none;color:var(--accent);border-radius:0}.mark svg{width:100%;height:100%;display:block}
+  .brand{font-family:"DM Sans","Sofia Sans",sans-serif;font-weight:600;letter-spacing:-.025em;color:var(--accent)}
 
   /* ---- Scale (Cloudflare-style): full-width header, full-screen hero, larger type ----
      body is a size container, so 100cqw is the page width without the scrollbar (no sideways scroll). */
@@ -497,12 +498,12 @@
     .faq summary{font-size:18.5px}
   }
 </style>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@600&family=Sofia+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
 <header>
   <nav class="nav">
-    <a class="brand" href="#" onclick="go('home');return false"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 1.4v21.2M1.4 12h21.2M4.5 4.5l15 15M19.5 4.5l-15 15"/><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.9" fill="currentColor" stroke="none"/></svg></span> CloudHelm</a>
+    <a class="brand" href="#" onclick="go('home');return false"><span class="mark"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="10"/><path d="M50 15V35M50 65V85M15 50H35M65 50H85M24.5 24.5L38 38M62 62L75.5 75.5M75.5 24.5L62 38M38 62L24.5 75.5" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><circle cx="50" cy="50" r="14" fill="none" stroke="currentColor" stroke-width="7"/><circle cx="50" cy="50" r="5" fill="currentColor"/></svg></span> CloudHelm</a>
     <button class="menu-btn" aria-label="Menu" onclick="document.querySelector('.nav').classList.toggle('open')">☰</button>
     <div class="links" id="navLinks" onclick="document.querySelector('.nav').classList.remove('open')"></div>
   </nav>
@@ -513,7 +514,7 @@
 <footer>
   <div class="wrap foot-grid">
     <div>
-      <div class="brand" style="font-size:17px;margin-bottom:6px"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 1.4v21.2M1.4 12h21.2M4.5 4.5l15 15M19.5 4.5l-15 15"/><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.9" fill="currentColor" stroke="none"/></svg></span> CloudHelm</div>
+      <div class="brand" style="font-size:17px;margin-bottom:6px"><span class="mark"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="10"/><path d="M50 15V35M50 65V85M15 50H35M65 50H85M24.5 24.5L38 38M62 62L75.5 75.5M75.5 24.5L62 38M38 62L24.5 75.5" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><circle cx="50" cy="50" r="14" fill="none" stroke="currentColor" stroke-width="7"/><circle cx="50" cy="50" r="5" fill="currentColor"/></svg></span> CloudHelm</div>
       <div>IT · Cyber · Cloud · Automation · Remote, worldwide</div>
       <div style="margin-top:6px"><a href="mailto:hello@cloudhelm.eu">hello@cloudhelm.eu</a></div>
       <div id="footContact" style="margin-top:4px"></div>
@@ -1137,7 +1138,7 @@
     const grad = (id,x1) => `<linearGradient id="${id}" gradientUnits="userSpaceOnUse" x1="${x1}" y1="0" x2="${cx}" y2="0"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity=".14"/><stop offset="1" stop-color="#FFFFFF" stop-opacity=".7"/></linearGradient>`;
     return `<svg class="flow-svg" viewBox="0 0 1200 380" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs>${grad('gfl',0)}${grad('gfr',W)}<radialGradient id="gcore"><stop offset="0" stop-color="#52B8E0" stop-opacity=".28"/><stop offset="1" stop-color="#52B8E0" stop-opacity="0"/></radialGradient></defs><ellipse cx="600" cy="300" rx="300" ry="120" fill="url(#gcore)"/>${stars}<g fill="none" stroke-width=".9">${lines}</g>${dots}</svg>`;
   }
-  const CORE_LOGO = '<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" aria-hidden="true"><defs><linearGradient id="lgCore" gradientUnits="userSpaceOnUse" x1="2" y1="3" x2="22" y2="21"><stop offset="0" stop-color="#F4FAFF"/><stop offset="1" stop-color="#52B8E0"/></linearGradient></defs><g stroke="url(#lgCore)" stroke-width="2"><path d="M12 1.4v21.2M1.4 12h21.2M4.5 4.5l15 15M19.5 4.5l-15 15"/><circle cx="12" cy="12" r="7"/></g><circle cx="12" cy="12" r="2.9" fill="url(#lgCore)"/></svg>';
+  const CORE_LOGO = '<svg viewBox="0 0 100 100" fill="none" stroke-linecap="round" aria-hidden="true"><defs><linearGradient id="lgCore" gradientUnits="userSpaceOnUse" x1="8" y1="8" x2="92" y2="92"><stop offset="0" stop-color="#F4FAFF"/><stop offset="1" stop-color="#52B8E0"/></linearGradient></defs><circle cx="50" cy="50" r="42" stroke="url(#lgCore)" stroke-width="10"/><path d="M50 15V35M50 65V85M15 50H35M65 50H85M24.5 24.5L38 38M62 62L75.5 75.5M75.5 24.5L62 38M38 62L24.5 75.5" stroke="url(#lgCore)" stroke-width="7"/><circle cx="50" cy="50" r="14" stroke="url(#lgCore)" stroke-width="7"/><circle cx="50" cy="50" r="5" fill="url(#lgCore)"/></svg>';
   const FLOW_TILES = [['cloud','16%','40%','#52B8E0',0],['shield','7%','74%','#34D399',1.4],['bot','84%','34%','#A78BFA',.7],['globe','93%','70%','#F0B84F',2.1]];
 
   const CLOUD = [
