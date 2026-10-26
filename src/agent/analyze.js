@@ -1,4 +1,4 @@
-// LeadFlow AI Agent - a rule-based "agent flow" (no external API key required).
+// CloudHelm AI Agent - a rule-based "agent flow" (no external API key required).
 // It runs a lead's raw request through 6 steps and returns a structured analysis,
 // mirroring the LangGraph flow in the brief:
 //   1. Classify service   2. Score priority (1-10)   3. Summarize

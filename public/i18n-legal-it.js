@@ -1,7 +1,7 @@
 // Italian versions of the Terms of Service and Privacy Policy (whole pages, see i18n.js applyLegal).
 window.I18N_LEGAL = Object.assign(window.I18N_LEGAL || {}, { it: {
   terms: {
-    title: "Termini di servizio - LeadFlow",
+    title: "Termini di servizio - CloudHelm",
     html: `
   <h1>Termini di servizio</h1>
   <p class="meta">Ultimo aggiornamento: 26 ottobre 2026 · Questa traduzione è fornita per comodità; se differisce dalla versione inglese, prevale la versione inglese.</p>
@@ -9,7 +9,7 @@ window.I18N_LEGAL = Object.assign(window.I18N_LEGAL || {}, { it: {
   <div class="note">Questo è un modello in linguaggio semplice per una piccola attività di servizi IT. Fallo verificare da un avvocato qualificato e adattalo alla tua impresa registrata prima di usarlo con clienti paganti.</div>
 
   <h2>1. Chi siamo</h2>
-  <p>LeadFlow («noi», «nostro») fornisce servizi di IT, sicurezza informatica e automazione, tra cui hosting gestito di siti, protezione, domini e attività correlate. Puoi scriverci a <a href="mailto:admin@cookblog.net">admin@cookblog.net</a>.</p>
+  <p>CloudHelm («noi», «nostro») fornisce servizi di IT, sicurezza informatica e automazione, tra cui hosting gestito di siti, protezione, domini e attività correlate. Puoi scriverci a <a href="mailto:hello@cloudhelm.eu">hello@cloudhelm.eu</a>.</p>
 
   <h2>2. Servizi e piani</h2>
   <p>Offriamo progetti singoli (con preventivo personalizzato) e piani mensili ricorrenti (Starter, Business, Pro). Ciò che include ogni piano è descritto sul nostro sito al momento della sottoscrizione. Possiamo migliorare o modificare il contenuto di un piano con un preavviso ragionevole.</p>
@@ -48,13 +48,13 @@ window.I18N_LEGAL = Object.assign(window.I18N_LEGAL || {}, { it: {
   <p>Possiamo aggiornare questi termini. Se una modifica è rilevante, te ne daremo un preavviso ragionevole. Continuare a usare i servizi dopo una modifica significa accettare i termini aggiornati.</p>
 
   <h2>11. Legge applicabile</h2>
-  <p>Questi termini sono regolati dalle leggi del Paese in cui LeadFlow è registrata. Le controversie saranno risolte dai tribunali competenti di quel Paese, salvo diversa disposizione inderogabile della normativa a tutela dei consumatori.</p>
+  <p>Questi termini sono regolati dalle leggi del Paese in cui CloudHelm è registrata. Le controversie saranno risolte dai tribunali competenti di quel Paese, salvo diversa disposizione inderogabile della normativa a tutela dei consumatori.</p>
 
-  <p style="margin-top:28px"><a href="/">← Torna a LeadFlow</a> · <a href="/privacy">Informativa sulla privacy</a></p>
+  <p style="margin-top:28px"><a href="/">← Torna a CloudHelm</a> · <a href="/privacy">Informativa sulla privacy</a></p>
 `
   },
   privacy: {
-    title: "Informativa sulla privacy - LeadFlow",
+    title: "Informativa sulla privacy - CloudHelm",
     html: `
   <h1>Informativa sulla privacy</h1>
   <p class="meta">Ultimo aggiornamento: 26 ottobre 2026 · Questa traduzione è fornita per comodità; se differisce dalla versione inglese, prevale la versione inglese.</p>
@@ -62,7 +62,7 @@ window.I18N_LEGAL = Object.assign(window.I18N_LEGAL || {}, { it: {
   <div class="note">Questo modello copre gli aspetti essenziali del GDPR (UE/Regno Unito) per una piccola attività di servizi. Verificalo con un consulente qualificato e indica la tua entità giuridica registrata prima di pubblicarlo per clienti paganti.</div>
 
   <h2>1. Chi è responsabile dei tuoi dati</h2>
-  <p>LeadFlow è il titolare del trattamento dei dati personali descritti qui. Per domande sulla privacy scrivici a <a href="mailto:admin@cookblog.net">admin@cookblog.net</a>.</p>
+  <p>CloudHelm è il titolare del trattamento dei dati personali descritti qui. Per domande sulla privacy scrivici a <a href="mailto:hello@cloudhelm.eu">hello@cloudhelm.eu</a>.</p>
 
   <h2>2. Quali dati raccogliamo</h2>
   <ul>
@@ -92,7 +92,7 @@ window.I18N_LEGAL = Object.assign(window.I18N_LEGAL || {}, { it: {
   <p>Conserviamo i dati dell'account e delle richieste finché hai un account o una collaborazione attiva, e per un periodo ragionevole successivo per esigenze legali, contabili e di sicurezza. Puoi chiederci di cancellarli prima (vedi sotto).</p>
 
   <h2>8. I tuoi diritti</h2>
-  <p>In base al GDPR puoi chiedere l'accesso, la rettifica, la cancellazione, la limitazione o la portabilità dei tuoi dati, e opporti a determinati trattamenti. Per esercitare questi diritti scrivi a <a href="mailto:admin@cookblog.net">admin@cookblog.net</a>. Hai anche il diritto di presentare reclamo alla tua autorità per la protezione dei dati.</p>
+  <p>In base al GDPR puoi chiedere l'accesso, la rettifica, la cancellazione, la limitazione o la portabilità dei tuoi dati, e opporti a determinati trattamenti. Per esercitare questi diritti scrivi a <a href="mailto:hello@cloudhelm.eu">hello@cloudhelm.eu</a>. Hai anche il diritto di presentare reclamo alla tua autorità per la protezione dei dati.</p>
 
   <h2>9. Cookie</h2>
   <p>Usiamo un solo cookie essenziale per mantenerti connesso. È necessario al funzionamento del sito e non è usato per pubblicità o tracciamento tra siti. La lingua che scegli è salvata solo nel tuo browser (local storage).</p>
@@ -103,7 +103,7 @@ window.I18N_LEGAL = Object.assign(window.I18N_LEGAL || {}, { it: {
   <h2>11. Modifiche</h2>
   <p>Possiamo aggiornare questa informativa. La data di «ultimo aggiornamento» qui sopra indica la versione in vigore, e ti informeremo delle modifiche rilevanti.</p>
 
-  <p style="margin-top:28px"><a href="/">← Torna a LeadFlow</a> · <a href="/terms">Termini di servizio</a></p>
+  <p style="margin-top:28px"><a href="/">← Torna a CloudHelm</a> · <a href="/terms">Termini di servizio</a></p>
 `
   }
 } });

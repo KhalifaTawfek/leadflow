@@ -10,7 +10,7 @@ const tls = require("tls");
 const dns = require("dns");
 const dnsp = dns.promises;
 
-const UA = "LeadFlow-Inspector/1.0 (+https://shop.cookblog.net)";
+const UA = "CloudHelm-Inspector/1.0 (+https://cloudhelm.eu)";
 
 // ---------- SSRF guard ----------
 function isPrivateIp(ip) {

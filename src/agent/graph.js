@@ -1,4 +1,4 @@
-// LeadFlow AI Agent - a real LangGraph flow (LangGraph.js) that orchestrates the
+// CloudHelm AI Agent - a real LangGraph flow (LangGraph.js) that orchestrates the
 // brief's pipeline as a StateGraph, and uses LangChain (ChatOpenAI) to power the
 // text-generation steps when an LLM key is configured.
 //

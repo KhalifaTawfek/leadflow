@@ -1,7 +1,7 @@
 // Romanian versions of the Terms of Service and Privacy Policy (whole pages, see i18n.js applyLegal).
 window.I18N_LEGAL = Object.assign(window.I18N_LEGAL || {}, { ro: {
   terms: {
-    title: "Termeni și condiții - LeadFlow",
+    title: "Termeni și condiții - CloudHelm",
     html: `
   <h1>Termeni și condiții</h1>
   <p class="meta">Ultima actualizare: 26 octombrie 2026 · Această traducere este oferită pentru comoditate; dacă diferă de versiunea în engleză, se aplică versiunea în engleză.</p>
@@ -9,7 +9,7 @@ window.I18N_LEGAL = Object.assign(window.I18N_LEGAL || {}, { ro: {
   <div class="note">Acesta este un model pe înțelesul tuturor pentru o mică afacere de servicii IT. Cere verificarea lui de către un jurist calificat și adaptează-l entității tale înregistrate înainte de a te baza pe el cu clienți plătitori.</div>
 
   <h2>1. Cine suntem</h2>
-  <p>LeadFlow („noi”, „al nostru”) oferă servicii de IT, securitate cibernetică și automatizare, inclusiv găzduire administrată de site-uri, protecție, domenii și lucrări conexe. Ne poți contacta la <a href="mailto:admin@cookblog.net">admin@cookblog.net</a>.</p>
+  <p>CloudHelm („noi”, „al nostru”) oferă servicii de IT, securitate cibernetică și automatizare, inclusiv găzduire administrată de site-uri, protecție, domenii și lucrări conexe. Ne poți contacta la <a href="mailto:hello@cloudhelm.eu">hello@cloudhelm.eu</a>.</p>
 
   <h2>2. Servicii și planuri</h2>
   <p>Oferim proiecte punctuale (cu ofertă individuală) și planuri lunare recurente (Starter, Business, Pro). Ce include fiecare plan este descris pe site-ul nostru la momentul abonării. Putem îmbunătăți sau ajusta conținutul unui plan cu o notificare rezonabilă.</p>
@@ -48,13 +48,13 @@ window.I18N_LEGAL = Object.assign(window.I18N_LEGAL || {}, { ro: {
   <p>Putem actualiza acești termeni. Dacă o modificare este importantă, te anunțăm cu o notificare rezonabilă. Dacă folosești în continuare serviciile după o modificare, accepți termenii actualizați.</p>
 
   <h2>11. Legea aplicabilă</h2>
-  <p>Acești termeni sunt guvernați de legile țării în care este înregistrată LeadFlow. Litigiile vor fi soluționate de instanțele competente de acolo, cu excepția cazurilor în care legislația obligatorie privind protecția consumatorilor prevede altfel.</p>
+  <p>Acești termeni sunt guvernați de legile țării în care este înregistrată CloudHelm. Litigiile vor fi soluționate de instanțele competente de acolo, cu excepția cazurilor în care legislația obligatorie privind protecția consumatorilor prevede altfel.</p>
 
-  <p style="margin-top:28px"><a href="/">← Înapoi la LeadFlow</a> · <a href="/privacy">Politica de confidențialitate</a></p>
+  <p style="margin-top:28px"><a href="/">← Înapoi la CloudHelm</a> · <a href="/privacy">Politica de confidențialitate</a></p>
 `
   },
   privacy: {
-    title: "Politica de confidențialitate - LeadFlow",
+    title: "Politica de confidențialitate - CloudHelm",
     html: `
   <h1>Politica de confidențialitate</h1>
   <p class="meta">Ultima actualizare: 26 octombrie 2026 · Această traducere este oferită pentru comoditate; dacă diferă de versiunea în engleză, se aplică versiunea în engleză.</p>
@@ -62,7 +62,7 @@ window.I18N_LEGAL = Object.assign(window.I18N_LEGAL || {}, { ro: {
   <div class="note">Acest model acoperă elementele de bază ale GDPR (UE/Regatul Unit) pentru o mică afacere de servicii. Verifică-l cu un consultant calificat și menționează entitatea juridică înregistrată înainte de a-l publica pentru clienți plătitori.</div>
 
   <h2>1. Cine răspunde de datele tale</h2>
-  <p>LeadFlow este operatorul datelor cu caracter personal descrise aici. Pentru întrebări despre confidențialitate, scrie-ne la <a href="mailto:admin@cookblog.net">admin@cookblog.net</a>.</p>
+  <p>CloudHelm este operatorul datelor cu caracter personal descrise aici. Pentru întrebări despre confidențialitate, scrie-ne la <a href="mailto:hello@cloudhelm.eu">hello@cloudhelm.eu</a>.</p>
 
   <h2>2. Ce colectăm</h2>
   <ul>
@@ -92,7 +92,7 @@ window.I18N_LEGAL = Object.assign(window.I18N_LEGAL || {}, { ro: {
   <p>Păstrăm datele contului și ale cererilor cât timp ai un cont sau o colaborare activă și o perioadă rezonabilă după aceea, pentru nevoi legale, contabile și de securitate. Ne poți cere să le ștergem mai devreme (vezi mai jos).</p>
 
   <h2>8. Drepturile tale</h2>
-  <p>Conform GDPR, poți cere acces la datele tale, corectarea, ștergerea, restricționarea sau portarea lor și te poți opune anumitor prelucrări. Pentru a-ți exercita aceste drepturi, scrie la <a href="mailto:admin@cookblog.net">admin@cookblog.net</a>. Ai și dreptul să depui o plângere la autoritatea de protecție a datelor din țara ta.</p>
+  <p>Conform GDPR, poți cere acces la datele tale, corectarea, ștergerea, restricționarea sau portarea lor și te poți opune anumitor prelucrări. Pentru a-ți exercita aceste drepturi, scrie la <a href="mailto:hello@cloudhelm.eu">hello@cloudhelm.eu</a>. Ai și dreptul să depui o plângere la autoritatea de protecție a datelor din țara ta.</p>
 
   <h2>9. Cookie-uri</h2>
   <p>Folosim un singur cookie esențial, pentru a te menține autentificat. Este necesar pentru funcționarea site-ului și nu este folosit pentru publicitate sau urmărire între site-uri. Limba aleasă este salvată doar în propriul tău browser (local storage).</p>
@@ -103,7 +103,7 @@ window.I18N_LEGAL = Object.assign(window.I18N_LEGAL || {}, { ro: {
   <h2>11. Modificări</h2>
   <p>Putem actualiza această politică. Data „ultimei actualizări” de mai sus arată versiunea curentă, iar despre modificările importante te vom anunța.</p>
 
-  <p style="margin-top:28px"><a href="/">← Înapoi la LeadFlow</a> · <a href="/terms">Termeni și condiții</a></p>
+  <p style="margin-top:28px"><a href="/">← Înapoi la CloudHelm</a> · <a href="/terms">Termeni și condiții</a></p>
 `
   }
 } });

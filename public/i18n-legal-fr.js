@@ -1,7 +1,7 @@
 // French versions of the Terms of Service and Privacy Policy (whole pages, see i18n.js applyLegal).
 window.I18N_LEGAL = Object.assign(window.I18N_LEGAL || {}, { fr: {
   terms: {
-    title: "Conditions d'utilisation - LeadFlow",
+    title: "Conditions d'utilisation - CloudHelm",
     html: `
   <h1>Conditions d'utilisation</h1>
   <p class="meta">Dernière mise à jour : 26 octobre 2026 · Cette traduction est fournie pour votre confort ; en cas de différence avec la version anglaise, la version anglaise prévaut.</p>
@@ -9,7 +9,7 @@ window.I18N_LEGAL = Object.assign(window.I18N_LEGAL || {}, { fr: {
   <div class="note">Ceci est un modèle rédigé simplement pour une petite entreprise de services informatiques. Faites-le relire par un juriste qualifié et adaptez-le à votre structure immatriculée avant de vous y fier avec des clients payants.</div>
 
   <h2>1. Qui nous sommes</h2>
-  <p>LeadFlow (« nous », « notre ») fournit des services d'informatique, de cybersécurité et d'automatisation, notamment l'hébergement géré de sites, la protection, les noms de domaine et les travaux associés. Vous pouvez nous écrire à <a href="mailto:admin@cookblog.net">admin@cookblog.net</a>.</p>
+  <p>CloudHelm (« nous », « notre ») fournit des services d'informatique, de cybersécurité et d'automatisation, notamment l'hébergement géré de sites, la protection, les noms de domaine et les travaux associés. Vous pouvez nous écrire à <a href="mailto:hello@cloudhelm.eu">hello@cloudhelm.eu</a>.</p>
 
   <h2>2. Services et formules</h2>
   <p>Nous proposons des projets ponctuels (sur devis individuel) et des formules mensuelles récurrentes (Starter, Business, Pro). Le contenu de chaque formule est décrit sur notre site au moment de la souscription. Nous pouvons améliorer ou ajuster le contenu d'une formule moyennant un préavis raisonnable.</p>
@@ -48,13 +48,13 @@ window.I18N_LEGAL = Object.assign(window.I18N_LEGAL || {}, { fr: {
   <p>Nous pouvons mettre à jour ces conditions. En cas de changement important, nous vous en informons avec un préavis raisonnable. Continuer à utiliser les services après un changement vaut acceptation des conditions mises à jour.</p>
 
   <h2>11. Droit applicable</h2>
-  <p>Ces conditions sont régies par le droit du pays où LeadFlow est immatriculée. Les litiges relèvent des tribunaux compétents de ce pays, sauf disposition impérative contraire du droit de la consommation.</p>
+  <p>Ces conditions sont régies par le droit du pays où CloudHelm est immatriculée. Les litiges relèvent des tribunaux compétents de ce pays, sauf disposition impérative contraire du droit de la consommation.</p>
 
-  <p style="margin-top:28px"><a href="/">← Retour à LeadFlow</a> · <a href="/privacy">Politique de confidentialité</a></p>
+  <p style="margin-top:28px"><a href="/">← Retour à CloudHelm</a> · <a href="/privacy">Politique de confidentialité</a></p>
 `
   },
   privacy: {
-    title: "Politique de confidentialité - LeadFlow",
+    title: "Politique de confidentialité - CloudHelm",
     html: `
   <h1>Politique de confidentialité</h1>
   <p class="meta">Dernière mise à jour : 26 octobre 2026 · Cette traduction est fournie pour votre confort ; en cas de différence avec la version anglaise, la version anglaise prévaut.</p>
@@ -62,7 +62,7 @@ window.I18N_LEGAL = Object.assign(window.I18N_LEGAL || {}, { fr: {
   <div class="note">Ce modèle couvre l'essentiel du RGPD (UE/Royaume-Uni) pour une petite entreprise de services. Faites-le relire par un conseiller qualifié et indiquez votre structure juridique immatriculée avant de le publier pour des clients payants.</div>
 
   <h2>1. Qui est responsable de vos données</h2>
-  <p>LeadFlow est le responsable du traitement des données personnelles décrites ici. Pour toute question de confidentialité, écrivez-nous à <a href="mailto:admin@cookblog.net">admin@cookblog.net</a>.</p>
+  <p>CloudHelm est le responsable du traitement des données personnelles décrites ici. Pour toute question de confidentialité, écrivez-nous à <a href="mailto:hello@cloudhelm.eu">hello@cloudhelm.eu</a>.</p>
 
   <h2>2. Ce que nous collectons</h2>
   <ul>
@@ -92,7 +92,7 @@ window.I18N_LEGAL = Object.assign(window.I18N_LEGAL || {}, { fr: {
   <p>Nous conservons les données de compte et de demandes tant que vous avez un compte ou une collaboration active, puis pendant une durée raisonnable pour répondre à nos obligations légales, comptables et de sécurité. Vous pouvez nous demander de les supprimer plus tôt (voir ci-dessous).</p>
 
   <h2>8. Vos droits</h2>
-  <p>En vertu du RGPD, vous pouvez demander l'accès, la rectification, l'effacement, la limitation ou la portabilité de vos données, et vous opposer à certains traitements. Pour exercer ces droits, écrivez à <a href="mailto:admin@cookblog.net">admin@cookblog.net</a>. Vous avez aussi le droit de déposer une réclamation auprès de votre autorité de protection des données.</p>
+  <p>En vertu du RGPD, vous pouvez demander l'accès, la rectification, l'effacement, la limitation ou la portabilité de vos données, et vous opposer à certains traitements. Pour exercer ces droits, écrivez à <a href="mailto:hello@cloudhelm.eu">hello@cloudhelm.eu</a>. Vous avez aussi le droit de déposer une réclamation auprès de votre autorité de protection des données.</p>
 
   <h2>9. Cookies</h2>
   <p>Nous utilisons un seul cookie essentiel pour vous garder connecté. Il est nécessaire au fonctionnement du site et n'est pas utilisé pour la publicité ni le suivi entre sites. Votre choix de langue est enregistré uniquement dans votre propre navigateur (stockage local).</p>
@@ -103,7 +103,7 @@ window.I18N_LEGAL = Object.assign(window.I18N_LEGAL || {}, { fr: {
   <h2>11. Modifications</h2>
   <p>Nous pouvons mettre à jour cette politique. La date de « dernière mise à jour » ci-dessus indique la version en vigueur, et nous vous informerons des changements importants.</p>
 
-  <p style="margin-top:28px"><a href="/">← Retour à LeadFlow</a> · <a href="/terms">Conditions d'utilisation</a></p>
+  <p style="margin-top:28px"><a href="/">← Retour à CloudHelm</a> · <a href="/terms">Conditions d'utilisation</a></p>
 `
   }
 } });

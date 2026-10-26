@@ -55,7 +55,7 @@ app.use((req, res, next) => {
 // access is locked to an explicit allowlist - never "*". Because the app uses
 // cookies, the allowed origin is reflected (a wildcard can't be used with
 // credentials) and preflight requests are answered.
-const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || "https://shop.cookblog.net,http://localhost:8090")
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || "https://cloudhelm.eu,https://www.cloudhelm.eu,https://shop.cookblog.net,http://localhost:8090")
   .split(",").map((s) => s.trim()).filter(Boolean);
 app.use((req, res, next) => {
   const origin = req.headers.origin;
@@ -67,6 +67,18 @@ app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   }
   if (req.method === "OPTIONS") return res.sendStatus(204);
+  next();
+});
+
+// Main address. When CANONICAL_HOST is set (e.g. cloudhelm.eu), pages opened on any other host
+// (old domain, www) redirect there with the same path. The API is left alone so monitors keep working.
+const CANONICAL_HOST = String(process.env.CANONICAL_HOST || "").toLowerCase();
+app.use((req, res, next) => {
+  const host = String(req.headers.host || "").toLowerCase().split(":")[0];
+  if (CANONICAL_HOST && host && host !== CANONICAL_HOST && host !== "localhost" && host !== "127.0.0.1"
+      && (req.method === "GET" || req.method === "HEAD") && !req.path.startsWith("/api/")) {
+    return res.redirect(301, `https://${CANONICAL_HOST}${req.originalUrl}`);
+  }
   next();
 });
 
@@ -494,7 +506,7 @@ app.get("/api/tools/status", async (_req, res) => {
   const sites = await Promise.all(MONITOR_SITES.map(async (u) => {
     const s = Date.now();
     try {
-      const r = await fetch(u, { redirect: "follow", signal: AbortSignal.timeout(6000), headers: { "user-agent": "LeadFlow-Monitor/1.0" } });
+      const r = await fetch(u, { redirect: "follow", signal: AbortSignal.timeout(6000), headers: { "user-agent": "CloudHelm-Monitor/1.0" } });
       return { url: u, up: r.status < 500, status: r.status, ms: Date.now() - s };
     } catch (e) {
       return { url: u, up: false, status: 0, ms: Date.now() - s, error: e.name === "TimeoutError" ? "timeout" : "unreachable" };
@@ -587,7 +599,7 @@ app.get("/api/alerts", requireStaff, async (_req, res) => {
 // Staff: send a test Telegram message to confirm the bot is wired up.
 app.post("/api/telegram/test", requireStaff, async (req, res) => {
   if (!telegramEnabled()) return res.status(400).json({ ok: false, error: "Telegram is not configured on the server (set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID)." });
-  const ok = await sendTelegram(`✅ <b>LeadFlow test</b>\nTelegram alerts are working - sent by ${req.user.username} at ${new Date().toLocaleString()}.`);
+  const ok = await sendTelegram(`✅ <b>CloudHelm test</b>\nTelegram alerts are working - sent by ${req.user.username} at ${new Date().toLocaleString()}.`);
   res.status(ok ? 200 : 502).json({ ok, message: ok ? "Test message sent - check your Telegram." : "Telegram rejected the message. Check the token and chat ID." });
 });
 
@@ -620,6 +632,6 @@ app.use((req, res, next) => { if (req.method !== "GET") return next(); res.sendF
 
 initDb()
   .then(() => {
-    app.listen(port, () => { console.log(`LeadFlow AI running on ${port}`); startDailyReportJob(); });
+    app.listen(port, () => { console.log(`CloudHelm AI running on ${port}`); startDailyReportJob(); });
   })
   .catch((err) => { console.error("DB init failed:", err.message); process.exit(1); });

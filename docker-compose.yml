@@ -29,7 +29,8 @@ services:
       HIGH_PRIORITY_THRESHOLD: ${HIGH_PRIORITY_THRESHOLD:-8}
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
       TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID:-}
-      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-https://shop.cookblog.net}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-https://cloudhelm.eu,https://www.cloudhelm.eu,https://shop.cookblog.net}
+      CANONICAL_HOST: ${CANONICAL_HOST:-}
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
       LLM_MODEL: ${LLM_MODEL:-gpt-4o-mini}
       LLM_BASE_URL: ${LLM_BASE_URL:-}
