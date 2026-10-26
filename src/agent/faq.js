@@ -2,9 +2,9 @@
 // and as the fact sheet the LLM is given when one is.
 const rules = require("./analyze");
 
-const PLANS_TEXT = "Starter €19/mo (hosting, SSL, Cloudflare protection, weekly backups, uptime monitoring), " +
-  "Business €39/mo (adds a domain, about an hour of edits a month and a monthly report) and " +
-  "Pro €79/mo (priority fixes, security hardening, business email and more edit time); paying yearly gives 2 months free";
+const PLANS_TEXT = "Starter from €39/mo (hosting, SSL, Cloudflare protection, weekly backups, uptime monitoring), " +
+  "Business from €79/mo (adds a domain, about an hour of edits a month and a monthly report) and " +
+  "Pro from €149/mo (priority fixes, security hardening, business email and more edit time); paying yearly gives 2 months free; founding clients get their first 3 months at half price";
 
 const serviceNames = (services) => services.map((s) => s.name).join(", ");
 function cheapest(services) {

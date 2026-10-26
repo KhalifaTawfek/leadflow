@@ -220,6 +220,8 @@
   @media(prefers-reduced-motion:reduce){.pl{opacity:1;transform:none;transition:none}.caret{animation:none}}
 
   /* guarantees + FAQ + audit */
+  .founding{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 12px;width:fit-content;max-width:100%;margin:0 auto 22px;padding:10px 18px;border:1px solid rgba(52,211,153,.35);border-radius:999px;background:rgba(52,211,153,.08);color:var(--ink);font-size:14.5px;text-align:center}
+  .founding b{color:var(--ok)}
   .assure{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 26px;margin-top:20px;color:var(--muted);font-size:14px;font-weight:500}
   .assure span::before{content:"✓";color:var(--ok);font-weight:800;margin-right:8px}
   .faq{border-top:1px solid var(--line)}
@@ -525,11 +527,11 @@
 
   // Managed monthly plans - the recurring offer. Prices in EUR.
   const PLANS = [
-    { id:"starter", name:"Starter", price:"€19", period:"/mo", tagline:"Keep a site online, safe and backed up.",
+    { id:"starter", name:"Starter", price:"€39", period:"/mo", tagline:"Keep a site online, safe and backed up.",
       features:["Managed hosting on our server","SSL certificate (HTTPS)","Cloudflare protection (DDoS + WAF)","Weekly off-site backups","Uptime monitoring + alerts"], featured:false },
-    { id:"business", name:"Business", price:"€39", period:"/mo", tagline:"Everything in Starter, plus your domain and edits.",
+    { id:"business", name:"Business", price:"€79", period:"/mo", tagline:"Everything in Starter, plus your domain and edits.",
       features:["Everything in Starter","Domain name included","Content edits (~1 hour / month)","Monthly health & traffic report","Priority email support"], featured:true },
-    { id:"pro", name:"Pro", price:"€79", period:"/mo", tagline:"For sites that can't afford downtime.",
+    { id:"pro", name:"Pro", price:"€149", period:"/mo", tagline:"For sites that can't afford downtime.",
       features:["Everything in Business","Priority fixes (same business day)","Security hardening & reviews","Business email setup","More edit time (~3 hours / month)"], featured:false }
   ];
   // Billing: yearly = 10x monthly ("2 months free").
@@ -563,6 +565,7 @@
           <span class="subs-kicker">Care plans</span>
           <h2 class="sec">Monthly care plans</h2>
           <p class="sec-sub">Your website, hosting, protection and domain, looked after every month. These are starting prices: we agree the exact price with you before anything starts, based on what you need. Paying yearly? You get 2 months free.</p>
+          <div class="founding"><b>Founding clients</b><span>Your first 3 months at half price. Ask about it on your call.</span></div>
           <div class="price-grid" id="planGrid">${planCardsHTML()}</div>
           <div class="assure"><span>Free migration of your current site</span><span>Price agreed before we start</span><span>Cancel anytime</span><span>Reply within 1 business day</span></div>
           <p class="sec-sub" style="margin-top:16px;font-size:13px">Prices exclude VAT where applicable. "Protection" means backups, Cloudflare, updates and monitoring, not a guarantee against every attack. Full terms apply.</p>
@@ -655,7 +658,7 @@
             <div class="eyebrow">The package</div>
             <h2 class="sec">${esc(n.pack.name)}</h2>
             <ul class="ticks">${n.pack.items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>
-            <p class="sec-sub" style="margin:18px 0 0;font-size:15px">Runs on our Business plan (€39/month, or 2 months free yearly), plus a one-off setup we quote after a quick chat.</p>
+            <p class="sec-sub" style="margin:18px 0 0;font-size:15px">Runs on our Business plan (€79/month, or 2 months free yearly), plus a one-off setup we quote after a quick chat.</p>
           </div>
           <div class="pack-cta">
             <h3>Live in about a week</h3>
@@ -1128,7 +1131,7 @@
   ];
   const FAQ = [
     ['How does it work?', 'Tell us what you need and we reply by email with questions and a tailored offer. Prefer to talk? Tick the free call option and choose phone, WhatsApp, Google Meet or Discord. Once you say yes, we do the work and you follow it in My Requests.'],
-    ['How much does it cost?', 'It depends on what you need. Once we understand what you need (by email, or on an optional free call), we send a clear offer, and the price is agreed before any work starts. Monthly care plans start from €19, €39 or €79, and nothing is paid up front.'],
+    ['How much does it cost?', 'It depends on what you need. Once we understand what you need (by email, or on an optional free call), we send a clear offer, and the price is agreed before any work starts. Monthly care plans start from €39, €79 or €149, and nothing is paid up front.'],
     ["What's included in a monthly plan?", 'Every plan covers hosting, SSL, Cloudflare protection, off-site backups and uptime monitoring. Business adds your domain, small content edits and a monthly report; Pro adds priority fixes, security hardening and business email.'],
     ['Can you move my existing website?', 'Yes. When you join a plan we migrate your current site for you at no extra cost, and keep it online while we do it.'],
     ['Can I cancel?', 'Any time, with no lock-in. Your plan simply runs until the end of the month you have paid for.'],
@@ -1164,7 +1167,7 @@
         <div class="home-main">
           <div class="stats">
             <div class="stat"><b>${services.length||10}</b><span>Services, one team</span></div>
-            <div class="stat"><b>€19</b><span>Managed plans from / month</span></div>
+            <div class="stat"><b>€39</b><span>Managed plans from / month</span></div>
             <div class="stat"><b>&lt; 1 day</b><span>Typical response time</span></div>
             <div class="stat"><b>24/7</b><span>Uptime monitoring</span></div>
           </div>
