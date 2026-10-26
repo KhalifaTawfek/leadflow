@@ -43,8 +43,13 @@
   .brand .mark{width:34px;height:34px;display:grid;place-items:center;background:var(--accent);color:#04111C;border-radius:10px;font-weight:900;font-size:13px}
   .nav .links{display:flex;align-items:center;flex:1;margin-left:24px}
   .nav-main{display:flex;gap:30px;margin:0 auto;color:var(--muted);font-weight:500;font-size:15px;white-space:nowrap}
-  .nav-auth .btn{white-space:nowrap}
+  .nav-auth .btn,.nav-auth > a{white-space:nowrap}
   .nav-auth{display:flex;align-items:center;gap:10px;color:var(--muted);font-weight:500;font-size:15px}
+  /* desktop: page links centred, then the country/language badges, then the account buttons at the far right */
+  @media(min-width:1181px){ .nav .links{display:contents} .nav-main{order:1} .nav .lang{order:2;margin-left:0} .nav-auth{order:3} }
+  /* desktop: the account chip shows only the initial (full name on hover) so longer languages fit on one line */
+  @media(min-width:1181px){ .nav-auth .chip{font-size:0;gap:0;padding:5px} .nav-auth .chip .av{font-size:12px} }
+  @media(min-width:1181px) and (max-width:1399px){ .nav{gap:18px} .nav-main{gap:22px} }
   .nav .links a{cursor:pointer;transition:color .15s}.nav .links a:hover{color:var(--ink)}
   .menu-btn{display:none;margin-left:auto;background:transparent;border:1px solid var(--line2);color:var(--ink);border-radius:10px;width:42px;height:42px;cursor:pointer;font-size:18px}
 
@@ -716,11 +721,11 @@
     let auth;
     if(me && (me.role==='ADMIN' || me.role==='SALES')){
       auth = `<a class="btn primary sm" href="/admin" style="text-decoration:none">Admin panel</a>
-            <span class="chip"><span class="av">${esc((me.username[0]||'?').toUpperCase())}</span>${esc(me.username)}</span>
+            <span class="chip" title="${esc(me.username)}"><span class="av">${esc((me.username[0]||'?').toUpperCase())}</span>${esc(me.username)}</span>
             <a onclick="logout()" style="cursor:pointer">Log out</a>`;
     } else if(me && me.role==='CUSTOMER'){
       auth = `<a onclick="go('mine')" style="cursor:pointer">My Requests</a>
-            <span class="chip"><span class="av">${esc((me.username[0]||'?').toUpperCase())}</span>${esc(me.username)}</span>
+            <span class="chip" title="${esc(me.username)}"><span class="av">${esc((me.username[0]||'?').toUpperCase())}</span>${esc(me.username)}</span>
             <a onclick="logout()" style="cursor:pointer">Log out</a>`;
     } else {
       auth = `<button class="btn ghost sm" onclick="openAuth('login')">Log in</button><button class="btn primary sm" onclick="startRequest()">Submit a request</button>`;
