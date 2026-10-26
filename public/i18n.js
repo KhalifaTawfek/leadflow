@@ -117,10 +117,15 @@
       nav.appendChild(box);
     }
     const open = box.classList.contains('open');
-    const flag = country || LANGS[lang].flag;
+    // Where the visitor is (just shown) and which language the site is in (the menu) are separate.
+    const where = country ? `${LANGS[lang].from} ${countryName(country)}` : '';
     box.innerHTML = `
+      ${country ? `<span class="lang-country" title="${esc(where)}" aria-label="${esc(where)}" role="img">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></svg>
+        <img class="lang-flag" src="${flagUrl(country)}" alt="" width="20" height="15">
+      </span>` : ''}
       <button type="button" class="lang-btn" aria-haspopup="true" aria-expanded="${open}" title="${esc(LANGS[lang].name)}">
-        <img class="lang-flag" src="${flagUrl(flag)}" alt="" width="20" height="15">
+        <img class="lang-flag" src="${flagUrl(LANGS[lang].flag)}" alt="" width="20" height="15">
         <span>${lang.toUpperCase()}</span>
         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
       </button>
@@ -233,7 +238,9 @@
 
   const css = document.createElement('style');
   css.textContent = `
-    .nav .lang{position:relative;order:3;margin-left:12px}
+    .nav .lang{position:relative;order:3;margin-left:12px;display:flex;align-items:center;gap:8px}
+    .lang-country{display:flex;align-items:center;gap:6px;height:38px;padding:0 10px;border:1px solid var(--line2);border-radius:999px;color:var(--muted);cursor:default}
+    @media (max-width:420px){ .lang-country svg{display:none} .lang-country{padding:0 9px} .nav .lang{gap:6px} }
     .lang-btn{display:flex;align-items:center;gap:7px;height:38px;padding:0 10px;border:1px solid var(--line2);border-radius:999px;background:transparent;color:var(--ink);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
     .lang-btn:hover{border-color:var(--accent)}
     .lang-flag{width:20px;height:15px;border-radius:3px;object-fit:cover;flex:none;box-shadow:0 0 0 1px rgba(255,255,255,.12)}
