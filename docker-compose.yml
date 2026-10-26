@@ -47,5 +47,17 @@ services:
     ports:
       - "127.0.0.1:8090:3000"   # Nginx proxies your domain to this port
 
+  # Cloudflare Tunnel for cloudhelm.eu: publishes the app without opening ports or editing the
+  # host's nginx. Only runs where COMPOSE_PROFILES=tunnel and TUNNEL_TOKEN are set in .env.
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    profiles: ["tunnel"]
+    restart: always
+    command: tunnel --no-autoupdate run --url http://app:3000
+    environment:
+      TUNNEL_TOKEN: ${TUNNEL_TOKEN:-}
+    depends_on:
+      - app
+
 volumes:
   pgdata:
