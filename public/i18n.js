@@ -13,10 +13,13 @@
     it: { name: 'Italiano', flag: 'it', from: 'Stai navigando da' },
     ro: { name: 'Română', flag: 'ro', from: 'Navighezi din' },
     he: { name: 'עברית', flag: 'il', from: 'המיקום שלך:', rtl: true },
+    ar: { name: 'العربية', flag: 'sa', from: 'تتصفحون من', rtl: true },
   };
   // Default language for a first visit, by the visitor's country.
   const BY_COUNTRY = {
     RO: 'ro', MD: 'ro', IL: 'he', DE: 'de', AT: 'de', LI: 'de',
+    SA: 'ar', AE: 'ar', EG: 'ar', JO: 'ar', LB: 'ar', SY: 'ar', IQ: 'ar', KW: 'ar', QA: 'ar', BH: 'ar',
+    OM: 'ar', YE: 'ar', PS: 'ar', MA: 'ar', DZ: 'ar', TN: 'ar', LY: 'ar', SD: 'ar', MR: 'ar',
     FR: 'fr', MC: 'fr', ES: 'es', IT: 'it', SM: 'it', VA: 'it',
   };
   const KEY = 'lf-lang';

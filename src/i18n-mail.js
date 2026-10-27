@@ -7,11 +7,11 @@ const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
 
-const LANGS = ["en", "de", "fr", "es", "it", "ro", "he"];
+const LANGS = ["en", "de", "fr", "es", "it", "ro", "he", "ar"];
 const normLang = (l) => (LANGS.includes(String(l || "").toLowerCase()) ? String(l).toLowerCase() : "en");
 
 // Language names for the AI prompts (in English) and for you in alerts and the admin panel.
-const LANG_NAMES = { en: "English", de: "German", fr: "French", es: "Spanish", it: "Italian", ro: "Romanian", he: "Hebrew" };
+const LANG_NAMES = { en: "English", de: "German", fr: "French", es: "Spanish", it: "Italian", ro: "Romanian", he: "Hebrew", ar: "Arabic" };
 
 const T = {
   en: {
@@ -152,6 +152,26 @@ const T = {
       () => "מעולה. בואו נקבע שיחה קצרה כדי לסגור את הפרטים, ב-Google Meet או בדיסקורד, מה שנוח לכם. איזה יום ושעה מתאימים לכם השבוע?",
       () => "מצוין, רשמנו. נשלח לכם בקרוב הזמנה ליומן עם הקישור לשיחה. יש משהו שתרצו שנכין מראש?",
       (n) => `תודה ${n}. מומחה ימשיך לעקוב כאן ובדוא"ל כדי ששום דבר לא יתפספס.`,
+    ],
+  },
+  ar: {
+    hi: (n) => `مرحبًا ${n}،`,
+    ackSubject: "شكرًا على طلبكم - CloudHelm",
+    ackIntro: (svc) => `شكرًا على طلبكم بخصوص «${svc}». إليكم ردنا الأول:`,
+    ackPlain: (svc) => `شكرًا على طلبكم بخصوص «${svc}». لقد استلمناه وسيطّلع عليه أحد أعضاء الفريق قريبًا.`,
+    haveReady: "للتقدم أسرع، يُرجى تجهيز ما يلي:",
+    callYes: "طلبتم مكالمة مجانية، لذا سنراسلكم قريبًا لتأكيد الموعد.",
+    callNo: "سنعود إليكم عبر البريد بأي أسئلة لدينا وبتفاصيل عرضنا.",
+    track: "يمكنكم متابعة طلبكم في أي وقت بتسجيل الدخول وفتح «طلباتي».",
+    signoff: "فريق CloudHelm",
+    replySubject: (svc) => (svc ? `رد على طلبكم - ${svc}` : "رد على طلبكم"),
+    replyFooter: "يمكنكم الرد مباشرة على هذا البريد، أو تسجيل الدخول وفتح «طلباتي» لرؤية المحادثة كاملة.",
+    threadAsk: "للتقدم أسرع، هل يمكنكم إخبارنا:",
+    team: [
+      (n) => `شكرًا ${n}! راجعنا طلبكم ويسعدنا تنفيذه. عرضنا ما زال قائمًا، هل تودون البدء؟`,
+      () => "رائع. لنحدد مكالمة قصيرة لإنهاء التفاصيل، عبر Google Meet أو ديسكورد، كما تفضلون. أي يوم ووقت يناسبكم هذا الأسبوع؟",
+      () => "ممتاز، سجّلنا ذلك. سنرسل لكم قريبًا دعوة في التقويم مع رابط المكالمة. هل تريدون أن نجهّز شيئًا مسبقًا؟",
+      (n) => `شكرًا ${n}. سيواصل أحد المختصين المتابعة هنا وعبر البريد حتى لا يفوتنا شيء.`,
     ],
   },
 };

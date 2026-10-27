@@ -183,9 +183,10 @@ async function chatRespond(state) {
 
   if (LLM_ENABLED) {
     try {
-      const langNote = state.lang === "ro"
-        ? "The visitor is using the Romanian version of the site: reply in Romanian unless they write in another language."
-        : "Reply in the language the visitor writes in.";
+      const siteLang = LANG_NAMES[normLang(state.lang)];
+      const langNote = normLang(state.lang) === "en"
+        ? "Reply in the language the visitor writes in."
+        : `The visitor is using the ${siteLang} version of the site: reply in ${siteLang} unless they write in another language.`;
       const msgs = [new SystemMessage(`${factSheet(services)}\n\n${langNote}`)];
       for (const m of history.slice(-10)) {
         msgs.push(m.role === "assistant" ? new AIMessage(String(m.content)) : new HumanMessage(String(m.content)));

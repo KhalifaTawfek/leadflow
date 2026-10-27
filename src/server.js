@@ -298,7 +298,7 @@ app.post("/api/agent/chat", chatLimiter, async (req, res) => {
   if (!clean.length || clean[clean.length - 1].role !== "user") {
     return res.status(400).json({ error: "Send a message to the assistant." });
   }
-  const out = await agentChat(clean, await chatServices(), req.body.lang === "ro" ? "ro" : "en");
+  const out = await agentChat(clean, await chatServices(), normLang(req.body.lang));
   res.json({ reply: out.reply, engine: out.engine });
 });
 
