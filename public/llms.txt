@@ -1,0 +1,41 @@
+# CloudHelm
+
+> CloudHelm sets up and looks after IT, websites and automation for small businesses in Europe. Real engineers handle every request, hosting is in the EU, and the site and support are available in English, German, French, Spanish, Italian, Romanian, Hebrew and Arabic.
+
+Customers describe what they need on the website and get a tailored offer. A free call is optional. Ongoing website care is sold as monthly plans; other services are quoted per project.
+
+## Care plans
+
+- Starter, from €39/month: managed hosting, SSL, Cloudflare protection (DDoS and firewall), weekly off-site backups, uptime monitoring and alerts.
+- Business, from €79/month: everything in Starter, plus a domain name, about 1 hour of content edits per month, a monthly health and traffic report and priority email support.
+- Pro, from €149/month: everything in Business, plus same-business-day priority fixes, security hardening and reviews, business email setup and about 3 hours of edits per month.
+- Yearly billing costs 10 months (2 months free). Founding clients get their first 3 months at half price.
+
+## Services (tailored quote)
+
+- Website + Domain + Protection: website build, domain setup, speed, security and backups in one monthly plan.
+- Website Care & Maintenance: updates, backups, security checks and small edits for an existing website.
+- Website Speed & Protection: faster loading, protection from attacks and spam bots, HTTPS.
+- Hacked Website Recovery: clean-up of hacked or defaced sites and closing the security hole.
+- Uptime Monitoring: round-the-clock monitoring with alerts and action when a site goes down.
+- Domain & Business Email: domain registration or transfer and professional email that reaches inboxes.
+- Account Security: securing email and social media accounts, including two-factor login.
+- Managed IT for Small Offices: laptops, email, Wi-Fi, accounts and backups for a team.
+- Ongoing Tech Support: a tech partner for changes, fixes and questions each month.
+- Cloud Hosting & Servers: secure EU servers for websites, apps or remote desktops.
+- App Deployment: packaging apps with containers, easy updates and quick rollback.
+- CRM & Business Software: hosted customer lists, sales pipeline, invoicing, stock and support inbox, in the EU.
+- Task Automation: automating repetitive work such as copying orders, sending emails or updating spreadsheets.
+- Chatbots & Integrations: bots for Telegram, WhatsApp and Discord, website assistants and tool integrations.
+- Website & App Prompt Engineering: turning a website or app into a build-ready design spec and prompt.
+
+## Who it is for
+
+Small businesses without their own IT team, for example salons, barbers and beauty studios (https://cloudhelm.eu/for/salons) and restaurants, cafés and takeaways (https://cloudhelm.eu/for/restaurants).
+
+## Links
+
+- Website and request form: https://cloudhelm.eu/
+- Contact: hello@cloudhelm.eu
+- Terms: https://cloudhelm.eu/terms
+- Privacy: https://cloudhelm.eu/privacy

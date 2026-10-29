@@ -617,7 +617,7 @@ const PUBLIC_PAGES = ["/", "/for/salons", "/for/restaurants", "/status", "/terms
 const siteOrigin = (req) => `https://${String(req.headers.host || "").replace(/[^a-z0-9.:-]/gi, "")}`;
 app.get("/robots.txt", (req, res) => {
   res.type("text/plain").send(
-    `User-agent: *\nDisallow: /admin\nDisallow: /alerts\nDisallow: /api/\nAllow: /\n\nSitemap: ${siteOrigin(req)}/sitemap.xml\n`
+    `User-agent: *\nDisallow: /admin\nDisallow: /alerts\nDisallow: /api/\nAllow: /\n\nSitemap: ${siteOrigin(req)}/sitemap.xml\n# Plain-text summary for AI assistants: ${siteOrigin(req)}/llms.txt\n`
   );
 });
 app.get("/sitemap.xml", (req, res) => {
@@ -628,7 +628,12 @@ app.get("/sitemap.xml", (req, res) => {
 });
 
 // ---------- Fallback (public site) ----------
-app.use((req, res, next) => { if (req.method !== "GET") return next(); res.sendFile(path.join(__dirname, "..", "public", "index.html")); });
+// Only real pages get 200; anything else still shows the site but with a 404 so search engines skip it.
+const SPA_PAGES = /^\/(for\/(salons|restaurants)\/?)?$/;
+app.use((req, res, next) => {
+  if (req.method !== "GET") return next();
+  res.status(SPA_PAGES.test(req.path) ? 200 : 404).sendFile(path.join(__dirname, "..", "public", "index.html"));
+});
 
 initDb()
   .then(() => {

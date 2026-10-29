@@ -20,6 +20,31 @@
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="theme-color" content="#060D18">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "@id": "https://cloudhelm.eu/#business",
+  "name": "CloudHelm",
+  "url": "https://cloudhelm.eu/",
+  "logo": "https://cloudhelm.eu/apple-touch-icon.png",
+  "image": "https://cloudhelm.eu/og.jpg",
+  "email": "hello@cloudhelm.eu",
+  "description": "IT, websites and automation for small businesses: website care, hosting, business email, security and automation, set up and looked after by real engineers in the EU.",
+  "areaServed": "Europe",
+  "knowsLanguage": ["en", "de", "fr", "es", "it", "ro", "he", "ar"],
+  "priceRange": "€€",
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Website care plans",
+    "itemListElement": [
+      { "@type": "Offer", "name": "Starter", "description": "Managed hosting, SSL, Cloudflare protection, weekly backups and uptime monitoring.", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "39", "priceCurrency": "EUR", "unitText": "MONTH" } },
+      { "@type": "Offer", "name": "Business", "description": "Everything in Starter plus a domain, monthly content edits, reports and priority support.", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "79", "priceCurrency": "EUR", "unitText": "MONTH" } },
+      { "@type": "Offer", "name": "Pro", "description": "Everything in Business plus same-day priority fixes, security hardening and business email setup.", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "149", "priceCurrency": "EUR", "unitText": "MONTH" } }
+    ]
+  }
+}
+</script>
 <meta name="mobile-web-app-capable" content="yes">
 <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}));}</script>
 <script src="/firebase-config.js"></script>
