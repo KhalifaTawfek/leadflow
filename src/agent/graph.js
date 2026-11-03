@@ -23,6 +23,8 @@ function getLLM() {
     temperature: 0.2,
     maxTokens: 600,
     timeout: 20000,
+    // The SDK default (6 retries with backoff) turns a busy provider (503) into a multi-minute hang.
+    maxRetries: 1,
     // LLM_BASE_URL lets you point at any OpenAI-compatible endpoint (OpenAI, Groq, OpenRouter, local…)
     configuration: process.env.LLM_BASE_URL ? { baseURL: process.env.LLM_BASE_URL } : undefined
   });
@@ -176,10 +178,26 @@ const ChatState = Annotation.Root({
   reply: Annotation()
 });
 
+const CHAT_DEADLINE_MS = 12000;
+const CODE_ASK = /\b(write|give|show|generate|make|create)\b.{0,40}\b(code|script|program|function|snippet)\b|\bhello world\b/i;
+const CODE_REFUSAL = {
+  en: "I can't write code here, I'm only here to help you find the right service. If you need a script, an automation or an app built, send a request and our engineers will take care of it.",
+  ro: "Nu pot scrie cod aici, sunt aici doar ca să vă ajut să găsiți serviciul potrivit. Dacă aveți nevoie de un script, o automatizare sau o aplicație, trimiteți o cerere și inginerii noștri se vor ocupa.",
+  de: "Ich kann hier keinen Code schreiben, ich helfe Ihnen nur, den passenden Service zu finden. Wenn Sie ein Skript, eine Automatisierung oder eine App brauchen, senden Sie eine Anfrage und unsere Techniker kümmern sich darum.",
+  fr: "Je ne peux pas écrire de code ici, je suis seulement là pour vous aider à trouver le bon service. Si vous avez besoin d'un script, d'une automatisation ou d'une application, envoyez une demande et nos ingénieurs s'en occuperont.",
+  es: "No puedo escribir código aquí, solo estoy para ayudarle a encontrar el servicio adecuado. Si necesita un script, una automatización o una aplicación, envíe una solicitud y nuestros ingenieros se encargarán.",
+  it: "Non posso scrivere codice qui, sono qui solo per aiutarti a trovare il servizio giusto. Se ti serve uno script, un'automazione o un'app, invia una richiesta e i nostri ingegneri se ne occuperanno.",
+  he: "אני לא יכול לכתוב כאן קוד, אני כאן רק כדי לעזור לכם למצוא את השירות המתאים. אם אתם צריכים סקריפט, אוטומציה או אפליקציה, שלחו בקשה והמהנדסים שלנו יטפלו בזה.",
+  ar: "لا يمكنني كتابة الكود هنا، أنا هنا فقط لمساعدتك في اختيار الخدمة المناسبة. إذا كنت تحتاج إلى سكربت أو أتمتة أو تطبيق، أرسل طلبًا وسيتولى مهندسونا الأمر."
+};
+const codeRefusal = (lang) => CODE_REFUSAL[normLang(lang)] || CODE_REFUSAL.en;
+
 async function chatRespond(state) {
   const history = Array.isArray(state.history) ? state.history : [];
   const services = Array.isArray(state.services) ? state.services : [];
   const lastUser = [...history].reverse().find((m) => m.role === "user");
+  // Asked for code outright: answer instantly, no model call needed.
+  if (lastUser && CODE_ASK.test(lastUser.content)) return { reply: codeRefusal(state.lang) };
 
   if (LLM_ENABLED) {
     try {
@@ -191,10 +209,15 @@ async function chatRespond(state) {
       for (const m of history.slice(-10)) {
         msgs.push(m.role === "assistant" ? new AIMessage(String(m.content)) : new HumanMessage(String(m.content)));
       }
-      const res = await getLLM().invoke(msgs);
+      // A visitor is waiting: past CHAT_DEADLINE_MS, answer from the rules instead.
+      const res = await Promise.race([
+        getLLM().invoke(msgs),
+        new Promise((_, reject) => setTimeout(() => reject(new Error(`no answer within ${CHAT_DEADLINE_MS} ms`)), CHAT_DEADLINE_MS))
+      ]);
       const text = String(res.content || "").trim();
       // Safety net: never pass on code or how-to output, only service guidance.
-      if (text && !looksLikeTaskOutput(text)) return { reply: tidy(text) };
+      if (text && looksLikeTaskOutput(text)) return { reply: codeRefusal(state.lang) };
+      if (text) return { reply: tidy(text) };
     } catch (e) { console.error("[chat] LLM failed:", e.message); }
   }
   // No LLM (or it failed): instant FAQ answers, then match the problem to a service.
