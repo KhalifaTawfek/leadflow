@@ -2,7 +2,6 @@
 node_modules/
 
 # Secrets — NEVER commit these
-.env
 *.env
 !.env.example
 *firebase-adminsdk*.json
@@ -17,3 +16,4 @@ backups/
 # OS junk
 .DS_Store
 Thumbs.db
+config.bat

@@ -88,7 +88,7 @@ const SERVICE_RULES = [
   },
   {
     category: "Domain & Business Email",
-    keywords: ["transfer", "registrar", "nameserver", "move my domain", "move domain", "buy a domain", "register a domain", "godaddy", "namecheap", "domain expired", "domain", "business email", "professional email", "email for my"],
+    keywords: ["transfer", "registrar", "nameserver", "move my domain", "move domain", "buy a domain", "register a domain", "godaddy", "namecheap", "domain expired", "domain", "business email", "professional email", "email for my", "email", "emails", "goes to spam", "going to spam", "spam folder", "deliverability", "spf", "dkim", "dmarc"],
     estimate: "1-2 hours",
     questions: [
       "Which domain is it, and where is it registered today?",

@@ -1,11 +1,11 @@
 {
   "name": "leadflow-ai",
   "version": "1.0.0",
-  "description": "LeadFlow AI — smart lead management system with a rule-based AI agent, for an IT/cyber/automation services company.",
+  "description": "LeadFlow AI \u2014 smart lead management system with a rule-based AI agent, for an IT/cyber/automation services company.",
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "node src/server.js",
+    "start": "node init && node src/server.js",
+    "dev": "node init && node src/server.js",
     "seed": "node scripts/seed.js",
     "setup": "node scripts/seed.js"
   },
